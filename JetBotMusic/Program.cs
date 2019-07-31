@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace JetBotMusic
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
+        static async Task Main(string[] args)
+            => await new StreamMusicBot().InitializeAsync();
     }
 }
