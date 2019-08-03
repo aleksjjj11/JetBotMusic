@@ -519,7 +519,7 @@
           "lib/netstandard2.0/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "Victoria/4.0.7": {
+      "Victoria/4.0.17": {
         "type": "package",
         "dependencies": {
           "Discord.Net.WebSocket": "2.0.1",
@@ -2199,16 +2199,18 @@
         "version.txt"
       ]
     },
-    "Victoria/4.0.7": {
-      "sha512": "JT4aWfmHw74fx+Q3TfBmFCe8mlXqL8lgix6hnno3T8JtduO3JHUxrvc1oj0OIjnD53SSQTWhQCJhqNQNfOznCA==",
+    "Victoria/4.0.17": {
+      "sha512": "juvbPQmMBx0uYkAswP7gHmL7rlaE8tpG9dxuZkhapMBQLTBOYlEdKSL00GgDcaXFvHS7KoXyd+e550snWkZwGQ==",
       "type": "package",
-      "path": "victoria/4.0.7",
+      "path": "victoria/4.0.17",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netcoreapp3.0/Victoria.dll",
+        "lib/netcoreapp3.0/Victoria.xml",
         "lib/netstandard2.0/Victoria.dll",
-        "victoria.4.0.7.nupkg.sha512",
+        "lib/netstandard2.0/Victoria.xml",
+        "victoria.4.0.17.nupkg.sha512",
         "victoria.nuspec"
       ]
     }
@@ -2217,7 +2219,7 @@
     ".NETCoreApp,Version=v2.0": [
       "Discord.Net >= 2.0.1",
       "Microsoft.NETCore.App >= 2.0.0",
-      "Victoria >= 4.0.7"
+      "Victoria >= 4.0.17"
     ]
   },
   "packageFolders": {
@@ -2276,7 +2278,7 @@
           },
           "Victoria": {
             "target": "Package",
-            "version": "[4.0.7, )"
+            "version": "[4.0.17, )"
           }
         },
         "imports": [

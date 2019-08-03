@@ -1,3 +1,4 @@
+using System.IO.Pipes;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Discord;
@@ -30,6 +31,40 @@ namespace JetBotMusic.Modules
                 await _musicService.ConnectAsync(user.VoiceChannel, Context.Channel as ITextChannel);
                 await ReplyAsync($"now connected to {user.VoiceChannel.Name}");
             }
+        }
+
+        [Command("Leave")]
+        public async Task Leave()
+        {
+            SocketGuildUser user = Context.User as SocketGuildUser;
+            if (user is null)
+            {
+                await ReplyAsync("Please join the channel the bot is in to make it leave.");
+            }
+            else
+            {
+                await _musicService.LeaveAsync(user.VoiceChannel);
+                await ReplyAsync($"Bot has now left {user.VoiceChannel.Name}");
+            }
+        }
+
+        [Command("Play")]
+        public async Task Play([Remainder]string query)
+        {
+            var result = await _musicService.PlayAsync(query, Context.Guild.Id);
+            await ReplyAsync(result);
+        }
+
+        [Command("Stop")]
+        public async Task Stop()
+        {
+            
+        }
+
+        [Command("Skip")]
+        public async Task Skip()
+        {
+            
         }
     }
 }

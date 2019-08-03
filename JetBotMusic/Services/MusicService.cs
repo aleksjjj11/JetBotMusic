@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Victoria;
 using Victoria.Entities;
+using SearchResult = Discord.Commands.SearchResult;
 
 namespace JetBotMusic.Services
 {
@@ -13,6 +15,7 @@ namespace JetBotMusic.Services
         private LavaRestClient _lavaRestClient;
         private LavaSocketClient _lavaSocketClient;
         private DiscordSocketClient _client;
+        private LavaPlayer _player;
 
         public MusicService(LavaRestClient restClient, DiscordSocketClient client, LavaSocketClient socketClient)
         {
@@ -32,6 +35,31 @@ namespace JetBotMusic.Services
         public async Task ConnectAsync(SocketVoiceChannel voiceChannel, ITextChannel textChannel)
             => await _lavaSocketClient.ConnectAsync(voiceChannel, textChannel);
 
+        public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
+            => await _lavaSocketClient.DisconnectAsync(voiceChannel);
+
+        public async Task<string> PlayAsync(string query, ulong guildId)
+        {
+            _player = _lavaSocketClient.GetPlayer(guildId);
+            var results = await _lavaRestClient.SearchYouTubeAsync(query);
+            if (results.LoadType == LoadType.NoMatches || results.LoadType == LoadType.LoadFailed)
+            {
+                return "No matches found.";
+            }
+
+            var track = results.Tracks.FirstOrDefault();
+
+            if (_player.IsPlaying)
+            {
+                _player.Queue.Enqueue(track);
+                return $"{track.Title} has been added to the queue.";
+            }
+            else
+            {
+                await _player.PlayAsync(track);
+                return $"Now Playing: {track.Title}";
+            }
+        }
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)
         {
             if (!reason.ShouldPlayNext()) return;
