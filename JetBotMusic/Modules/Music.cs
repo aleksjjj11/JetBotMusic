@@ -1,10 +1,14 @@
 using System.IO.Pipes;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using JetBotMusic.Services;
+using Victoria;
+using Victoria.Entities;
+using Victoria.Queue;
 
 namespace JetBotMusic.Modules
 {
@@ -66,6 +70,30 @@ namespace JetBotMusic.Modules
         public async Task Skip()
         {
             await _musicService.SkipAsync();
+        }
+
+        [Command("List")]
+        public async Task List()
+        {
+            LavaPlayer player = await _musicService.TrackListAsync();
+            if (player is null) return;
+            string listMessage = $"Now playing: {player.CurrentTrack.Title}";
+            
+            var trackList = player.Queue.Items.ToList();
+
+            if (player.Queue.Count > 0)
+            {
+                listMessage += "\nTrack in queue:";
+                for (int i = 0; i < trackList.Count; i++)
+                {
+                    var track = trackList[i] as LavaTrack;
+                    if (track is null) listMessage += "\nTrack empty";
+                    //await ReplyAsync(track.Title);
+                    else listMessage += "\n" + track.Title;
+                }
+            }
+
+            await ReplyAsync(listMessage);
         }
     }
 }

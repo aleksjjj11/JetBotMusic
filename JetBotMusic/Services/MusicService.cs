@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -72,6 +73,12 @@ namespace JetBotMusic.Services
             if (_player is null || _player.Queue.Count is 0) return;
             await _player.SkipAsync();
         }
+
+        public async Task<LavaPlayer> TrackListAsync()
+        {
+            return _player;
+        }
+        
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)
         {
             if (!reason.ShouldPlayNext()) return;
