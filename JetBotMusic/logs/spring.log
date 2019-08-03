@@ -83,3 +83,40 @@
 2019-08-03 14:09:13.989  INFO 12344 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:57933 -- CloseStatus[code=1006, reason=]
 2019-08-03 14:09:13.990  INFO 12344 --- [XNIO-2 I/O-1] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
 2019-08-03 14:09:13.991  INFO 12344 --- [XNIO-2 I/O-1] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2019-08-03 16:43:55.809  INFO 12344 --- [XNIO-2 task-6] l.server.io.HandshakeInterceptorImpl     : Incoming connection from /127.0.0.1:61929
+2019-08-03 16:43:55.815  INFO 12344 --- [XNIO-2 task-6] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2019-08-03 16:43:55.828  INFO 12344 --- [XNIO-2 task-6] lavalink.server.io.SocketServer          : Connection successfully established from /127.0.0.1:61929
+2019-08-03 16:44:11.143  INFO 12344 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"sessionId":"cb9166c011849b962c08ca9809dc458b","event":{"token":"7c2e3db138286bda","guildid":"509583277661880321","endpoint":"eu-central959.discord.media:80"},"guildId":"509583277661880321","op":"voiceUpdate"}
+2019-08-03 16:44:21.486  INFO 12344 --- [XNIO-2 task-7] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-03 16:44:22.387  INFO 12344 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Counting stars
+2019-08-03 16:44:22.430  INFO 12344 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAgQIAHE9uZVJlcHVibGljIC0gQ291bnRpbmcgU3RhcnMAC09uZVJlcHVibGljAAAAAAAEVWAAC2hUX252V3JlSWhnAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9aFRfbnZXcmVJaGcAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-03 16:44:41.940  INFO 12344 --- [XNIO-2 task-9] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-03 16:44:42.529  INFO 12344 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Unreval
+2019-08-03 16:45:11.896  INFO 12344 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"guildId":"509583277661880321","op":"stop"}
+2019-08-03 16:45:34.779  INFO 12344 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:61929 -- CloseStatus[code=1006, reason=]
+2019-08-03 16:45:34.780  INFO 12344 --- [XNIO-2 I/O-1] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
+2019-08-03 16:45:34.788  INFO 12344 --- [XNIO-2 I/O-1] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2019-08-03 16:46:38.096  INFO 12344 --- [XNIO-2 task-11] l.server.io.HandshakeInterceptorImpl     : Incoming connection from /127.0.0.1:62008
+2019-08-03 16:46:38.101  INFO 12344 --- [XNIO-2 task-11] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2019-08-03 16:46:38.108  INFO 12344 --- [XNIO-2 task-11] lavalink.server.io.SocketServer          : Connection successfully established from /127.0.0.1:62008
+2019-08-03 16:46:52.124  INFO 12344 --- [XNIO-2 task-12] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-03 16:46:52.743  INFO 12344 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Counting stars
+2019-08-03 16:47:24.551  INFO 12344 --- [XNIO-2 I/O-4] lavalink.server.io.SocketServer          : {"sessionId":"0bfbc4e71dd5890ae4509de57ea41670","event":{"token":"fa111c8a8da71ad0","guildid":"509583277661880321","endpoint":"eu-central959.discord.media:80"},"guildId":"509583277661880321","op":"voiceUpdate"}
+2019-08-03 16:47:31.600  INFO 12344 --- [XNIO-2 task-14] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-03 16:47:32.173  INFO 12344 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Counting stars
+2019-08-03 16:47:32.199  INFO 12344 --- [XNIO-2 I/O-4] lavalink.server.io.SocketServer          : {"track":"QAAAgQIAHE9uZVJlcHVibGljIC0gQ291bnRpbmcgU3RhcnMAC09uZVJlcHVibGljAAAAAAAEVWAAC2hUX252V3JlSWhnAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9aFRfbnZXcmVJaGcAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-03 16:47:45.413  INFO 12344 --- [XNIO-2 task-16] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-03 16:47:46.019  INFO 12344 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: unreval
+2019-08-03 16:48:00.421  INFO 12344 --- [XNIO-2 I/O-4] lavalink.server.io.SocketServer          : {"track":"QAAAfQIAHlRva3lvIEdob3VsIC0gVW5yYXZlbCBbTHlyaWNzXQAFRVhPLUwAAAAAAAOxUAALS0JTc3JGTG42U0UAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1LQlNzckZMbjZTRQAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-03 16:48:16.570  INFO 12344 --- [XNIO-2 I/O-4] lavalink.server.io.SocketServer          : {"guildId":"509583277661880321","op":"stop"}
+2019-08-03 16:48:22.985  INFO 12344 --- [XNIO-2 I/O-4] lavalink.server.io.SocketServer          : {"guildId":"509583277661880321","op":"destroy"}
+2019-08-03 16:49:40.538  INFO 12344 --- [XNIO-2 task-18] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-03 16:49:41.198  INFO 12344 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Counting stars
+2019-08-03 16:49:51.686  INFO 12344 --- [XNIO-2 task-20] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-03 16:49:52.452  INFO 12344 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Counting stars
+2019-08-03 16:51:27.274  INFO 12344 --- [XNIO-2 I/O-4] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:62008 -- CloseStatus[code=1006, reason=]
+2019-08-03 16:51:27.274  INFO 12344 --- [XNIO-2 I/O-4] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
+2019-08-03 16:51:27.275  INFO 12344 --- [XNIO-2 I/O-4] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2019-08-03 16:51:34.235  INFO 12344 --- [XNIO-2 task-22] l.server.io.HandshakeInterceptorImpl     : Incoming connection from /127.0.0.1:62133
+2019-08-03 16:51:34.238  INFO 12344 --- [XNIO-2 task-22] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2019-08-03 16:51:34.245  INFO 12344 --- [XNIO-2 task-22] lavalink.server.io.SocketServer          : Connection successfully established from /127.0.0.1:62133

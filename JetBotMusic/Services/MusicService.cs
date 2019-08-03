@@ -60,6 +60,18 @@ namespace JetBotMusic.Services
                 return $"Now Playing: {track.Title}";
             }
         }
+
+        public async Task StopAsync()
+        {
+            if (_player is null) return;
+            await _player.StopAsync();
+        }
+
+        public async Task SkipAsync()
+        {
+            if (_player is null || _player.Queue.Count is 0) return;
+            await _player.SkipAsync();
+        }
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)
         {
             if (!reason.ShouldPlayNext()) return;

@@ -21,7 +21,7 @@ namespace JetBotMusic.Modules
         public async Task Join()
         {
             SocketGuildUser user = Context.User as SocketGuildUser;
-            if (user is null)
+            if (user is null || user.VoiceChannel is null)
             {
                 await ReplyAsync("You need to connect to a voice channel.");
                 return;
@@ -58,13 +58,14 @@ namespace JetBotMusic.Modules
         [Command("Stop")]
         public async Task Stop()
         {
-            
+            await _musicService.StopAsync();
+            await ReplyAsync("Music playBack stopped.");
         }
 
         [Command("Skip")]
         public async Task Skip()
         {
-            
+            await _musicService.SkipAsync();
         }
     }
 }
