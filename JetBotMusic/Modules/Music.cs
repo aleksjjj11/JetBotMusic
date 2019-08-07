@@ -80,10 +80,12 @@ namespace JetBotMusic.Modules
                  await message.AddReactionAsync(new Emoji("" + listEmoji[i]));
              }*/
             //await message.AddReactionAsync(new Emoji("🔊"));
-            await message.AddReactionAsync(new Emoji("⏯"));
-            await message.AddReactionAsync(new Emoji("⏭"));
-            await message.AddReactionAsync(new Emoji("🔀"));
-            await message.AddReactionAsync(new Emoji("🚫"));
+            await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
+            await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
+            await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
+            await message.AddReactionAsync(new Emoji("⏭")); //skip
+            await message.AddReactionAsync(new Emoji("🔀")); //shuffle
+            await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
         }
 
         [Command("Stop")]

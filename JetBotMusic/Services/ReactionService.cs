@@ -44,46 +44,46 @@ namespace JetBotMusic.Services
             {
                 await _musicService.PauseAsync();
             }
+            
             if (reaction.Emote.Name is "⏭")
             {
                 await _musicService.SkipAsync(reaction.Message.Value);
             }
-
+            
             if (reaction.Emote.Name is "🔊")
             {
                 await _musicService.UnmuteAsync();
-                //await ReAddedReactions(reaction);
-                //await reaction.Message.Value.RemoveAllReactionsAsync();
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🚫"));
-                /*await reaction.Message.Value.AddReactionAsync(new Emoji("⏯"));
-                await reaction.Message.Value.AddReactionAsync(new Emoji("⏩"));
-                await reaction.Message.Value.AddReactionAsync(new Emoji("🔀"));*/
-
             }
+            
             if (reaction.Emote.Name is "🔈")
             {
                 await _musicService.DownVolumeAsync();
             }
-
+            
             if (reaction.Emote.Name is "🚫")
             {
                 await _musicService.MuteAsync();
-                //await ReAddedReactions(reaction);
-                //await reaction.Message.Value.RemoveAllReactionsAsync();
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🔊"));
-                /*await reaction.Message.Value.AddReactionAsync(new Emoji("⏯"));
-                await reaction.Message.Value.AddReactionAsync(new Emoji("⏩"));
-                await reaction.Message.Value.AddReactionAsync(new Emoji("🔀"));*/
-                //await reaction.Message.Value.RemoveAllReactionsAsync()
             }
-
+            
             if (reaction.Emote.Name is "🔀")
             {
                 await _musicService.Shuffle();
             }
-            
+
+            if (reaction.Emote.Name is "⏹")
+            {
+                await _musicService.StopAsync();
+            }
+
+            if (reaction.Emote.Name is "🚪")
+            {
+                if (!((reaction.User.Value as SocketGuildUser).VoiceChannel is null))
+                    await _musicService.LeaveAsync((reaction.User.Value as SocketGuildUser).VoiceChannel);
+            }
             //await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
             //return Task.CompletedTask;
         }
