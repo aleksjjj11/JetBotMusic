@@ -71,7 +71,7 @@ namespace JetBotMusic.Modules
             }
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("JetBot-Music")
-                .WithDescription($"Status: {result}" + "\nVoice Status: Without mute")
+                .WithDescription($"*Status*: {result}" + "\n*Voice Status*: **Without mute**")
                 .WithColor(Color.Orange);
             var message = await ReplyAsync("", false, builder.Build());
             
@@ -82,7 +82,7 @@ namespace JetBotMusic.Modules
             await message.AddReactionAsync(new Emoji("🔀")); //shuffle
             await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
             
-            message as SocketUserMessage;
+            _musicService.SetMessage(message);
         }
 
         [Command("Stop")]

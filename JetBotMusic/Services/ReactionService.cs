@@ -63,7 +63,7 @@ namespace JetBotMusic.Services
                 await reaction.Message.Value.ModifyAsync(properties =>
                 {
                     EmbedBuilder builder = new EmbedBuilder();
-                    string description = embed.Description.Replace("Voice Status: With mute", "Voice Status: Without mute");
+                    string description = embed.Description.Replace("*Voice Status*: **With mute**", "*Voice Status*: **Without mute**");
                     builder.WithTitle(embed.Title)
                         .WithDescription(description)
                         .WithColor(Color.Orange);
@@ -88,7 +88,7 @@ namespace JetBotMusic.Services
                 await reaction.Message.Value.ModifyAsync(properties =>
                 {
                     EmbedBuilder builder = new EmbedBuilder();
-                    string description = embed.Description.Replace("Voice Status: Without mute", "Voice Status: With mute");
+                    string description = embed.Description.Replace("*Voice Status*: **Without mute**", "*Voice Status*: **With mute**");
                     builder.WithTitle(embed.Title)
                         .WithDescription(description)
                         .WithColor(Color.Orange);
@@ -111,7 +111,7 @@ namespace JetBotMusic.Services
                 await reaction.Message.Value.ModifyAsync(properties =>
                 {
                     EmbedBuilder builder = new EmbedBuilder();
-                    string description = embed.Description.Replace(firstString, "Status: Stopping");
+                    string description = embed.Description.Replace(firstString, "*Status*: **Stopping**");
                     builder.WithTitle(embed.Title)
                         .WithDescription(description)
                         .WithColor(Color.Orange);

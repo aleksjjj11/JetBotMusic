@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using JetBotMusic.Modules;
 using Victoria;
 using Victoria.Entities;
 using SearchResult = Discord.Commands.SearchResult;
@@ -18,7 +19,7 @@ namespace JetBotMusic.Services
         private LavaSocketClient _lavaSocketClient;
         private DiscordSocketClient _client;
         private LavaPlayer _player;
-        public SocketUserMessage _message;
+        private IUserMessage _message;
 
         public MusicService(LavaRestClient restClient, DiscordSocketClient client, LavaSocketClient socketClient)
         {
@@ -41,7 +42,11 @@ namespace JetBotMusic.Services
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
-        public async Task<string> PlayAsync(string query, ulong guildId, SocketUserMessage message)
+        public void SetMessage(IUserMessage message)
+        {
+            _message = message;
+        }
+        public async Task<string> PlayAsync(string query, ulong guildId)
         {
             _player = _lavaSocketClient.GetPlayer(guildId);
             var results = await _lavaRestClient.SearchYouTubeAsync(query);
@@ -60,7 +65,7 @@ namespace JetBotMusic.Services
             else
             {
                 await _player.PlayAsync(track);
-                return $"Playing {track.Title}";
+                return $"**Playing** `{track.Title}`";
             }
         }
 
@@ -128,7 +133,7 @@ namespace JetBotMusic.Services
                 await message.ModifyAsync(properties =>
                 {
                     EmbedBuilder builder = new EmbedBuilder();
-                    string description = embed.Description.Replace(firstString, $"Status: Pausing {_player.CurrentTrack.Title}");
+                    string description = embed.Description.Replace(firstString, $"*Status*: **Pausing** `{_player.CurrentTrack.Title}`");
                     builder.WithTitle(embed.Title)
                         .WithDescription(description)
                         .WithColor(Color.Orange);
@@ -154,7 +159,7 @@ namespace JetBotMusic.Services
                 await message.ModifyAsync(properties =>
                 {
                     EmbedBuilder builder = new EmbedBuilder();
-                    string description = embed.Description.Replace(firstString, $"Status: Playing {_player.CurrentTrack.Title}");
+                    string description = embed.Description.Replace(firstString, $"*Status*: **Playing** `{_player.CurrentTrack.Title}`");
                     builder.WithTitle(embed.Title)
                         .WithDescription(description)
                         .WithColor(Color.Orange);
@@ -202,18 +207,17 @@ namespace JetBotMusic.Services
                 return;
             }
 
-            /*Embed embed = _message.Embeds.First();
-            string firstString = embed.Description.Substring(0, embed.Description.IndexOf("\n"));
+            string firstString = _message.Embeds.First().Description.Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
                 
             await _message.ModifyAsync(properties =>
             {
                 EmbedBuilder builder = new EmbedBuilder();
-                string description = embed.Description.Replace(firstString, $"Status: Playing {nextTack.Title}");
-                builder.WithTitle(embed.Title)
+                string description = _message.Embeds.First().Description.Replace(firstString, $"*Status*: **Playing** `{nextTack.Title}`");
+                builder.WithTitle(_message.Embeds.First().Title)
                     .WithDescription(description)
                     .WithColor(Color.Orange);
                 properties.Embed = builder.Build();
-            });*/
+            });
             
             await player.PlayAsync(nextTack);
         }
