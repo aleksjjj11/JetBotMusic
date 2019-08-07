@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using JetBotMusic.Modules;
 using JetBotMusic.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Victoria;
@@ -41,6 +42,7 @@ namespace JetBotMusic
             await cmdHandler.InitializeAsync();
 
             await _services.GetRequiredService<MusicService>().InitializeAsync();
+            await _services.GetRequiredService<ReactionService>().InitializeAsync();
             
             await Task.Delay(-1);
         }
@@ -57,6 +59,7 @@ namespace JetBotMusic
                 .AddSingleton(_cmdService)
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<MusicService>()
+                .AddSingleton<ReactionService>()
                 .AddSingleton<LavaRestClient>()
                 .AddSingleton<LavaSocketClient>()
                 .BuildServiceProvider();

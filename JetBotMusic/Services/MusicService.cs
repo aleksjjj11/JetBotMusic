@@ -68,26 +68,104 @@ namespace JetBotMusic.Services
             await _player.StopAsync();
         }
 
-        public async Task SkipAsync()
+        public async Task MuteAsync()
         {
-            if (_player is null || _player.Queue.Count is 0) return;
+            await _player.SetVolumeAsync(0);
+        }
+
+        public async Task UnmuteAsync()
+        {
+            await _player.SetVolumeAsync(100);
+        }
+        public async Task SkipAsync(SocketUserMessage message)
+        {
+            if (_player is null || _player.Queue.Count is 0)
+            {
+                //await _player.TextChannel.SendMessageAsync("Nothing in queue.");
+                return;
+            }
+            
+            var oldTrack = _player.CurrentTrack;
             await _player.SkipAsync();
+            await message.ModifyAsync(properties =>
+                {
+                    properties.Content = $"Now Playing: {_player.CurrentTrack.Title}";
+                });
+            //await _player.TextChannel.SendMessageAsync($"Skiped: {oldTrack.Title} \nNow Playing: {_player.CurrentTrack.Title}");
         }
 
         public async Task<LavaPlayer> TrackListAsync()
         {
             return _player;
         }
-        
+
+        public Task Shuffle()
+        {
+            _player.Queue.Shuffle();
+            return Task.CompletedTask;
+        }
+        public async Task PauseAsync()
+        {
+            if (_player is null) return;
+            if (!_player.IsPaused)
+            {
+                await _player.PauseAsync();
+                //await _player.TextChannel.SendMessageAsync("Player is paused.");
+            }
+            else
+            {
+                await ResumeAsync();
+            }
+        }
+
+        public async Task ResumeAsync()
+        {
+            if (_player is null) return;
+            if (_player.IsPaused)
+            {
+                await _player.ResumeAsync();
+                //await _player.TextChannel.SendMessageAsync("Playback resumed.");
+            }
+            else
+            {
+                await PauseAsync();
+            }
+        }
+
+        public async Task SetVolumeAsync(int value)
+        {
+            if (value > 150 || value < 0)
+            {
+                await _player.TextChannel.SendMessageAsync("Incorrect value for volume");
+                return;
+            }
+
+            await _player.SetVolumeAsync(value);
+        }
+
+        public async Task UpVolumeAsync()
+        {
+            if (_player.CurrentVolume + 10 <= 150)
+                await _player.SetVolumeAsync(_player.CurrentVolume + 10);
+            else
+                await _player.SetVolumeAsync(150);
+        }
+
+        public async Task DownVolumeAsync()
+        {
+            if (_player.CurrentVolume - 10 >= 0)
+                await _player.SetVolumeAsync(_player.CurrentVolume - 10);
+            else
+                await _player.SetVolumeAsync(0);
+        }
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)
         {
             if (!reason.ShouldPlayNext()) return;
-            if (player.Queue.TryDequeue(out var item) || !(item is LavaTrack nextTack))
+            if (!player.Queue.TryDequeue(out var item) || !(item is LavaTrack nextTack))
             {
                 await player.TextChannel.SendMessageAsync("There are no more tracks in the queue");
                 return;
             }
-
             await player.PlayAsync(nextTack);
         }
 
