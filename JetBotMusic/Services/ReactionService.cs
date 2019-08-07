@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Discord.Rest;
 using Discord.WebSocket;
 using JetBotMusic.Modules;
 
@@ -42,7 +43,7 @@ namespace JetBotMusic.Services
             
             if (reaction.Emote.Name is "⏯")
             {
-                await _musicService.PauseAsync();
+                await _musicService.PauseAsync(reaction.Message.Value);
             }
             
             if (reaction.Emote.Name is "⏭")
@@ -52,9 +53,22 @@ namespace JetBotMusic.Services
             
             if (reaction.Emote.Name is "🔊")
             {
-                await _musicService.UnmuteAsync();
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🚫"));
+                
+                await _musicService.UnmuteAsync(reaction.Message.Value);
+                
+                Embed embed = reaction.Message.Value.Embeds.First();
+                
+                await reaction.Message.Value.ModifyAsync(properties =>
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    string description = embed.Description.Replace("Voice Status: With mute", "Voice Status: Without mute");
+                    builder.WithTitle(embed.Title)
+                        .WithDescription(description)
+                        .WithColor(Color.Orange);
+                    properties.Embed = builder.Build();
+                });
             }
             
             if (reaction.Emote.Name is "🔈")
@@ -64,9 +78,22 @@ namespace JetBotMusic.Services
             
             if (reaction.Emote.Name is "🚫")
             {
-                await _musicService.MuteAsync();
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🔊"));
+                
+                await _musicService.MuteAsync(reaction.Message.Value);
+
+                Embed embed = reaction.Message.Value.Embeds.First();
+                
+                await reaction.Message.Value.ModifyAsync(properties =>
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    string description = embed.Description.Replace("Voice Status: Without mute", "Voice Status: With mute");
+                    builder.WithTitle(embed.Title)
+                        .WithDescription(description)
+                        .WithColor(Color.Orange);
+                    properties.Embed = builder.Build();
+                });
             }
             
             if (reaction.Emote.Name is "🔀")
@@ -77,6 +104,19 @@ namespace JetBotMusic.Services
             if (reaction.Emote.Name is "⏹")
             {
                 await _musicService.StopAsync();
+                
+                Embed embed = reaction.Message.Value.Embeds.First();
+                string firstString = embed.Description.Substring(0, embed.Description.IndexOf("\n"));
+                
+                await reaction.Message.Value.ModifyAsync(properties =>
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    string description = embed.Description.Replace(firstString, "Status: Stopping");
+                    builder.WithTitle(embed.Title)
+                        .WithDescription(description)
+                        .WithColor(Color.Orange);
+                    properties.Embed = builder.Build();
+                });
             }
 
             if (reaction.Emote.Name is "🚪")
@@ -104,7 +144,7 @@ namespace JetBotMusic.Services
         private async Task ReactionRemoved(Cacheable<IUserMessage, ulong> arg1, ISocketMessageChannel socketMessageChannel, SocketReaction reaction)
         {
             //socketMessageChannel.SendMessageAsync(reaction.Emote.Name);
-            await ReactionAdded(arg1, socketMessageChannel, reaction);
+            //await ReactionAdded(arg1, socketMessageChannel, reaction);
         }
     }
 }

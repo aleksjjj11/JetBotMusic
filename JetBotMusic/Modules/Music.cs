@@ -17,7 +17,6 @@ namespace JetBotMusic.Modules
     {
         private MusicService _musicService;
         private ReactionService _reactionService;
-        private string listEmoji;
         public Music(MusicService musicService)
         {
             _musicService = musicService;
@@ -36,8 +35,6 @@ namespace JetBotMusic.Modules
             {
                 await _musicService.ConnectAsync(user.VoiceChannel, Context.Channel as ITextChannel);
                 await ReplyAsync($"now connected to {user.VoiceChannel.Name}");
-                listEmoji = "🚫⏯⏭🔀";
-                await _reactionService.SetReactions(listEmoji);
             }
         }
 
@@ -72,20 +69,20 @@ namespace JetBotMusic.Modules
                 await dmChannel.SendMessageAsync(result);
                 return;
             }
-            var message = await ReplyAsync(result);
-            //List<Emoji> listReaction = null;
-             //await ReplyAsync("🔊:mute:⏯⏩");
-             /*for (int i = 0; i < listEmoji.Length; i++)
-             {
-                 await message.AddReactionAsync(new Emoji("" + listEmoji[i]));
-             }*/
-            //await message.AddReactionAsync(new Emoji("🔊"));
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle("JetBot-Music")
+                .WithDescription($"Status: {result}" + "\nVoice Status: Without mute")
+                .WithColor(Color.Orange);
+            var message = await ReplyAsync("", false, builder.Build());
+            
             await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
             await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
             await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
             await message.AddReactionAsync(new Emoji("⏭")); //skip
             await message.AddReactionAsync(new Emoji("🔀")); //shuffle
             await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
+            
+            message as SocketUserMessage;
         }
 
         [Command("Stop")]
@@ -104,13 +101,13 @@ namespace JetBotMusic.Modules
         [Command("Pause")]
         public async Task Pause()
         {
-            await _musicService.PauseAsync();
+            //await _musicService.PauseAsync();
         }
 
         [Command("Resume")]
         public async Task Resume()
         {
-            await _musicService.ResumeAsync();
+            //await _musicService.ResumeAsync();
         }
         [Command("List")]
         public async Task List()

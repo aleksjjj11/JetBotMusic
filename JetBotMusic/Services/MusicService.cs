@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -17,6 +18,7 @@ namespace JetBotMusic.Services
         private LavaSocketClient _lavaSocketClient;
         private DiscordSocketClient _client;
         private LavaPlayer _player;
+        public SocketUserMessage _message;
 
         public MusicService(LavaRestClient restClient, DiscordSocketClient client, LavaSocketClient socketClient)
         {
@@ -39,7 +41,7 @@ namespace JetBotMusic.Services
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
-        public async Task<string> PlayAsync(string query, ulong guildId)
+        public async Task<string> PlayAsync(string query, ulong guildId, SocketUserMessage message)
         {
             _player = _lavaSocketClient.GetPlayer(guildId);
             var results = await _lavaRestClient.SearchYouTubeAsync(query);
@@ -58,7 +60,7 @@ namespace JetBotMusic.Services
             else
             {
                 await _player.PlayAsync(track);
-                return $"Now Playing: {track.Title}";
+                return $"Playing {track.Title}";
             }
         }
 
@@ -68,14 +70,16 @@ namespace JetBotMusic.Services
             await _player.StopAsync();
         }
 
-        public async Task MuteAsync()
+        public async Task MuteAsync(SocketUserMessage message)
         {
             await _player.SetVolumeAsync(0);
+            _message = message;
         }
 
-        public async Task UnmuteAsync()
+        public async Task UnmuteAsync(SocketUserMessage message)
         {
-            await _player.SetVolumeAsync(100);
+            await _player.SetVolumeAsync(100);   
+            _message = message;
         }
         public async Task SkipAsync(SocketUserMessage message)
         {
@@ -85,12 +89,19 @@ namespace JetBotMusic.Services
                 return;
             }
             
-            var oldTrack = _player.CurrentTrack;
+            LavaTrack oldTrack = _player.CurrentTrack;
             await _player.SkipAsync();
+            Embed embed = message.Embeds.First();
+                
             await message.ModifyAsync(properties =>
-                {
-                    properties.Content = $"Now Playing: {_player.CurrentTrack.Title}";
-                });
+            {
+                EmbedBuilder builder = new EmbedBuilder();
+                string description = embed.Description.Replace(oldTrack.Title, _player.CurrentTrack.Title);
+                builder.WithTitle(embed.Title)
+                    .WithDescription(description)
+                    .WithColor(Color.Orange);
+                properties.Embed = builder.Build();
+            });
             //await _player.TextChannel.SendMessageAsync($"Skiped: {oldTrack.Title} \nNow Playing: {_player.CurrentTrack.Title}");
         }
 
@@ -104,31 +115,55 @@ namespace JetBotMusic.Services
             _player.Queue.Shuffle();
             return Task.CompletedTask;
         }
-        public async Task PauseAsync()
+        public async Task PauseAsync(SocketUserMessage message)
         {
             if (_player is null) return;
             if (!_player.IsPaused)
             {
                 await _player.PauseAsync();
-                //await _player.TextChannel.SendMessageAsync("Player is paused.");
+                
+                Embed embed = message.Embeds.First();
+                string firstString = embed.Description.Substring(0, embed.Description.IndexOf("\n"));
+                
+                await message.ModifyAsync(properties =>
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    string description = embed.Description.Replace(firstString, $"Status: Pausing {_player.CurrentTrack.Title}");
+                    builder.WithTitle(embed.Title)
+                        .WithDescription(description)
+                        .WithColor(Color.Orange);
+                    properties.Embed = builder.Build();
+                });
             }
             else
             {
-                await ResumeAsync();
+                await ResumeAsync(message);
             }
         }
 
-        public async Task ResumeAsync()
+        public async Task ResumeAsync(SocketUserMessage message)
         {
             if (_player is null) return;
             if (_player.IsPaused)
             {
                 await _player.ResumeAsync();
-                //await _player.TextChannel.SendMessageAsync("Playback resumed.");
+                
+                Embed embed = message.Embeds.First();
+                string firstString = embed.Description.Substring(0, embed.Description.IndexOf("\n"));
+                
+                await message.ModifyAsync(properties =>
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    string description = embed.Description.Replace(firstString, $"Status: Playing {_player.CurrentTrack.Title}");
+                    builder.WithTitle(embed.Title)
+                        .WithDescription(description)
+                        .WithColor(Color.Orange);
+                    properties.Embed = builder.Build();
+                });
             }
             else
             {
-                await PauseAsync();
+                await PauseAsync(message);
             }
         }
 
@@ -166,6 +201,20 @@ namespace JetBotMusic.Services
                 await player.TextChannel.SendMessageAsync("There are no more tracks in the queue");
                 return;
             }
+
+            /*Embed embed = _message.Embeds.First();
+            string firstString = embed.Description.Substring(0, embed.Description.IndexOf("\n"));
+                
+            await _message.ModifyAsync(properties =>
+            {
+                EmbedBuilder builder = new EmbedBuilder();
+                string description = embed.Description.Replace(firstString, $"Status: Playing {nextTack.Title}");
+                builder.WithTitle(embed.Title)
+                    .WithDescription(description)
+                    .WithColor(Color.Orange);
+                properties.Embed = builder.Build();
+            });*/
+            
             await player.PlayAsync(nextTack);
         }
 
