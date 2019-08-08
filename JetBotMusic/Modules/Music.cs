@@ -66,11 +66,8 @@ namespace JetBotMusic.Modules
             var result = await _musicService.PlayAsync(query, Context.Guild.Id);
             if (result.Contains("has been added to the queue"))
             {
-                var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
-                await dmChannel.SendMessageAsync(result);
-                
+                await Context.Message.DeleteAsync();
                 await _musicService.TrackListAsync();
-                
                 return;
             }
             EmbedBuilder builder = new EmbedBuilder();

@@ -134,6 +134,10 @@ namespace JetBotMusic.Services
                         listMessage += $"\n`{track.Title}`";
                 }
             }
+            else
+            {
+                listMessage = "\n🎶**Track in queue:**\n***Nothing***";
+            }
             
             await _message.ModifyAsync(properties =>
             {
