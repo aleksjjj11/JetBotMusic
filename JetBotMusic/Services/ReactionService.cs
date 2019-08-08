@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Discord.Rest;
 using Discord.WebSocket;
-using JetBotMusic.Modules;
 
 namespace JetBotMusic.Services
 {
@@ -43,12 +40,12 @@ namespace JetBotMusic.Services
             
             if (reaction.Emote.Name is "⏯")
             {
-                await _musicService.PauseAsync(reaction.Message.Value);
+                await _musicService.PauseAsync();
             }
             
             if (reaction.Emote.Name is "⏭")
             {
-                await _musicService.SkipAsync(reaction.Message.Value);
+                await _musicService.SkipAsync();
             }
             
             if (reaction.Emote.Name is "🔊")
@@ -56,7 +53,7 @@ namespace JetBotMusic.Services
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🚫"));
                 
-                await _musicService.UnmuteAsync(reaction.Message.Value);
+                await _musicService.UnmuteAsync();
                 
                 Embed embed = reaction.Message.Value.Embeds.First();
                 
@@ -81,7 +78,7 @@ namespace JetBotMusic.Services
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🔊"));
                 
-                await _musicService.MuteAsync(reaction.Message.Value);
+                await _musicService.MuteAsync();
 
                 Embed embed = reaction.Message.Value.Embeds.First();
                 

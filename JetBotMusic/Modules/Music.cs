@@ -1,15 +1,10 @@
-using System.Collections.Generic;
-using System.IO.Pipes;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using JetBotMusic.Services;
-using Victoria;
 using Victoria.Entities;
-using Victoria.Queue;
 
 namespace JetBotMusic.Modules
 {
@@ -22,6 +17,12 @@ namespace JetBotMusic.Modules
             _musicService = musicService;
         }
 
+        [Command("SetVolume")]
+        public async Task SetVolume(int volume)
+        {
+            await _musicService.SetVolumeAsync(volume);
+        }
+        
         [Command("Join")]
         public async Task Join()
         {
@@ -54,9 +55,10 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Shuffle")]
-        public async Task Shuffle()
+        public Task Shuffle()
         {
-            
+            _musicService.Shuffle();
+            return Task.CompletedTask;
         }
         
         [Command("Play")]
@@ -95,25 +97,25 @@ namespace JetBotMusic.Modules
         [Command("Skip")]
         public async Task Skip()
         {
-            //await _musicService.SkipAsync();
+            await _musicService.SkipAsync();
         }
 
         [Command("Pause")]
         public async Task Pause()
         {
-            //await _musicService.PauseAsync();
+            await _musicService.PauseAsync();
         }
 
         [Command("Resume")]
         public async Task Resume()
         {
-            //await _musicService.ResumeAsync();
+            await _musicService.ResumeAsync();
         }
         [Command("List")]
         public async Task List()
         {
-            var player = await _musicService.TrackListAsync();
-            string listMessage = $"Now playing: {player.CurrentTrack.Title}";
+            await _musicService.TrackListAsync();
+            /*string listMessage = $"Now playing: {player.CurrentTrack.Title}";
             
             var trackList = player.Queue.Items.ToList();
 
@@ -130,7 +132,7 @@ namespace JetBotMusic.Modules
             }
             //Отправляем список песен в ЛС пользователю, который его запросил
             var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
-            await dmChannel.SendMessageAsync(listMessage);
+            await dmChannel.SendMessageAsync(listMessage);*/
         }
     }
 }
