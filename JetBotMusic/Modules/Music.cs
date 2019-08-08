@@ -55,10 +55,9 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Shuffle")]
-        public Task Shuffle()
+        public async Task Shuffle()
         {
-            _musicService.Shuffle();
-            return Task.CompletedTask;
+            await _musicService.Shuffle();
         }
         
         [Command("Play")]
@@ -69,11 +68,14 @@ namespace JetBotMusic.Modules
             {
                 var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
                 await dmChannel.SendMessageAsync(result);
+                
+                await _musicService.TrackListAsync();
+                
                 return;
             }
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("JetBot-Music")
-                .WithDescription($"*Status*: {result}" + "\n*Voice Status*: **Without mute**")
+                .WithDescription($"*Status*: {result}" + "\n*Voice Status*: **Without mute**\n🎶**Track in queue:**\n***Nothing***")
                 .WithColor(Color.Orange);
             var message = await ReplyAsync("", false, builder.Build());
             
@@ -87,6 +89,11 @@ namespace JetBotMusic.Modules
             _musicService.SetMessage(message);
         }
 
+        [Command("Reset")]
+        public async Task Reset()
+        {
+            await _musicService.ResetPlay();
+        }
         [Command("Stop")]
         public async Task Stop()
         {
@@ -111,28 +118,16 @@ namespace JetBotMusic.Modules
         {
             await _musicService.ResumeAsync();
         }
+
+        [Command("Lyrics")]
+        public async Task Lyrics()
+        {
+            await _musicService.LyricsAsync();
+        }
         [Command("List")]
         public async Task List()
         {
             await _musicService.TrackListAsync();
-            /*string listMessage = $"Now playing: {player.CurrentTrack.Title}";
-            
-            var trackList = player.Queue.Items.ToList();
-
-            if (player.Queue.Count > 0)
-            {
-                listMessage += "\nTrack in queue:";
-                for (int i = 0; i < trackList.Count; i++)
-                {
-                    var track = trackList[i] as LavaTrack;
-                    if (track is null) listMessage += "\nTrack empty";
-                    //await ReplyAsync(track.Title);
-                    else listMessage += "\n" + track.Title;
-                }
-            }
-            //Отправляем список песен в ЛС пользователю, который его запросил
-            var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
-            await dmChannel.SendMessageAsync(listMessage);*/
         }
     }
 }

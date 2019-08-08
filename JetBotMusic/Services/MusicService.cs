@@ -29,7 +29,13 @@ namespace JetBotMusic.Services
             _client.Ready += ClientReadyAsync;
             _lavaSocketClient.Log += LogAsync;
             _lavaSocketClient.OnTrackFinished += TrackFinished;
+            //_lavaSocketClient.OnPlayerUpdated += PlayerUpdated;
             return Task.CompletedTask;
+        }
+
+        private async Task PlayerUpdated(LavaPlayer player, LavaTrack track, TimeSpan timeSpan)
+        {
+            
         }
 
         public async Task ConnectAsync(SocketVoiceChannel voiceChannel, ITextChannel textChannel)
@@ -69,6 +75,8 @@ namespace JetBotMusic.Services
         {
             if (_player is null) return;
             await _player.StopAsync();
+            
+            await TrackListAsync();
         }
 
         public async Task MuteAsync()
@@ -100,17 +108,22 @@ namespace JetBotMusic.Services
                     .WithColor(Color.Orange);
                 properties.Embed = builder.Build();
             });
+            
+            await TrackListAsync();
         }
 
         public async Task TrackListAsync()
         {
             string listMessage = "";
+            string useless = _message.Embeds.First().Description.Substring(
+                _message.Embeds.First().Description.IndexOf("\n🎶"),
+                _message.Embeds.First().Description.Length - _message.Embeds.First().Description.IndexOf("\n🎶"));
             
             var trackList = _player.Queue.Items.ToList();
 
             if (_player.Queue.Count > 0)
             {
-                listMessage += "\n**Track in queue:**";
+                listMessage += "\n🎶**Track in queue:**";
                 for (int i = 0; i < trackList.Count; i++)
                 {
                     var track = trackList[i] as LavaTrack;
@@ -124,10 +137,10 @@ namespace JetBotMusic.Services
             
             await _message.ModifyAsync(properties =>
             {
-                listMessage = properties.Embed.Value.Description + listMessage; 
-                
+                listMessage = _message.Embeds.First().Description.Replace(useless, " ") + listMessage; 
+
                 EmbedBuilder builder = new EmbedBuilder();
-                builder.WithTitle("Track List")
+                builder.WithTitle(_message.Embeds.First().Title)
                     .WithDescription(listMessage)
                     .WithColor(Color.LightOrange);
                 
@@ -135,14 +148,21 @@ namespace JetBotMusic.Services
             });
         }
 
-        public async Task Peek()
+        public async Task LyricsAsync()
         {
-            await _player.CurrentTrack.FetchLyricsAsync();
+            //Not working 
+            _player.CurrentTrack.ResetPosition();
         }
-        public Task Shuffle()
+
+        public async Task ResetPlay()
+        {
+            
+            await _player.TextChannel.SendMessageAsync();///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
+        public async Task Shuffle()
         {
             _player.Queue.Shuffle();
-            return Task.CompletedTask;
+            await TrackListAsync();
         }
         public async Task PauseAsync()
         {
@@ -241,7 +261,7 @@ namespace JetBotMusic.Services
                     .WithColor(Color.Orange);
                 properties.Embed = builder.Build();
             });
-            
+            await TrackListAsync();
             await player.PlayAsync(nextTack);
         }
 
