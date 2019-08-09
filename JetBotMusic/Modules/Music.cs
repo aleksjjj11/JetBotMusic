@@ -59,6 +59,12 @@ namespace JetBotMusic.Modules
         {
             await _musicService.Shuffle();
         }
+
+        [Command("Time")]
+        public async Task Time()
+        {
+            await _musicService.TimeAsync();
+        }
         
         [Command("Play")]
         public async Task Play([Remainder]string query)
@@ -72,7 +78,7 @@ namespace JetBotMusic.Modules
             }
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("JetBot-Music")
-                .WithDescription($"*Status*: {result}" + "\n*Voice Status*: **Without mute**\n🎶**Track in queue:**\n***Nothing***")
+                .WithDescription($"*Status*: {result}" + "\n*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`\n🎶**Track in queue:**\n***Nothing***")
                 .WithColor(Color.Orange);
             var message = await ReplyAsync("", false, builder.Build());
             
@@ -86,10 +92,14 @@ namespace JetBotMusic.Modules
             _musicService.SetMessage(message);
         }
 
-        [Command("Reset")]
-        public async Task Reset()
+        [Command("Seek")]
+        public async Task Reset(int hours = 0, int minutes = 0, int seconds = 0)
         {
-            await _musicService.ResetPlay();
+            hours = hours < 0 || hours > 23 ? 0 : hours;
+            minutes = minutes < 0 || minutes > 59 ? 0 : minutes;
+            seconds = seconds < 0 || seconds > 59 ? 0 : seconds;
+            
+            await _musicService.SeekAsync(0, hours, minutes, seconds);
         }
         [Command("Stop")]
         public async Task Stop()

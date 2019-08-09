@@ -29,13 +29,13 @@ namespace JetBotMusic.Services
             _client.Ready += ClientReadyAsync;
             _lavaSocketClient.Log += LogAsync;
             _lavaSocketClient.OnTrackFinished += TrackFinished;
-            //_lavaSocketClient.OnPlayerUpdated += PlayerUpdated;
+            _lavaSocketClient.OnPlayerUpdated += PlayerUpdated;
             return Task.CompletedTask;
         }
 
         private async Task PlayerUpdated(LavaPlayer player, LavaTrack track, TimeSpan timeSpan)
         {
-            
+            await TimeAsync();
         }
 
         public async Task ConnectAsync(SocketVoiceChannel voiceChannel, ITextChannel textChannel)
@@ -44,6 +44,39 @@ namespace JetBotMusic.Services
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
+        public async Task TimeAsync()
+        {
+            TimeSpan timeSpan = _player.CurrentTrack.Position;
+            LavaTrack track = _player.CurrentTrack;
+            await _message.ModifyAsync(properties =>
+            {
+                string oldStr = _message.Embeds.First().Description.Substring(_message.Embeds.First().Description.IndexOf("**This time:**"), 
+                    "**This time:**".Length + "`00:00/00:00`".Length);
+                
+                string oldMinutes = timeSpan.Minutes + timeSpan.Hours * 60 < 10 
+                    ? '0' + (timeSpan.Minutes + timeSpan.Hours * 60 ).ToString() 
+                    : (timeSpan.Minutes + timeSpan.Hours * 60).ToString();
+                
+                string oldSeconds = timeSpan.Seconds < 10 ? '0' + timeSpan.Seconds.ToString() : timeSpan.Seconds.ToString();
+                
+                string newMinutes = track.Length.Minutes + track.Length.Hours * 60 < 10 
+                    ? '0' + (track.Length.Minutes + track.Length.Hours * 60).ToString() 
+                    : (track.Length.Minutes + track.Length.Hours * 60).ToString();
+                
+                string newSeconds = track.Length.Seconds < 10 ? '0' + track.Length.Seconds.ToString() : track.Length.Seconds.ToString();
+                
+                string timeMSG =
+                    $"**This time:**`{oldMinutes}:{oldSeconds}/{newMinutes}:{newSeconds}`";
+                
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.WithTitle(_message.Embeds.First().Title)
+                    .WithDescription(_message.Embeds.First().Description.Replace(oldStr, timeMSG))
+                    .WithColor(_message.Embeds.First().Color.Value);
+                
+                properties.Embed = builder.Build();
+            });
+        }
+        
         public void SetMessage(IUserMessage message)
         {
             _message = message;
@@ -158,9 +191,10 @@ namespace JetBotMusic.Services
             _player.CurrentTrack.ResetPosition();
         }
 
-        public async Task ResetPlay()
+        public async Task SeekAsync(int days = 0, int hours = 0, int minutes = 0, int second = 0)
         {
-            
+            TimeSpan time = new TimeSpan(days, hours, minutes, second);
+            await _player.SeekAsync(time);
             await _player.TextChannel.SendMessageAsync();///////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
         public async Task Shuffle()
