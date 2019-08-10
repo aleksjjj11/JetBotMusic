@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -6,6 +7,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Victoria;
 using Victoria.Entities;
+using Victoria.Queue;
 
 namespace JetBotMusic.Services
 {
@@ -51,7 +53,7 @@ namespace JetBotMusic.Services
             await _message.ModifyAsync(properties =>
             {
                 string oldStr = _message.Embeds.First().Description.Substring(_message.Embeds.First().Description.IndexOf("**This time:**"), 
-                    "**This time:**".Length + "`00:00/00:00`".Length);
+                    _message.Embeds.First().Description.IndexOf("🆒") - _message.Embeds.First().Description.IndexOf("**This time:**"));
                 
                 string oldMinutes = timeSpan.Minutes + timeSpan.Hours * 60 < 10 
                     ? '0' + (timeSpan.Minutes + timeSpan.Hours * 60 ).ToString() 
@@ -125,7 +127,6 @@ namespace JetBotMusic.Services
         {
             if (_player is null || _player.Queue.Count is 0)
             {
-                //await _player.TextChannel.SendMessageAsync("Nothing in queue.");
                 return;
             }
             
@@ -188,7 +189,15 @@ namespace JetBotMusic.Services
         public async Task LyricsAsync()
         {
             //Not working 
-            _player.CurrentTrack.ResetPosition();
+            string lyrics = await _player.CurrentTrack.FetchLyricsAsync();
+            if (lyrics is null)
+            {
+                Console.WriteLine("--------------------------> NULL");
+            }
+            else
+            {
+                Console.WriteLine($"---------------------------> {lyrics}");
+            }
         }
 
         public async Task SeekAsync(int days = 0, int hours = 0, int minutes = 0, int second = 0)
@@ -279,17 +288,53 @@ namespace JetBotMusic.Services
             else
                 await _player.SetVolumeAsync(0);
         }
+
+        public async Task MoveAsync(int numberTrack, int newPosition = 0)
+        {
+            //Если номер трека совпадает с его позицией, то ничего не делаем
+            if (numberTrack == newPosition || _player.Queue.Count is 0) return;
+            if (numberTrack >= _player.Queue.Count || newPosition >= _player.Queue.Count) return;
+            //Получаем нашу очередь в лист 
+            List<IQueueObject> queue = _player.Queue.Items.ToList();
+            //Добаляем трек в новую позицию и удаляем со старой
+            queue.Insert(newPosition, queue[numberTrack]);
+            if (newPosition < numberTrack)
+                queue.RemoveAt(numberTrack + 1);
+            else 
+                queue.RemoveAt(numberTrack);
+            //Очищаем очередь
+            _player.Queue.Clear();
+            //ЗАполняем изменённую очередь
+            foreach (IQueueObject element in queue)
+            {
+                _player.Queue.Enqueue(element);
+            }
+
+            await TrackListAsync();
+        }
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)
         {
+            string firstString = _message.Embeds.First().Description.Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
+
             if (!reason.ShouldPlayNext()) return;
             if (!player.Queue.TryDequeue(out var item) || !(item is LavaTrack nextTack))
             {
-                await player.TextChannel.SendMessageAsync("There are no more tracks in the queue");
+                //await player.TextChannel.SendMessageAsync("There are no more tracks in the queue");
+                await _message.ModifyAsync(properties =>
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    string description = _message.Embeds.First().Description
+                        .Replace(firstString, $"*Status*: **Played** `{track.Title}`");
+                    
+                    builder.WithTitle(_message.Embeds.First().Title)
+                        .WithDescription(description)
+                        .WithColor(Color.LightOrange);
+                    
+                    properties.Embed = builder.Build();
+                });
                 return;
             }
-
-            string firstString = _message.Embeds.First().Description.Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
-                
+ 
             await _message.ModifyAsync(properties =>
             {
                 EmbedBuilder builder = new EmbedBuilder();
@@ -302,7 +347,7 @@ namespace JetBotMusic.Services
             await TrackListAsync();
             await player.PlayAsync(nextTack);
         }
-
+        
         private Task LogAsync(LogMessage msg)
         {
             Console.WriteLine(msg.Message);

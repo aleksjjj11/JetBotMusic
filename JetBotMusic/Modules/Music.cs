@@ -58,12 +58,7 @@ namespace JetBotMusic.Modules
         public async Task Shuffle()
         {
             await _musicService.Shuffle();
-        }
-
-        [Command("Time")]
-        public async Task Time()
-        {
-            await _musicService.TimeAsync();
+            await Context.Message.DeleteAsync();
         }
         
         [Command("Play")]
@@ -78,7 +73,7 @@ namespace JetBotMusic.Modules
             }
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("JetBot-Music")
-                .WithDescription($"*Status*: {result}" + "\n*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`\n🎶**Track in queue:**\n***Nothing***")
+                .WithDescription($"*Status*: {result}" + "\n*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n🎶**Track in queue:**\n***Nothing***")
                 .WithColor(Color.Orange);
             var message = await ReplyAsync("", false, builder.Build());
             
@@ -99,6 +94,7 @@ namespace JetBotMusic.Modules
             minutes = minutes < 0 || minutes > 59 ? 0 : minutes;
             seconds = seconds < 0 || seconds > 59 ? 0 : seconds;
             
+            await Context.Message.DeleteAsync();
             await _musicService.SeekAsync(0, hours, minutes, seconds);
         }
         [Command("Stop")]
@@ -112,29 +108,41 @@ namespace JetBotMusic.Modules
         public async Task Skip()
         {
             await _musicService.SkipAsync();
+            await Context.Message.DeleteAsync();
         }
 
         [Command("Pause")]
         public async Task Pause()
         {
             await _musicService.PauseAsync();
+            await Context.Message.DeleteAsync();
         }
 
         [Command("Resume")]
         public async Task Resume()
         {
             await _musicService.ResumeAsync();
+            await Context.Message.DeleteAsync();
         }
 
         [Command("Lyrics")]
         public async Task Lyrics()
         {
             await _musicService.LyricsAsync();
+            await Context.Message.DeleteAsync();
         }
         [Command("List")]
         public async Task List()
         {
             await _musicService.TrackListAsync();
+            await Context.Message.DeleteAsync();
+        }
+
+        [Command("Move")]
+        public async Task Move(int numberTrack, int newPosition = 0)
+        {
+            await _musicService.MoveAsync(numberTrack, newPosition);
+            await Context.Message.DeleteAsync();
         }
     }
 }
