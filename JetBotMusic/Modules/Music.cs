@@ -21,6 +21,7 @@ namespace JetBotMusic.Modules
         public async Task SetVolume(int volume)
         {
             await _musicService.SetVolumeAsync(volume);
+            await Context.Message.DeleteAsync();
         }
         
         [Command("Join")]

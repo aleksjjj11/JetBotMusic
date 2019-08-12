@@ -46,7 +46,7 @@ namespace JetBotMusic.Services
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
-        public async Task TimeAsync()
+        public async Task TimeAsync() 
         {
             TimeSpan timeSpan = _player.CurrentTrack.Position;
             LavaTrack track = _player.CurrentTrack;
@@ -55,20 +55,34 @@ namespace JetBotMusic.Services
                 string oldStr = _message.Embeds.First().Description.Substring(_message.Embeds.First().Description.IndexOf("**This time:**"), 
                     _message.Embeds.First().Description.IndexOf("🆒") - _message.Embeds.First().Description.IndexOf("**This time:**"));
                 
-                string oldMinutes = timeSpan.Minutes + timeSpan.Hours * 60 < 10 
-                    ? '0' + (timeSpan.Minutes + timeSpan.Hours * 60 ).ToString() 
-                    : (timeSpan.Minutes + timeSpan.Hours * 60).ToString();
-                
-                string oldSeconds = timeSpan.Seconds < 10 ? '0' + timeSpan.Seconds.ToString() : timeSpan.Seconds.ToString();
-                
-                string newMinutes = track.Length.Minutes + track.Length.Hours * 60 < 10 
-                    ? '0' + (track.Length.Minutes + track.Length.Hours * 60).ToString() 
-                    : (track.Length.Minutes + track.Length.Hours * 60).ToString();
-                
-                string newSeconds = track.Length.Seconds < 10 ? '0' + track.Length.Seconds.ToString() : track.Length.Seconds.ToString();
-                
-                string timeMSG =
-                    $"**This time:**`{oldMinutes}:{oldSeconds}/{newMinutes}:{newSeconds}`";
+                string timeMSG;
+                //Если текущий трек является стримом, то вместо временной позиции будет отображаться надпись трансляция
+                //IF this track is stream then in place of THIS TIME, inscription "STREAM" will displayed 
+                if (_player.CurrentTrack.IsStream)
+                {
+                    timeMSG = "**This time:**`STREAMING`";
+                }
+                else
+                {
+                    string oldMinutes = timeSpan.Minutes + timeSpan.Hours * 60 < 10
+                        ? '0' + (timeSpan.Minutes + timeSpan.Hours * 60).ToString()
+                        : (timeSpan.Minutes + timeSpan.Hours * 60).ToString();
+
+                    string oldSeconds = timeSpan.Seconds < 10
+                        ? '0' + timeSpan.Seconds.ToString()
+                        : timeSpan.Seconds.ToString();
+
+                    string newMinutes = track.Length.Minutes + track.Length.Hours * 60 < 10
+                        ? '0' + (track.Length.Minutes + track.Length.Hours * 60).ToString()
+                        : (track.Length.Minutes + track.Length.Hours * 60).ToString();
+
+                    string newSeconds = track.Length.Seconds < 10
+                        ? '0' + track.Length.Seconds.ToString()
+                        : track.Length.Seconds.ToString();
+
+                    timeMSG =
+                        $"**This time:**`{oldMinutes}:{oldSeconds}/{newMinutes}:{newSeconds}`";
+                }
                 
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle(_message.Embeds.First().Title)
