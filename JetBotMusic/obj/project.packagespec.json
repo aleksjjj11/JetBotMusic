@@ -13,6 +13,10 @@
     "originalTargetFrameworks": [
       "netcoreapp2.0"
     ],
+    "sources": {
+      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+      "https://api.nuget.org/v3/index.json": {}
+    },
     "frameworks": {
       "netcoreapp2.0": {
         "projectReferences": {}
@@ -27,6 +31,10 @@
   "frameworks": {
     "netcoreapp2.0": {
       "dependencies": {
+        "AngleSharp": {
+          "target": "Package",
+          "version": "[0.12.1, )"
+        },
         "Discord.Net": {
           "target": "Package",
           "version": "[2.0.1, )"
@@ -40,6 +48,10 @@
         "Victoria": {
           "target": "Package",
           "version": "[4.0.17, )"
+        },
+        "Yandex.Music.Api": {
+          "target": "Package",
+          "version": "[1.0.0, )"
         }
       },
       "imports": [

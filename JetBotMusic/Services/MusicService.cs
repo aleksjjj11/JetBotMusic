@@ -1,13 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using AngleSharp.Html.Parser;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using JetBotMusic.ParserLycris;
+using JetBotMusic.ParserLycris.YandexMusic;
 using Victoria;
 using Victoria.Entities;
 using Victoria.Queue;
+using Yandex.Music.Api;
+using SearchResult = Victoria.Entities.SearchResult;
+using Yandex.Music.Api.Models;
 
 namespace JetBotMusic.Services
 {
@@ -18,7 +26,6 @@ namespace JetBotMusic.Services
         private DiscordSocketClient _client;
         private LavaPlayer _player;
         private IUserMessage _message;
-
         public MusicService(LavaRestClient restClient, DiscordSocketClient client, LavaSocketClient socketClient)
         {
             _lavaRestClient = restClient;
@@ -46,7 +53,7 @@ namespace JetBotMusic.Services
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
-        public async Task TimeAsync() 
+        private async Task TimeAsync() 
         {
             TimeSpan timeSpan = _player.CurrentTrack.Position;
             LavaTrack track = _player.CurrentTrack;
@@ -55,7 +62,7 @@ namespace JetBotMusic.Services
                 string oldStr = _message.Embeds.First().Description.Substring(_message.Embeds.First().Description.IndexOf("**This time:**"), 
                     _message.Embeds.First().Description.IndexOf("🆒") - _message.Embeds.First().Description.IndexOf("**This time:**"));
                 
-                string timeMSG;
+                string timeMSG = default;
                 //Если текущий трек является стримом, то вместо временной позиции будет отображаться надпись трансляция
                 //IF this track is stream then in place of THIS TIME, inscription "STREAM" will displayed 
                 if (_player.CurrentTrack.IsStream)
@@ -97,17 +104,85 @@ namespace JetBotMusic.Services
         {
             _message = message;
         }
+
+        public async Task Yandex(string query)
+        {
+            YandexMusicApi musicApi = new YandexMusicApi();
+            var yandexTracks = musicApi.SearchTrack(query);//musicApi.SearchTrack($"{_player.CurrentTrack.Author} - {_player.CurrentTrack.Title}");
+            if (yandexTracks is null)
+            {
+                Console.WriteLine("Yandex DEBUG ---------------------->> NUUUUUULL");
+            }
+            else
+            {
+                YandexTrack track = yandexTracks.First();
+                
+                //Console.WriteLine($"Yandex DEBUG --------->{yandexTrack.Id} Duration ====> {yandexTrack.DurationMS}");
+                //ParserWorker<string> parser = new ParserWorker<string>(new YandexParser());
+                
+                //parser.Settings = new YandexParserSetting(track.Albums.First().Id, track.Id);
+                HttpClient client = new HttpClient();
+                string currentUrl = $"http://music.yandex.ru/album/{track.Albums.First().Id}/track/{track.Id}";
+                Console.WriteLine(currentUrl);
+
+                string lyrics = null;
+                lyrics = await HelpYandex(client,  currentUrl);                
+                //string lyrics = await parser.Worker();
+                
+                if (lyrics is null)
+                    Console.WriteLine("LYRICS -------------------> NULL");
+                else
+                    Console.WriteLine("LYRICS -------------------> NOT NULL");
+            }
+        }
+
+        private async Task<string> HelpYandex(HttpClient client, string currentUrl)
+        {
+            string source = null;
+            HttpResponseMessage response;
+            try
+            {
+                response = await client.GetAsync(currentUrl);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("PIZDEC     " + e.InnerException.Message + " Help here: " + e.HelpLink);
+                return null;
+            }
+            
+                
+            if (response != null && response.StatusCode == HttpStatusCode.OK)
+            {
+                source = await response.Content.ReadAsStringAsync();
+                
+                var domParser = new HtmlParser();
+                var document = await domParser.ParseDocumentAsync(source);
+                
+                string lyrics = null;
+                var items = document.QuerySelectorAll("div").Where(item => item.ClassName != null && item.ClassName.Contains("sidebar-track__lyric-text"));
+
+                if (items.Count() > 0)
+                    lyrics = items.First().TextContent;
+                if (lyrics is null)
+                    return "Not found";
+                
+                return lyrics;
+            }
+
+            return null;
+        }
         public async Task<string> PlayAsync(string query, ulong guildId)
         {
             _player = _lavaSocketClient.GetPlayer(guildId);
-            var results = await _lavaRestClient.SearchYouTubeAsync(query);
+            
+            SearchResult results = await _lavaRestClient.SearchYouTubeAsync(query);
             if (results.LoadType == LoadType.NoMatches || results.LoadType == LoadType.LoadFailed)
             {
                 return "No matches found.";
             }
-
+            
             var track = results.Tracks.FirstOrDefault();
-
+            
             if (_player.IsPlaying)
             {
                 _player.Queue.Enqueue(track);
@@ -179,7 +254,7 @@ namespace JetBotMusic.Services
                     if (track is null) 
                         listMessage += "\n`Track empty`";
                     else 
-                        listMessage += $"\n`{track.Title}`";
+                        listMessage += $"\n```css\n .{i} [{track.Title}]```";
                 }
             }
             else

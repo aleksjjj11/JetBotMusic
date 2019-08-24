@@ -145,5 +145,11 @@ namespace JetBotMusic.Modules
             await _musicService.MoveAsync(numberTrack, newPosition);
             await Context.Message.DeleteAsync();
         }
+
+        [Command("Yandex")]
+        public Task Yandex([Remainder] string query)
+        {
+            return _musicService.Yandex(query);
+        }
     }
 }
