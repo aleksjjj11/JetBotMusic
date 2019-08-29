@@ -1,6 +1,142 @@
-2019-08-23 16:34:15.795  INFO 7928 --- [XNIO-2 I/O-4] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:49188 -- CloseStatus[code=1006, reason=]
-2019-08-23 16:34:15.798  INFO 7928 --- [XNIO-2 I/O-3] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:64379 -- CloseStatus[code=1006, reason=]
-2019-08-23 16:34:15.810  INFO 7928 --- [XNIO-2 I/O-4] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
-2019-08-23 16:34:15.812  INFO 7928 --- [XNIO-2 I/O-3] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
-2019-08-23 16:34:15.814  INFO 7928 --- [XNIO-2 I/O-4] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
-2019-08-23 16:34:15.815  INFO 7928 --- [XNIO-2 I/O-3] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2019-08-30 00:04:47.103  INFO 16695 --- [XNIO-2 I/O-3] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:32779 -- CloseStatus[code=1006, reason=]
+2019-08-30 00:04:47.141  INFO 16695 --- [XNIO-2 I/O-3] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
+2019-08-30 00:04:47.142  INFO 16695 --- [XNIO-2 I/O-3] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2019-08-30 00:04:47.501  INFO 16695 --- [parallel-4] s.n.magma.connections.AudioWebSocket     : Websocket to wss://russia193.discord.gg/?v=4 closed with code 1000 and reason 
+2019-08-30 00:04:47.507  WARN 16695 --- [parallel-4] s.n.magma.connections.AudioWebSocket     : Connection closed due to [1000 HEARTBEAT_TIMEOUT] . This could indicate an issue with the magma library or your usage of it. Please get in touch. https://github.com/napstr/Magma/issues
+2019-08-30 00:04:47.508  INFO 16695 --- [parallel-4] s.n.magma.connections.AudioWebSocket     : Resuming
+2019-08-30 00:06:07.423  INFO 16695 --- [XNIO-2 task-8] l.server.io.HandshakeInterceptorImpl     : Incoming connection from /127.0.0.1:44041
+2019-08-30 00:06:07.614  INFO 16695 --- [XNIO-2 task-8] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2019-08-30 00:06:07.702  INFO 16695 --- [XNIO-2 task-8] lavalink.server.io.SocketServer          : Connection successfully established from /127.0.0.1:44041
+2019-08-30 00:06:25.125  INFO 16695 --- [XNIO-2 task-9] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:06:26.054  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Пидорас
+2019-08-30 00:06:39.730  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"sessionId":"1521df863cf3b105f400198ec87e8943","event":{"token":"f5f19e72a892957f","guildid":"509583277661880321","endpoint":"russia193.discord.gg:80"},"guildId":"509583277661880321","op":"voiceUpdate"}
+2019-08-30 00:06:39.748  INFO 16695 --- [XNIO-2 task-11] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:06:40.539  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Counting stars
+2019-08-30 00:06:40.619  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAgQIAHE9uZVJlcHVibGljIC0gQ291bnRpbmcgU3RhcnMAC09uZVJlcHVibGljAAAAAAAEVWAAC2hUX252V3JlSWhnAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9aFRfbnZXcmVJaGcAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:06:55.846  INFO 16695 --- [XNIO-2 task-13] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:06:56.303  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Пидорас
+2019-08-30 00:08:34.745  INFO 16695 --- [XNIO-2 task-15] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:08:35.975  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: green day
+2019-08-30 00:08:52.689  INFO 16695 --- [XNIO-2 task-17] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:08:53.413  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: свинка пепа
+2019-08-30 00:09:08.982  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAnQIAOkdyZWVuIERheTogIkJvdWxldmFyZCBPZiBCcm9rZW4gRHJlYW1zIiAtIFtPZmZpY2lhbCBWaWRlb10ACUdyZWVuIERheQAAAAAABGUAAAtTb2EzZ083dEwtYwABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PVNvYTNnTzd0TC1jAAd5b3V0dWJlAAAAAAAAAAA=","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:09:10.464  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAzwIAVNCT0KPQl9CV0JXQktCQINCg0JDQodCh0JrQkNCX0JDQm9CQINCe0KLQmtCj0JTQkCDQktCX0K/Qm9CQ0KHQrCDQn9CY0JTQntCg0JDQodCY0J3QkAAh0JHQsNGC0YDRg9GF0LAg0J/RgdC60L7QstGB0LrQuNC5AAAAAAACr4AAC0dwc2tFNi11TW5ZAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9R3Bza0U2LXVNblkAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:09:14.764  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAABMAIAjNCh0LLQuNC90LrQsCDQn9C10L/Qv9CwINC90LAg0YDRg9GB0YHQutC+0Lwg0LLRgdC1INGB0LXRgNC40Lgg0L/QvtC00YDRj9C0IHwg0KfQtdGA0LXQv9Cw0YjQutCwINC00L7QutGC0L7RgNCwINCl0L7QvNGP0LogfCDQnNGD0LvRjNGC0LjQutC4AErQodCy0LjQvdC60LAg0J/QtdC/0L/QsCDQoNGD0YHRgdC60LjQuSAtINCe0YTQuNGG0LjQsNC70YzQvdGL0Lkg0LrQsNC90LDQuwAAAAAAMl6IAAtReXFNMG9HenREYwABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PVF5cU0wb0d6dERjAAd5b3V0dWJlAAAAAAAAAAA=","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:09:22.111  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"guildId":"509583277661880321","op":"stop"}
+2019-08-30 00:09:29.926  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:44041 -- CloseStatus[code=1006, reason=]
+2019-08-30 00:09:29.927  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
+2019-08-30 00:09:29.928  INFO 16695 --- [XNIO-2 I/O-1] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2019-08-30 00:09:29.974  INFO 16695 --- [parallel-2] s.n.magma.connections.AudioWebSocket     : Websocket to wss://russia193.discord.gg/?v=4 closed with code 1000 and reason 
+2019-08-30 00:09:29.975  WARN 16695 --- [parallel-2] s.n.magma.connections.AudioWebSocket     : Connection closed due to [1000 HEARTBEAT_TIMEOUT] . This could indicate an issue with the magma library or your usage of it. Please get in touch. https://github.com/napstr/Magma/issues
+2019-08-30 00:09:29.976  INFO 16695 --- [parallel-2] s.n.magma.connections.AudioWebSocket     : Resuming
+2019-08-30 00:11:34.151  INFO 16695 --- [XNIO-2 task-19] l.server.io.HandshakeInterceptorImpl     : Incoming connection from /127.0.0.1:41565
+2019-08-30 00:11:34.160  INFO 16695 --- [XNIO-2 task-19] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2019-08-30 00:11:34.170  INFO 16695 --- [XNIO-2 task-19] lavalink.server.io.SocketServer          : Connection successfully established from /127.0.0.1:41565
+2019-08-30 00:11:49.606  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"sessionId":"d20c82a556faa216b4c4c99858cc3c9e","event":{"token":"14baec7db7dfaae4","guildid":"509583277661880321","endpoint":"russia193.discord.gg:80"},"guildId":"509583277661880321","op":"voiceUpdate"}
+2019-08-30 00:11:56.129  INFO 16695 --- [XNIO-2 task-20] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:11:57.028  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: counting stars
+2019-08-30 00:11:57.116  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAgQIAHE9uZVJlcHVibGljIC0gQ291bnRpbmcgU3RhcnMAC09uZVJlcHVibGljAAAAAAAEVWAAC2hUX252V3JlSWhnAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9aFRfbnZXcmVJaGcAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:12:11.959  INFO 16695 --- [XNIO-2 task-22] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:12:12.695  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: свинка пепа
+2019-08-30 00:12:21.081  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAABMAIAjNCh0LLQuNC90LrQsCDQn9C10L/Qv9CwINC90LAg0YDRg9GB0YHQutC+0Lwg0LLRgdC1INGB0LXRgNC40Lgg0L/QvtC00YDRj9C0IHwg0KfQtdGA0LXQv9Cw0YjQutCwINC00L7QutGC0L7RgNCwINCl0L7QvNGP0LogfCDQnNGD0LvRjNGC0LjQutC4AErQodCy0LjQvdC60LAg0J/QtdC/0L/QsCDQoNGD0YHRgdC60LjQuSAtINCe0YTQuNGG0LjQsNC70YzQvdGL0Lkg0LrQsNC90LDQuwAAAAAAMl6IAAtReXFNMG9HenREYwABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PVF5cU0wb0d6dERjAAd5b3V0dWJlAAAAAAAAAAA=","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:12:30.306  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"guildId":"509583277661880321","op":"stop"}
+2019-08-30 00:12:46.582  INFO 16695 --- [XNIO-2 task-24] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:12:47.220  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: TMNT
+2019-08-30 00:12:47.228  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAfQIAGtCi0J7QnyDQmNCT0KAgVE1OVCDQvdCwIFBDAAlWZW5vbVJlYWwAAAAAAApr+AALcElqc2hpS3pmX0UAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1wSWpzaGlLemZfRQAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:12:53.689  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"guildId":"509583277661880321","op":"stop"}
+2019-08-30 00:13:20.810  INFO 16695 --- [XNIO-2 task-26] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:13:21.448  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: земфира
+2019-08-30 00:13:21.456  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAqgIAQ9C/0L7Qu9C90YvQuSDQsNC70YzQsdC+0LwgWmVtZmlyYSAtINCb0YPRh9GI0LjQtSDQv9C10YHQvdC4IFplbWZpcmEADVJ1c3NpYW4gTXVzaWMAAAAAAEJ7iAALOGtjRTBMN0pxUGMAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj04a2NFMEw3SnFQYwAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:13:55.321  INFO 16695 --- [XNIO-2 task-28] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:13:56.056  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: AK-47
+2019-08-30 00:14:02.205  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAhAIAIExJVFRMRSBCSUcgLSBBSy00NyAobXVzaWMgdmlkZW8pAApMaXR0bGUgQmlnAAAAAAACRggACy1RSGhhMXprbzFBAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9LVFIaGExemtvMUEAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:15:04.626  INFO 16695 --- [XNIO-2 task-30] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:15:05.431  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: чёрный пистолет
+2019-08-30 00:15:08.979  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAmAIAL9Cn0JXQoNCd0KvQmSDQn9CY0KHQotCe0JvQldCiICjRhNCw0L0g0LrQu9C40L8pAA9jdWx0dXJld29ya3Nob3AAAAAAAAHckAALRnd0RElTLU9vQlEAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1Gd3RESVMtT29CUQAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:16:05.540  INFO 16695 --- [XNIO-2 task-32] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:16:06.175  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: fais
+2019-08-30 00:16:08.114  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAkAIALkZhaXMgLSBIZXkgZnQuIEFmcm9qYWNrIChPZmZpY2lhbCBNdXNpYyBWaWRlbykACEFmcm9qYWNrAAAAAAADzKgAC3hIVUliRk5PMElJAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9eEhVSWJGTk8wSUkAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:16:23.686  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"pause":true,"guildId":"509583277661880321","op":"pause"}
+2019-08-30 00:16:26.376  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"pause":false,"guildId":"509583277661880321","op":"pause"}
+2019-08-30 00:18:34.783  INFO 16695 --- [XNIO-2 task-2] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:18:35.344  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: Дык Кын Дыш
+2019-08-30 00:18:41.275  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAoAIAL0FrIE9yZ28gQm95cyAtINCU0YvQuiDQmtGL0L0g0JTRi9GIIGZ0LiDQkNCYLTkyABdBSyBPUkdPIENJVFkgcHJvZHVjdGlvbgAAAAAAAzg4AAsycDk0U1h1RG9GawABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PTJwOTRTWHVEb0ZrAAd5b3V0dWJlAAAAAAAAAAA=","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:20:28.511  INFO 16695 --- [XNIO-2 task-4] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:20:29.142  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: арабская ночь
+2019-08-30 00:20:33.998  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAnwIALtCQ0YDQsNCx0YHQutCw0Y8g0L3QvtGH0Ywo0JDQu9Cw0LTQtNC40L0gMjAxOSkAF9Cd0LjQudC+0YLQsCDQo9GF0YPRgNCwAAAAAAAC2ngAC1MzdGxNZGZKVm5nAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9UzN0bE1kZkpWbmcAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:20:35.202  INFO 16695 --- [lava-daemon-pool-playback-13-thread-6] c.s.l.c.natives.NativeLibraryLoader      : Native library libmpg123-0: loading with filter com.sedmelluq.discord.lavaplayer.natives.ConnectorNativeLibLoader$$Lambda$640/0x0000000801494440@4f1687b3
+2019-08-30 00:20:35.206  INFO 16695 --- [lava-daemon-pool-playback-13-thread-6] c.s.l.c.natives.NativeLibraryLoader      : Native library connector: loading with filter null
+2019-08-30 00:20:35.344  INFO 16695 --- [lava-daemon-pool-playback-13-thread-6] c.s.l.c.natives.NativeLibraryLoader      : Native library connector: successfully loaded.
+2019-08-30 00:22:29.584  INFO 16695 --- [XNIO-2 task-6] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:22:30.142  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: ебанная ночь
+2019-08-30 00:22:34.473  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAigIAFdCe0LvQsNC00YzQuNC9IHwgUllUUAAb0KHQvtGB0LXQtCDQmtC+0LzQutC40L3Ri9GFAAAAAAAC2ngACzQ0N193TENFNWU4AAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9NDQ3X3dMQ0U1ZTgAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:23:11.243  INFO 16695 --- [XNIO-2 task-8] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:23:11.888  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: counting stars
+2019-08-30 00:23:12.465  INFO 16695 --- [XNIO-2 task-10] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:23:13.165  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: шалом
+2019-08-30 00:23:21.534  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAgQIAHE9uZVJlcHVibGljIC0gQ291bnRpbmcgU3RhcnMAC09uZVJlcHVibGljAAAAAAAEVWAAC2hUX252V3JlSWhnAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9aFRfbnZXcmVJaGcAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:23:22.252  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAwQIAM9Co0JDQm9Ce0JwgfCDQntGH0LXQvdGMINC60YDQsNGB0LjQstCw0Y8g0L/QtdGB0L3RjwA00JrRgNCw0YHQuNCy0L7QtSDRhdGA0LjRgdGC0LjQsNC90YHQutC+0LUg0L/QtdC90LjQtQAAAAAAAxzgAAtNQ0UzSDJFMTIzUQABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PU1DRTNIMkUxMjNRAAd5b3V0dWJlAAAAAAAAAAA=","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:25:28.063  INFO 16695 --- [XNIO-2 task-12] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:25:28.761  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: АИГЕЛ
+2019-08-30 00:25:32.253  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAoQIAMtCQ0JjQk9CV0Jsg4oCUINCi0LDRgtCw0YDQuNC9IC8vIEFJR0VMIOKAlCBUYXRhcmluABXQkNCY0JPQldCbINCQ0JjQk9CV0JsAAAAAAAOSEAALeVFSX05MZVhLdHcAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj15UVJfTkxlWEt0dwAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:26:38.055  INFO 16695 --- [XNIO-2 task-14] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:26:38.771  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: звуки ада
+2019-08-30 00:27:03.608  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAABGgIAetCa0L7Qu9GM0YHQutCw0Y8g0YHQutCy0LDQttC40L3QsCAxOTcwINCz0L7QtCDQl9Cy0YPQutC4INC40Lcg0JDQtNCwINCz0LvRg9Cx0LjQvdCwIDEyIDI2MiDQvNC10YLRgNCwINC00L7RgNC+0LPQsCDQsiDQkNC0AEbQktC10LvQuNC60LjQtSDQotCw0LnQvdGLINCc0LjRgNCwLiDQqNC+0LrQuNGA0YPRjtGJ0LDRjyDQv9GA0LDQstC00LAuAAAAAAAFxJAACzk5NzNxWWV6ZjV3AAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9OTk3M3FZZXpmNXcAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:27:18.337  INFO 16695 --- [XNIO-2 task-16] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:27:18.928  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: СССР
+2019-08-30 00:27:26.931  INFO 16695 --- [XNIO-2 task-18] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:27:27.525  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: NF
+2019-08-30 00:27:30.873  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAA9AIAe9Cf0L7Rh9C10LzRgyDQsiDQodCh0KHQoCDQttC40LvQvtGB0Ywg0LLRgdC10Lwg0YXQvtGA0L7RiNC+LCDRh9GC0L4g0YXQvtGA0L7RiNC10LPQviDQsiDQodCh0KHQoCDQvdCwINGD0YDQvtCy0L3QtSDQsdGL0YLQsAAf0JjQvdGC0LXRgNC10YHQvdGL0LUg0YTQsNC60YLRiwAAAAAAEAGoAAtzVTFQZmtLWFVpcwABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PXNVMVBma0tYVWlzAAd5b3V0dWJlAAAAAAAAAAA=","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:27:37.569  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAeAIAE05GIC0gV2hlbiBJIEdyb3cgVXAAC05GcmVhbG11c2ljAAAAAAADrWgAC2x4UndFUHZMLW1RAAEAK2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9bHhSd0VQdkwtbVEAB3lvdXR1YmUAAAAAAAAAAA==","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:27:42.662  INFO 16695 --- [XNIO-2 task-20] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:27:43.308  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: гимн ссср
+2019-08-30 00:27:58.513  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAoQIAP9CT0LjQvNC9INCh0L7QstC10YLRgdC60L7Qs9C+INCh0L7RjtC30LAsR2ltbiBTb3ZldHNrb2dvIFNveXV6YQAIdXRzcHJ1dDIAAAAAAAO1OAALYVd0OWJHaWxCYTAAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1hV3Q5YkdpbEJhMAAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:28:24.173  INFO 16695 --- [XNIO-2 task-22] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:28:24.723  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: слава украине
+2019-08-30 00:28:37.594  INFO 16695 --- [XNIO-2 task-24] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:28:38.231  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: гимн украины
+2019-08-30 00:28:52.794  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAwQIAXtCa0LDQuiDRgNC10LDQs9C40YDRg9GO0YIg0LzQsNGA0LjRg9C/0L7Qu9GM0YbRiyDQvdCwINC70L7Qt9GD0L3QsyAi0KHQu9Cw0LLQsCDQo9C60YDQsNC40L3QtSIACTA2Mjljb211YQAAAAAABN4YAAstSm5KZmFENTFwOAABACtodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PS1KbkpmYUQ1MXA4AAd5b3V0dWJlAAAAAAAAAAA=","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:28:59.116  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAAvAIAW9CT0LjQvNC9INCj0LrRgNCw0LjQvdGLIC0gItCp0LUg0L3QtSDQstC80LXRgNC70LAg0KPQutGA0LDRl9C90LgiIFvQoNCj0KEg0KHQo9CRL0VORyBTVUJTIF0AB1hMIExpdmUAAAAAAAPzuAALNXQ0d25rS0FtVmsAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj01dDR3bmtLQW1WawAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:31:01.158  INFO 16695 --- [XNIO-2 task-26] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:31:01.715  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: мы бежим как будто от гепарда
+2019-08-30 00:31:05.516  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAApAIAQ9Cc0Ysg0LHQtdC20LjQvCDRgSDRgtC+0LHQvtC5INC60LDQuiDQsdGD0LTRgtC+INC+0YIg0LPQtdC/0LDRgNC00LAAB1BPWklUSVYAAAAAAANfSAALSU1Yb0FJbXhrZEkAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1JTVhvQUlteGtkSQAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":0,"noReplace":false,"guildId":"509583277661880321","op":"play"}
+2019-08-30 00:31:38.757  INFO 16695 --- [XNIO-2 task-28] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:31:39.319  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: она жрёт мой хуй
+2019-08-30 00:32:17.876  INFO 16695 --- [XNIO-2 task-30] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2019-08-30 00:32:18.400  INFO 16695 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: феофан
+2019-08-30 00:32:53.123  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:41565 -- CloseStatus[code=1006, reason=]
+2019-08-30 00:32:53.123  INFO 16695 --- [XNIO-2 I/O-1] lavalink.server.io.SocketContext         : Shutting down 1 playing players.
+2019-08-30 00:32:53.124  INFO 16695 --- [XNIO-2 I/O-1] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2019-08-30 00:32:53.161  WARN 16695 --- [lava-daemon-pool-playback-13-thread-14] c.s.d.l.t.p.LocalAudioTrackExecutor      : Suspicious exception for playback of IMXoAImxkdI
+
+com.sedmelluq.discord.lavaplayer.tools.FriendlyException: The track was unexpectedly terminated.
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.handlePlaybackInterrupt(LocalAudioTrackExecutor.java:323) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.executeProcessingLoop(LocalAudioTrackExecutor.java:267) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaAudioTrack.process(MatroskaAudioTrack.java:39) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.DelegatedAudioTrack.processDelegate(DelegatedAudioTrack.java:27) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack.processStatic(YoutubeAudioTrack.java:77) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack.process(YoutubeAudioTrack.java:69) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.execute(LocalAudioTrackExecutor.java:90) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager.lambda$executeTrack$1(DefaultAudioPlayerManager.java:349) ~[lavaplayer-1.3.19.jar!/:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:835) ~[na:na]
+Caused by: java.lang.InterruptedException: null
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056) ~[na:na]
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090) ~[na:na]
+	at java.base/java.util.concurrent.ArrayBlockingQueue.put(ArrayBlockingQueue.java:367) ~[na:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.AllocatingAudioFrameBuffer.consume(AllocatingAudioFrameBuffer.java:179) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.common.OpusPacketRouter.passThrough(OpusPacketRouter.java:164) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.common.OpusPacketRouter.process(OpusPacketRouter.java:96) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaOpusTrackConsumer.consume(MatroskaOpusTrackConsumer.java:47) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaStreamingFile.processFrameInBlock(MatroskaStreamingFile.java:372) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaStreamingFile.parseClusterSimpleBlock(MatroskaStreamingFile.java:336) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaStreamingFile.parseNextCluster(MatroskaStreamingFile.java:321) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaStreamingFile.provideFrames(MatroskaStreamingFile.java:297) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaAudioTrack.lambda$process$0(MatroskaAudioTrack.java:40) ~[lavaplayer-1.3.19.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.executeProcessingLoop(LocalAudioTrackExecutor.java:257) ~[lavaplayer-1.3.19.jar!/:na]
+	... 9 common frames omitted
+
+2019-08-30 00:32:53.214  INFO 16695 --- [parallel-4] s.n.magma.connections.AudioWebSocket     : Websocket to wss://russia193.discord.gg/?v=4 closed with code 1000 and reason 
+2019-08-30 00:32:53.215  WARN 16695 --- [parallel-4] s.n.magma.connections.AudioWebSocket     : Connection closed due to [1000 HEARTBEAT_TIMEOUT] . This could indicate an issue with the magma library or your usage of it. Please get in touch. https://github.com/napstr/Magma/issues
+2019-08-30 00:32:53.215  INFO 16695 --- [parallel-4] s.n.magma.connections.AudioWebSocket     : Resuming

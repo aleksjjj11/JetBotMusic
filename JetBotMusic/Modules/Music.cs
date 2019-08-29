@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -125,13 +126,7 @@ namespace JetBotMusic.Modules
             await _musicService.ResumeAsync();
             await Context.Message.DeleteAsync();
         }
-
-        [Command("Lyrics")]
-        public async Task Lyrics()
-        {
-            await _musicService.LyricsAsync();
-            await Context.Message.DeleteAsync();
-        }
+        
         [Command("List")]
         public async Task List()
         {
@@ -146,10 +141,18 @@ namespace JetBotMusic.Modules
             await Context.Message.DeleteAsync();
         }
 
-        [Command("Yandex")]
-        public Task Yandex([Remainder] string query)
+        [Command("Lyrics")]
+        public async Task Yandex([Remainder] string query = null)
         {
-            return _musicService.Yandex(query);
+            //Отправляем запрос, чтобы получить текст песни в файле lyrics.txt
+            
+            //Считываем наш файл, полученным текстом песни
+            /*FileStream file = new FileStream("lyrics.txt", FileMode.Open);
+            if (file is null) return;
+            byte[] arrFile = new byte[file.Length];
+            file.Read(arrFile, 0, arrFile.Length);*/
+            await Context.Message.DeleteAsync();
+            await _musicService.GetLyrics(query);
         }
     }
 }

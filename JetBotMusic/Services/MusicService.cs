@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using AngleSharp.Html.Parser;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using JetBotMusic.ParserLycris;
-using JetBotMusic.ParserLycris.YandexMusic;
+using Genius;
+using Genius.Clients;
+using Genius.Models;
+using JavaAnSharp;
 using Victoria;
 using Victoria.Entities;
 using Victoria.Queue;
@@ -26,6 +26,7 @@ namespace JetBotMusic.Services
         private DiscordSocketClient _client;
         private LavaPlayer _player;
         private IUserMessage _message;
+        private IUserMessage _messageLyrics = null;
         public MusicService(LavaRestClient restClient, DiscordSocketClient client, LavaSocketClient socketClient)
         {
             _lavaRestClient = restClient;
@@ -105,10 +106,20 @@ namespace JetBotMusic.Services
             _message = message;
         }
 
-        public async Task Yandex(string query)
+        public async Task GetLyrics(string query = null)
         {
+            //GeniusClient geniusClient = new GeniusClient("tjYMgUzV7LWhmWvNXPmmDpDiq0ek7MMonxfNTIRDHyz5r7Z0jQi2kFMmJWDybGKd");
+            //Получем песню через API Genius
+            //var searchResult = geniusClient.SearchClient.Search(TextFormat.Dom, query).Result;
+            //searchResult.Response.First().Index
+            //Song song = geniusClient.SongsClient.GetSong(TextFormat.Dom, "").Result.Response;
+            if (_player.CurrentTrack != null)
+            {
+                query = _player.CurrentTrack.Title;
+            }
+            
             YandexMusicApi musicApi = new YandexMusicApi();
-            var yandexTracks = musicApi.SearchTrack(query);//musicApi.SearchTrack($"{_player.CurrentTrack.Author} - {_player.CurrentTrack.Title}");
+            var yandexTracks = musicApi.SearchTrack(query);
             if (yandexTracks is null)
             {
                 Console.WriteLine("Yandex DEBUG ---------------------->> NUUUUUULL");
@@ -116,60 +127,34 @@ namespace JetBotMusic.Services
             else
             {
                 YandexTrack track = yandexTracks.First();
-                
-                //Console.WriteLine($"Yandex DEBUG --------->{yandexTrack.Id} Duration ====> {yandexTrack.DurationMS}");
-                //ParserWorker<string> parser = new ParserWorker<string>(new YandexParser());
-                
-                //parser.Settings = new YandexParserSetting(track.Albums.First().Id, track.Id);
-                HttpClient client = new HttpClient();
-                string currentUrl = $"http://music.yandex.ru/album/{track.Albums.First().Id}/track/{track.Id}";
-                Console.WriteLine(currentUrl);
+                //    Process cmdProc = Process.Start("java", $"-cp Testick.jar Main \"{track.Artists.First().Name} - {track.Title}\"");
+                //    if (cmdProc is null)
+                //    {
+                //        Console.WriteLine("Fail");
+                //        return;
+                //    }
+                //    cmdProc.WaitForExit();
 
+                //}*/
+                ParserGenius parser = new ParserGenius($"{track.Artists.First().Name} - {track.Title}");
+                parser.Initialization().Wait();
                 string lyrics = null;
-                lyrics = await HelpYandex(client,  currentUrl);                
-                //string lyrics = await parser.Worker();
-                
-                if (lyrics is null)
-                    Console.WriteLine("LYRICS -------------------> NULL");
+                lyrics = parser.GetLyrics();
+                Console.WriteLine($"lyrcs------------->{lyrics}");
+                if (_messageLyrics is null)
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    builder.WithTitle("Lyrics")
+                        .WithDescription(lyrics)
+                        .WithColor(Color.Red);
+
+                    _messageLyrics = await _player.TextChannel.SendMessageAsync("", false, builder.Build());
+                }
                 else
-                    Console.WriteLine("LYRICS -------------------> NOT NULL");
+                {
+                    _messageLyrics.ModifyAsync(properties => { });
+                }
             }
-        }
-
-        private async Task<string> HelpYandex(HttpClient client, string currentUrl)
-        {
-            string source = null;
-            HttpResponseMessage response;
-            try
-            {
-                response = await client.GetAsync(currentUrl);
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("PIZDEC     " + e.InnerException.Message + " Help here: " + e.HelpLink);
-                return null;
-            }
-            
-                
-            if (response != null && response.StatusCode == HttpStatusCode.OK)
-            {
-                source = await response.Content.ReadAsStringAsync();
-                
-                var domParser = new HtmlParser();
-                var document = await domParser.ParseDocumentAsync(source);
-                
-                string lyrics = null;
-                var items = document.QuerySelectorAll("div").Where(item => item.ClassName != null && item.ClassName.Contains("sidebar-track__lyric-text"));
-
-                if (items.Count() > 0)
-                    lyrics = items.First().TextContent;
-                if (lyrics is null)
-                    return "Not found";
-                
-                return lyrics;
-            }
-
-            return null;
         }
         public async Task<string> PlayAsync(string query, ulong guildId)
         {
