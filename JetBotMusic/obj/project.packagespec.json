@@ -1,18 +1,20 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/alexey/Рабочий стол/JetBotMusic/JetBotMusic/JetBotMusic.csproj",
+    "projectUniqueName": "C:\\Users\\user\\Desktop\\Programming\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
     "projectName": "JetBotMusic",
-    "projectPath": "/home/alexey/Рабочий стол/JetBotMusic/JetBotMusic/JetBotMusic.csproj",
-    "outputPath": "/home/alexey/Рабочий стол/JetBotMusic/JetBotMusic/obj/",
+    "projectPath": "C:\\Users\\user\\Desktop\\Programming\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
+    "outputPath": "C:\\Users\\user\\Desktop\\Programming\\JetBotMusic\\JetBotMusic\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
-      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
       "netcoreapp2.0"
     ],
     "sources": {
+      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {

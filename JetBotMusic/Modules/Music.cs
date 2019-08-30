@@ -152,7 +152,7 @@ namespace JetBotMusic.Modules
             byte[] arrFile = new byte[file.Length];
             file.Read(arrFile, 0, arrFile.Length);*/
             await Context.Message.DeleteAsync();
-            await _musicService.GetLyrics(query);
+            await _musicService.GetLyricsAsync(query);
         }
     }
 }

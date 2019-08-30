@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -65,8 +66,9 @@ namespace JavaAnSharp
             var document = await domParser.ParseDocumentAsync(source);
             //Console.WriteLine($"URl : {fullAddress}");
             var results = document.QuerySelectorAll("p");
+            if (results is null) return;
             lyrics = results.First().TextContent;    
-            Regex squareBrackets = new Regex(@"\[\w*\s?\w*\]");
+            Regex squareBrackets = new Regex(@"\[\w*\W*\w*\W*\w*\]");
             MatchCollection collection = squareBrackets.Matches(lyrics);
             foreach (Match match in collection)
             {
@@ -78,6 +80,24 @@ namespace JavaAnSharp
         public string GetLyrics()
         {
             return lyrics;
+        }
+
+        public string[] DivideLyrics()
+        {
+            string[] listLyrics = new string[2];
+            if (lyrics.Length > 2500)
+            {
+                int i = 2500;
+                while (i < lyrics.Length)
+                {
+                    lyrics = lyrics.Insert(i, "/");
+                    i += 2500;
+                }
+
+                listLyrics = lyrics.Split("/");
+            }
+
+            return listLyrics;
         }
     }
 }

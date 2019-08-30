@@ -106,13 +106,8 @@ namespace JetBotMusic.Services
             _message = message;
         }
 
-        public async Task GetLyrics(string query = null)
+        public async Task GetLyricsAsync(string query = null)
         {
-            //GeniusClient geniusClient = new GeniusClient("tjYMgUzV7LWhmWvNXPmmDpDiq0ek7MMonxfNTIRDHyz5r7Z0jQi2kFMmJWDybGKd");
-            //Получем песню через API Genius
-            //var searchResult = geniusClient.SearchClient.Search(TextFormat.Dom, query).Result;
-            //searchResult.Response.First().Index
-            //Song song = geniusClient.SongsClient.GetSong(TextFormat.Dom, "").Result.Response;
             if (_player.CurrentTrack != null)
             {
                 query = _player.CurrentTrack.Title;
@@ -120,27 +115,28 @@ namespace JetBotMusic.Services
             
             YandexMusicApi musicApi = new YandexMusicApi();
             var yandexTracks = musicApi.SearchTrack(query);
-            if (yandexTracks is null)
+            if (yandexTracks is null || yandexTracks.Count < 1)
             {
                 Console.WriteLine("Yandex DEBUG ---------------------->> NUUUUUULL");
             }
             else
             {
-                YandexTrack track = yandexTracks.First();
-                //    Process cmdProc = Process.Start("java", $"-cp Testick.jar Main \"{track.Artists.First().Name} - {track.Title}\"");
-                //    if (cmdProc is null)
-                //    {
-                //        Console.WriteLine("Fail");
-                //        return;
-                //    }
-                //    cmdProc.WaitForExit();
-
-                //}*/
-                ParserGenius parser = new ParserGenius($"{track.Artists.First().Name} - {track.Title}");
-                parser.Initialization().Wait();
                 string lyrics = null;
-                lyrics = parser.GetLyrics();
-                Console.WriteLine($"lyrcs------------->{lyrics}");
+
+                YandexTrack track = yandexTracks.First();
+                if (track is null) lyrics = "**NOT FOUND**";
+                else
+                {
+                    ParserGenius parser = new ParserGenius($"{track.Artists.First().Name} - {track.Title}");
+                    parser.Initialization().Wait();
+                
+                    lyrics = parser.GetLyrics();
+
+                    if (lyrics is null) lyrics = "**NOT FOUND**";
+                }
+                
+                Console.WriteLine($"lyrics------------->{lyrics}");
+                
                 if (_messageLyrics is null)
                 {
                     EmbedBuilder builder = new EmbedBuilder();
@@ -152,7 +148,15 @@ namespace JetBotMusic.Services
                 }
                 else
                 {
-                    _messageLyrics.ModifyAsync(properties => { });
+                    await _messageLyrics.ModifyAsync(properties =>
+                    {
+                        EmbedBuilder builder = new EmbedBuilder();
+                        builder.WithTitle("Lyrics")
+                            .WithDescription(lyrics)
+                            .WithColor(Color.Red);
+                        
+                        properties.Embed = builder.Build();
+                    });
                 }
             }
         }
@@ -184,7 +188,7 @@ namespace JetBotMusic.Services
         {
             if (_player is null) return;
             await _player.StopAsync();
-            
+            _messageLyrics = null;
             await TrackListAsync();
         }
 
@@ -406,6 +410,7 @@ namespace JetBotMusic.Services
                     
                     properties.Embed = builder.Build();
                 });
+                _messageLyrics = null;
                 return;
             }
  
