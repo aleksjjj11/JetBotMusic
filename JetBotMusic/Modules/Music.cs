@@ -1,11 +1,8 @@
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using JetBotMusic.Services;
-using Victoria.Entities;
 
 namespace JetBotMusic.Modules
 {
@@ -29,16 +26,20 @@ namespace JetBotMusic.Modules
         public async Task Join()
         {
             SocketGuildUser user = Context.User as SocketGuildUser;
-            if (user is null || user.VoiceChannel is null)
+            if (user is null)
+            {
+                await ReplyAsync("User not found.");
+                return;
+            }
+            if (user.VoiceChannel is null)
             {
                 await ReplyAsync("You need to connect to a voice channel.");
                 return;
             }
-            else
-            {
-                await _musicService.ConnectAsync(user.VoiceChannel, Context.Channel as ITextChannel);
-                await ReplyAsync($"now connected to {user.VoiceChannel.Name}");
-            }
+            
+            await _musicService.ConnectAsync(user.VoiceChannel, Context.Channel as ITextChannel);
+            await ReplyAsync($"now connected to {user.VoiceChannel.Name}");
+
         }
 
         [Command("Leave")]
@@ -75,7 +76,7 @@ namespace JetBotMusic.Modules
             }
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("JetBot-Music")
-                .WithDescription($"*Status*: {result}" + "\n*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n🎶**Track in queue:**\n***Nothing***")
+                .WithDescription($"*Status*: {result}\n" + "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n🎶**Track in queue:**\n***Nothing***")
                 .WithColor(Color.Orange);
             var message = await ReplyAsync("", false, builder.Build());
             
@@ -84,6 +85,7 @@ namespace JetBotMusic.Modules
             await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
             await message.AddReactionAsync(new Emoji("⏭")); //skip
             await message.AddReactionAsync(new Emoji("🔀")); //shuffle
+            await message.AddReactionAsync(new Emoji("🎼")); //lyrics
             await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
             
             _musicService.SetMessage(message);
@@ -144,15 +146,58 @@ namespace JetBotMusic.Modules
         [Command("Lyrics")]
         public async Task Yandex([Remainder] string query = null)
         {
-            //Отправляем запрос, чтобы получить текст песни в файле lyrics.txt
-            
-            //Считываем наш файл, полученным текстом песни
-            /*FileStream file = new FileStream("lyrics.txt", FileMode.Open);
-            if (file is null) return;
-            byte[] arrFile = new byte[file.Length];
-            file.Read(arrFile, 0, arrFile.Length);*/
             await Context.Message.DeleteAsync();
-            await _musicService.GetLyricsAsync(query);
+            await _musicService.GetLyricsAsync(Context.User, query);
+        }
+
+        [Command("Remove")]
+        public async Task RemoveaAsync(int index = 0)
+        {
+            await Context.Message.DeleteAsync();
+            await _musicService.RemoveAsync(index);
+        }
+
+        [Command("Aliases")]
+        public async Task AliasesAsync()
+        {
+            //todo Описать все команды и сделать и вывод по ввду данной команды
+        }
+
+        [Command("Ping")]
+        public async Task PingAsync()
+        {
+            //todo Выводить задержку с серверами дискорда
+        }
+
+        [Command("Loopqueue")]
+        public async Task LoopQueueAsync()
+        {
+            //todo Реализация должна зацикливать текущую очередь, если в очереди нет песен, то зациклить только эту песню, 
+            //через другой команды Loop
+        }
+
+        [Command("Loop")]
+        public async Task LoopAsync()
+        {
+            //todo Зацикливать текущую песню
+        }
+
+        [Command("Replay")]
+        public async Task ReplayAsync()
+        {
+            //todo Воспроизводить заново текущую песню
+        }
+
+        [Command("RemoveDupes")]
+        public async Task RemoveDupesAsync()
+        {
+            //todo Удалять дублирующиеся песни из очереди
+        }
+
+        [Command("LeaveCleanUp")]
+        public async Task LeaveCleanupAsync()
+        {
+            //todo Должно удалять все песни пользователей из очереди, которые не находятся в голосовом чате с ботом
         }
     }
 }

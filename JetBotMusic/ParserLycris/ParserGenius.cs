@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AngleSharp;
-using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
 using Genius;
 using Genius.Models;
@@ -24,7 +21,8 @@ namespace JavaAnSharp
 
         public ParserGenius(string query = "NEFFEX - Trust me")
         {
-            GeniusClient geniusClient = new GeniusClient("0KELsTGebL5A6ZExHu-h4sLL7MlZxoX_4DKfGgXC1RrilwKQhWpGeMcXik0hMZ35");
+            GeniusClient geniusClient =
+                new GeniusClient("0KELsTGebL5A6ZExHu-h4sLL7MlZxoX_4DKfGgXC1RrilwKQhWpGeMcXik0hMZ35");
             //Получаем результаты по запросу
             var result = geniusClient.SearchClient.Search(TextFormat.Dom, query);
             Hit hit = result.Result.Response.First();
@@ -38,13 +36,13 @@ namespace JavaAnSharp
             string id = matches.Value.Remove(0, 6);
             //По пулученному id получаем песню
             Song song = geniusClient.SongsClient.GetSong(TextFormat.Dom, id).Result.Response;
-            
+
             if (song is null)
             {
                 Console.WriteLine("Song is null, next actions stopped.");
                 return;
             }
-            
+
             Console.WriteLine($"URl : {song.Url}");
             fullAddress = song.Url is null ? null : song.Url;
 
@@ -53,7 +51,6 @@ namespace JavaAnSharp
                 Console.WriteLine("Address is null, next actions stopped.");
                 return;
             }
-            
         }
 
         public async Task Initialization()
@@ -67,14 +64,13 @@ namespace JavaAnSharp
             //Console.WriteLine($"URl : {fullAddress}");
             var results = document.QuerySelectorAll("p");
             if (results is null) return;
-            lyrics = results.First().TextContent;    
+            lyrics = results.First().TextContent;
             Regex squareBrackets = new Regex(@"\[\w*\W*\w*\W*\w*\]");
             MatchCollection collection = squareBrackets.Matches(lyrics);
             foreach (Match match in collection)
             {
                 lyrics = lyrics.Replace(match.Value + "\n", "");
             }
-            Console.WriteLine(lyrics);
         }
 
         public string GetLyrics()
@@ -82,20 +78,18 @@ namespace JavaAnSharp
             return lyrics;
         }
 
-        public string[] DivideLyrics()
+        public List<string> DivideLyrics()
         {
-            string[] listLyrics = new string[2];
-            if (lyrics.Length > 2500)
-            {
-                int i = 2500;
-                while (i < lyrics.Length)
-                {
-                    lyrics = lyrics.Insert(i, "/");
-                    i += 2500;
-                }
+            List<string> listLyrics = new List<string>();
 
-                listLyrics = lyrics.Split("/");
+            int i = 2000;
+            while (i < lyrics.Length)
+            {
+                lyrics = lyrics.Insert(i, "/");
+                i += 2000;
             }
+
+            listLyrics = lyrics.Split("/").ToList();
 
             return listLyrics;
         }

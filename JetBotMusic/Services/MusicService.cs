@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Genius;
-using Genius.Clients;
-using Genius.Models;
 using JavaAnSharp;
 using Victoria;
 using Victoria.Entities;
@@ -27,6 +23,8 @@ namespace JetBotMusic.Services
         private LavaPlayer _player;
         private IUserMessage _message;
         private IUserMessage _messageLyrics = null;
+        private List<IUserMessage> _messagesLyrics = null;
+
         public MusicService(LavaRestClient restClient, DiscordSocketClient client, LavaSocketClient socketClient)
         {
             _lavaRestClient = restClient;
@@ -54,15 +52,17 @@ namespace JetBotMusic.Services
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
             => await _lavaSocketClient.DisconnectAsync(voiceChannel);
 
-        private async Task TimeAsync() 
+        private async Task TimeAsync()
         {
             TimeSpan timeSpan = _player.CurrentTrack.Position;
             LavaTrack track = _player.CurrentTrack;
             await _message.ModifyAsync(properties =>
             {
-                string oldStr = _message.Embeds.First().Description.Substring(_message.Embeds.First().Description.IndexOf("**This time:**"), 
-                    _message.Embeds.First().Description.IndexOf("🆒") - _message.Embeds.First().Description.IndexOf("**This time:**"));
-                
+                string oldStr = _message.Embeds.First().Description.Substring(
+                    _message.Embeds.First().Description.IndexOf("**This time:**"),
+                    _message.Embeds.First().Description.IndexOf("🆒") -
+                    _message.Embeds.First().Description.IndexOf("**This time:**"));
+
                 string timeMSG = default;
                 //Если текущий трек является стримом, то вместо временной позиции будет отображаться надпись трансляция
                 //IF this track is stream then in place of THIS TIME, inscription "STREAM" will displayed 
@@ -91,87 +91,70 @@ namespace JetBotMusic.Services
                     timeMSG =
                         $"**This time:**`{oldMinutes}:{oldSeconds}/{newMinutes}:{newSeconds}`";
                 }
-                
+
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle(_message.Embeds.First().Title)
                     .WithDescription(_message.Embeds.First().Description.Replace(oldStr, timeMSG))
                     .WithColor(_message.Embeds.First().Color.Value);
-                
+
                 properties.Embed = builder.Build();
             });
         }
-        
+
         public void SetMessage(IUserMessage message)
         {
             _message = message;
         }
 
-        public async Task GetLyricsAsync(string query = null)
+        public async Task GetLyricsAsync(SocketUser user,string query = null)
         {
+            //Массив строк для неопреледелённого количества сообщения для вывода текста песен
+            List<string> listLyrics = new List<string>();
+
             if (_player.CurrentTrack != null)
             {
                 query = _player.CurrentTrack.Title;
             }
-            
+
             YandexMusicApi musicApi = new YandexMusicApi();
             var yandexTracks = musicApi.SearchTrack(query);
             if (yandexTracks is null || yandexTracks.Count < 1)
             {
                 Console.WriteLine("Yandex DEBUG ---------------------->> NUUUUUULL");
+                listLyrics[0] = "**NOT FOUND**";
             }
+            YandexTrack track = yandexTracks is null ? null : yandexTracks.First();
+            if (track is null) listLyrics[0] = "**NOT FOUND**"; 
             else
             {
-                string lyrics = null;
-
-                YandexTrack track = yandexTracks.First();
-                if (track is null) lyrics = "**NOT FOUND**";
-                else
-                {
-                    ParserGenius parser = new ParserGenius($"{track.Artists.First().Name} - {track.Title}");
-                    parser.Initialization().Wait();
+                ParserGenius parser = new ParserGenius($"{track.Artists.First().Name} - {track.Title}");
+                parser.Initialization().Wait();
                 
-                    lyrics = parser.GetLyrics();
-
-                    if (lyrics is null) lyrics = "**NOT FOUND**";
-                }
-                
-                Console.WriteLine($"lyrics------------->{lyrics}");
-                
-                if (_messageLyrics is null)
-                {
-                    EmbedBuilder builder = new EmbedBuilder();
-                    builder.WithTitle("Lyrics")
-                        .WithDescription(lyrics)
-                        .WithColor(Color.Red);
-
-                    _messageLyrics = await _player.TextChannel.SendMessageAsync("", false, builder.Build());
-                }
-                else
-                {
-                    await _messageLyrics.ModifyAsync(properties =>
-                    {
-                        EmbedBuilder builder = new EmbedBuilder();
-                        builder.WithTitle("Lyrics")
-                            .WithDescription(lyrics)
-                            .WithColor(Color.Red);
-                        
-                        properties.Embed = builder.Build();
-                    });
-                }
+                listLyrics = parser.DivideLyrics();
+            }
+            var dmChannel = user.GetOrCreateDMChannelAsync();
+            for (int i = 0; i < listLyrics.Count; i++)
+            {
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.WithTitle("Lyrics")
+                    .WithDescription(listLyrics[i])
+                    .WithColor(Color.Red);
+                await dmChannel.Result.SendMessageAsync("", false, builder.Build());
             }
         }
+
         public async Task<string> PlayAsync(string query, ulong guildId)
         {
             _player = _lavaSocketClient.GetPlayer(guildId);
-            
+
             SearchResult results = await _lavaRestClient.SearchYouTubeAsync(query);
             if (results.LoadType == LoadType.NoMatches || results.LoadType == LoadType.LoadFailed)
             {
                 return "No matches found.";
             }
-            
+
             var track = results.Tracks.FirstOrDefault();
-            
+
             if (_player.IsPlaying)
             {
                 _player.Queue.Enqueue(track);
@@ -199,28 +182,30 @@ namespace JetBotMusic.Services
 
         public async Task UnmuteAsync()
         {
-            await _player.SetVolumeAsync(100);   
+            await _player.SetVolumeAsync(100);
         }
+
         public async Task SkipAsync()
         {
             if (_player is null || _player.Queue.Count is 0)
             {
                 return;
             }
-            
+
             LavaTrack oldTrack = _player.CurrentTrack;
             await _player.SkipAsync();
-                
+
             await _message.ModifyAsync(properties =>
             {
                 EmbedBuilder builder = new EmbedBuilder();
-                string description = _message.Embeds.First().Description.Replace(oldTrack.Title, _player.CurrentTrack.Title);
+                string description = _message.Embeds.First().Description
+                    .Replace(oldTrack.Title, _player.CurrentTrack.Title);
                 builder.WithTitle(_message.Embeds.First().Title)
                     .WithDescription(description)
                     .WithColor(Color.Orange);
                 properties.Embed = builder.Build();
             });
-            
+
             await TrackListAsync();
         }
 
@@ -230,7 +215,7 @@ namespace JetBotMusic.Services
             string useless = _message.Embeds.First().Description.Substring(
                 _message.Embeds.First().Description.IndexOf("\n🎶"),
                 _message.Embeds.First().Description.Length - _message.Embeds.First().Description.IndexOf("\n🎶"));
-            
+
             var trackList = _player.Queue.Items.ToList();
 
             if (_player.Queue.Count > 0)
@@ -239,10 +224,10 @@ namespace JetBotMusic.Services
                 for (int i = 0; i < trackList.Count; i++)
                 {
                     var track = trackList[i] as LavaTrack;
-                    
-                    if (track is null) 
+
+                    if (track is null)
                         listMessage += "\n`Track empty`";
-                    else 
+                    else
                         listMessage += $"\n```css\n .{i} [{track.Title}]```";
                 }
             }
@@ -250,16 +235,16 @@ namespace JetBotMusic.Services
             {
                 listMessage = "\n🎶**Track in queue:**\n***Nothing***";
             }
-            
+
             await _message.ModifyAsync(properties =>
             {
-                listMessage = _message.Embeds.First().Description.Replace(useless, " ") + listMessage; 
+                listMessage = _message.Embeds.First().Description.Replace(useless, " ") + listMessage;
 
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle(_message.Embeds.First().Title)
                     .WithDescription(listMessage)
                     .WithColor(Color.LightOrange);
-                
+
                 properties.Embed = builder.Build();
             });
         }
@@ -282,27 +267,32 @@ namespace JetBotMusic.Services
         {
             TimeSpan time = new TimeSpan(days, hours, minutes, second);
             await _player.SeekAsync(time);
-            await _player.TextChannel.SendMessageAsync();///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            await _player.TextChannel
+                .SendMessageAsync(); 
         }
+
         public async Task Shuffle()
         {
             _player.Queue.Shuffle();
             await TrackListAsync();
         }
+
         public async Task PauseAsync()
         {
             if (_player is null) return;
             if (!_player.IsPaused)
             {
                 await _player.PauseAsync();
-                
+
                 //Embed embed = _message.Embeds.First();
-                string firstString = _message.Embeds.First().Description.Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
-                
+                string firstString = _message.Embeds.First().Description
+                    .Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
+
                 await _message.ModifyAsync(properties =>
                 {
                     EmbedBuilder builder = new EmbedBuilder();
-                    string description = _message.Embeds.First().Description.Replace(firstString, $"*Status*: **Pausing** `{_player.CurrentTrack.Title}`");
+                    string description = _message.Embeds.First().Description.Replace(firstString,
+                        $"*Status*: **Pausing** `{_player.CurrentTrack.Title}`");
                     builder.WithTitle(_message.Embeds.First().Title)
                         .WithDescription(description)
                         .WithColor(Color.Orange);
@@ -321,13 +311,15 @@ namespace JetBotMusic.Services
             if (_player.IsPaused)
             {
                 await _player.ResumeAsync();
-                
-                string firstString = _message.Embeds.First().Description.Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
-                
+
+                string firstString = _message.Embeds.First().Description
+                    .Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
+
                 await _message.ModifyAsync(properties =>
                 {
                     EmbedBuilder builder = new EmbedBuilder();
-                    string description = _message.Embeds.First().Description.Replace(firstString, $"*Status*: **Playing** `{_player.CurrentTrack.Title}`");
+                    string description = _message.Embeds.First().Description.Replace(firstString,
+                        $"*Status*: **Playing** `{_player.CurrentTrack.Title}`");
                     builder.WithTitle(_message.Embeds.First().Title)
                         .WithDescription(description)
                         .WithColor(Color.Orange);
@@ -378,7 +370,7 @@ namespace JetBotMusic.Services
             queue.Insert(newPosition, queue[numberTrack]);
             if (newPosition < numberTrack)
                 queue.RemoveAt(numberTrack + 1);
-            else 
+            else
                 queue.RemoveAt(numberTrack);
             //Очищаем очередь
             _player.Queue.Clear();
@@ -390,9 +382,11 @@ namespace JetBotMusic.Services
 
             await TrackListAsync();
         }
+
         private async Task TrackFinished(LavaPlayer player, LavaTrack track, TrackEndReason reason)
         {
-            string firstString = _message.Embeds.First().Description.Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
+            string firstString = _message.Embeds.First().Description
+                .Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
 
             if (!reason.ShouldPlayNext()) return;
             if (!player.Queue.TryDequeue(out var item) || !(item is LavaTrack nextTack))
@@ -403,21 +397,22 @@ namespace JetBotMusic.Services
                     EmbedBuilder builder = new EmbedBuilder();
                     string description = _message.Embeds.First().Description
                         .Replace(firstString, $"*Status*: **Played** `{track.Title}`");
-                    
+
                     builder.WithTitle(_message.Embeds.First().Title)
                         .WithDescription(description)
                         .WithColor(Color.LightOrange);
-                    
+
                     properties.Embed = builder.Build();
                 });
                 _messageLyrics = null;
                 return;
             }
- 
+
             await _message.ModifyAsync(properties =>
             {
                 EmbedBuilder builder = new EmbedBuilder();
-                string description = _message.Embeds.First().Description.Replace(firstString, $"*Status*: **Playing** `{nextTack.Title}`");
+                string description = _message.Embeds.First().Description
+                    .Replace(firstString, $"*Status*: **Playing** `{nextTack.Title}`");
                 builder.WithTitle(_message.Embeds.First().Title)
                     .WithDescription(description)
                     .WithColor(Color.Orange);
@@ -426,7 +421,7 @@ namespace JetBotMusic.Services
             await TrackListAsync();
             await player.PlayAsync(nextTack);
         }
-        
+
         private Task LogAsync(LogMessage msg)
         {
             Console.WriteLine(msg.Message);
@@ -439,6 +434,22 @@ namespace JetBotMusic.Services
             {
                 LogSeverity = LogSeverity.Info
             });
+        }
+
+        public async Task RemoveAsync(int index = 0)
+        {
+            int i = 0;
+            foreach (LavaTrack element in _player.Queue.Items)
+            {
+                if (i == index)
+                {
+                    _player.Queue.Remove(element);
+                    break;
+                }
+                i++;
+            }
+
+            await TrackListAsync();
         }
     }
 }

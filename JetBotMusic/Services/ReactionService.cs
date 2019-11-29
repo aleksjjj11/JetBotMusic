@@ -121,6 +121,11 @@ namespace JetBotMusic.Services
                 if (!((reaction.User.Value as SocketGuildUser).VoiceChannel is null))
                     await _musicService.LeaveAsync((reaction.User.Value as SocketGuildUser).VoiceChannel);
             }
+
+            if (reaction.Emote.Name is "🎼")
+            {
+                await _musicService.GetLyricsAsync(reaction.User.Value as SocketUser);
+            }
             //await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
             //return Task.CompletedTask;
         }
