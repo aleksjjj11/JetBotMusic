@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AngleSharp.Common;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -447,6 +448,29 @@ namespace JetBotMusic.Services
                     break;
                 }
                 i++;
+            }
+
+            await TrackListAsync();
+        }
+
+        public async Task ReplayAsync()
+        {
+            await _player.PlayAsync(_player.CurrentTrack);
+        }
+
+        public async Task RemoveDupesAsync()
+        {
+            if (_player.Queue.Count is 0) return;
+
+            for (int i = 0; i < _player.Queue.Count - 1; i++)
+            {
+                LavaTrack firstTrack = _player.Queue.Items.GetItemByIndex(i) as LavaTrack;
+                for (int j = i + 1; j < _player.Queue.Count; j++)
+                {
+                    LavaTrack secondTrack = _player.Queue.Items.GetItemByIndex(j) as LavaTrack;
+
+                    if (firstTrack?.Id == secondTrack?.Id) _player.Queue.Remove(secondTrack);
+                }
             }
 
             await TrackListAsync();

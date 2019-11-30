@@ -186,12 +186,16 @@ namespace JetBotMusic.Modules
         public async Task ReplayAsync()
         {
             //todo Воспроизводить заново текущую песню
+            await Context.Message.DeleteAsync();
+            await _musicService.ReplayAsync();
         }
 
         [Command("RemoveDupes")]
         public async Task RemoveDupesAsync()
         {
             //todo Удалять дублирующиеся песни из очереди
+            await Context.Message.DeleteAsync();
+            await _musicService.RemoveDupesAsync();
         }
 
         [Command("LeaveCleanUp")]
