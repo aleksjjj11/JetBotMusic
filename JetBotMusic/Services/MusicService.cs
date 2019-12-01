@@ -25,12 +25,16 @@ namespace JetBotMusic.Services
         private IUserMessage _message;
         private IUserMessage _messageLyrics = null;
         private List<IUserMessage> _messagesLyrics = null;
+        private bool _loopTrack;
+        private bool _loopQueue;
 
         public MusicService(LavaRestClient restClient, DiscordSocketClient client, LavaSocketClient socketClient)
         {
             _lavaRestClient = restClient;
             _lavaSocketClient = socketClient;
             _client = client;
+            _loopTrack = false;
+            _loopQueue = false;
         }
 
         public Task InitializeAsync()
@@ -390,6 +394,14 @@ namespace JetBotMusic.Services
                 .Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
 
             if (!reason.ShouldPlayNext()) return;
+            Console.WriteLine($"Loooooooooooooooop ->>>>>> {_loopTrack}");
+            if (_loopTrack is true)
+            {
+                await player.PlayAsync(track);
+                await TrackListAsync();
+                return;
+            }
+                
             if (!player.Queue.TryDequeue(out var item) || !(item is LavaTrack nextTack))
             {
                 //await player.TextChannel.SendMessageAsync("There are no more tracks in the queue");
@@ -419,8 +431,9 @@ namespace JetBotMusic.Services
                     .WithColor(Color.Orange);
                 properties.Embed = builder.Build();
             });
-            await TrackListAsync();
+            player.Queue.Enqueue(track);
             await player.PlayAsync(nextTack);
+            await TrackListAsync();
         }
 
         private Task LogAsync(LogMessage msg)
@@ -474,6 +487,20 @@ namespace JetBotMusic.Services
             }
 
             await TrackListAsync();
+        }
+
+        public async Task LeaveCleanUpAsync()
+        {
+        }
+
+        public async Task LoopAsync()
+        {
+            _loopTrack = !_loopTrack;
+        }
+
+        public async Task LoopQueueAsync()
+        {
+            _loopQueue = !_loopQueue;
         }
     }
 }

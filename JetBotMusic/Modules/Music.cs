@@ -174,12 +174,16 @@ namespace JetBotMusic.Modules
         {
             //todo Реализация должна зацикливать текущую очередь, если в очереди нет песен, то зациклить только эту песню, 
             //через другой команды Loop
+            await Context.Message.DeleteAsync();
+            
         }
 
         [Command("Loop")]
         public async Task LoopAsync()
         {
             //todo Зацикливать текущую песню
+            await Context.Message.DeleteAsync();
+
         }
 
         [Command("Replay")]
@@ -202,6 +206,8 @@ namespace JetBotMusic.Modules
         public async Task LeaveCleanupAsync()
         {
             //todo Должно удалять все песни пользователей из очереди, которые не находятся в голосовом чате с ботом
+            await Context.Message.DeleteAsync();
+            await _musicService.LeaveCleanUpAsync();
         }
     }
 }
