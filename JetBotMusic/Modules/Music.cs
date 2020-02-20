@@ -67,7 +67,7 @@ namespace JetBotMusic.Modules
         [Command("Play")]
         public async Task Play([Remainder]string query)
         {
-            var result = await _musicService.PlayAsync(query, Context.Guild.Id);
+            var result = await _musicService.PlayAsync(query, Context.Guild);
             if (result.Contains("has been added to the queue"))
             {
                 await Context.Message.DeleteAsync();
@@ -182,6 +182,7 @@ namespace JetBotMusic.Modules
         public async Task LoopAsync()
         {
             //todo Зацикливать текущую песню
+            await _musicService.LoopTrackAsync();
             await Context.Message.DeleteAsync();
 
         }

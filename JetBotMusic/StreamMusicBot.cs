@@ -33,7 +33,7 @@ namespace JetBotMusic
 
         public async Task InitializeAsync()
         {
-            await _client.LoginAsync(TokenType.Bot, "NTA5NTgxNzA0NzgwODQwOTYx.XUV2bA.Ow872AOmD2oR1EQ46BRiKUQExJk");
+            await _client.LoginAsync(TokenType.Bot, "NTA5NTgxNzA0NzgwODQwOTYx.Xi-4qw.uTR5LwFBznkQIHrjZ7zQQLnQZkI");
             await _client.StartAsync();
             _client.Log += LogAsync;
             _services = SetupServices();
@@ -60,8 +60,8 @@ namespace JetBotMusic
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<MusicService>()
                 .AddSingleton<ReactionService>()
-                .AddSingleton<LavaRestClient>()
-                .AddSingleton<LavaSocketClient>()
+                .AddSingleton<LavaConfig>()
+                .AddSingleton<LavaNode>()
                 .BuildServiceProvider();
     }
 }

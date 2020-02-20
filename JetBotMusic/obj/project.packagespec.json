@@ -1,24 +1,22 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\user\\Desktop\\Programming\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
+    "projectUniqueName": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj",
     "projectName": "JetBotMusic",
-    "projectPath": "C:\\Users\\user\\Desktop\\Programming\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
-    "outputPath": "C:\\Users\\user\\Desktop\\Programming\\JetBotMusic\\JetBotMusic\\obj\\",
+    "projectPath": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj",
+    "outputPath": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/obj/",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
-      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback",
-      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
-      "netcoreapp2.0"
+      "netcoreapp3.0"
     ],
     "sources": {
-      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {
-      "netcoreapp2.0": {
+      "netcoreapp3.0": {
         "projectReferences": {}
       }
     },
@@ -29,7 +27,7 @@
     }
   },
   "frameworks": {
-    "netcoreapp2.0": {
+    "netcoreapp3.0": {
       "dependencies": {
         "AngleSharp": {
           "target": "Package",
@@ -43,15 +41,9 @@
           "target": "Package",
           "version": "[2.0.0, )"
         },
-        "Microsoft.NETCore.App": {
-          "suppressParent": "All",
-          "target": "Package",
-          "version": "[2.0.0, )",
-          "autoReferenced": true
-        },
         "Victoria": {
           "target": "Package",
-          "version": "[4.0.17, )"
+          "version": "[5.1.2, )"
         },
         "Yandex.Music.Api": {
           "target": "Package",
@@ -59,10 +51,35 @@
         }
       },
       "imports": [
-        "net461"
+        "net461",
+        "net462",
+        "net47",
+        "net471",
+        "net472",
+        "net48"
       ],
       "assetTargetFallback": true,
-      "warn": true
+      "warn": true,
+      "downloadDependencies": [
+        {
+          "name": "Microsoft.AspNetCore.App.Ref",
+          "version": "[3.0.1, 3.0.1]"
+        },
+        {
+          "name": "Microsoft.NETCore.App.Host.linux-x64",
+          "version": "[3.0.1, 3.0.1]"
+        },
+        {
+          "name": "Microsoft.NETCore.App.Ref",
+          "version": "[3.0.0, 3.0.0]"
+        }
+      ],
+      "frameworkReferences": {
+        "Microsoft.NETCore.App": {
+          "privateAssets": "all"
+        }
+      },
+      "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
     }
   }
 }
