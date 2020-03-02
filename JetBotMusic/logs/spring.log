@@ -154,3 +154,154 @@ Caused by: java.lang.RuntimeException: Did not detect any supported formats
 2020-03-02 07:26:42.702  INFO 8312 --- [XNIO-1 I/O-3] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:50263 -- CloseStatus[code=1006, reason=]
 2020-03-02 07:26:42.702  INFO 8312 --- [XNIO-1 I/O-3] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
 2020-03-02 07:26:42.703  INFO 8312 --- [XNIO-1 I/O-3] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2020-03-02 07:33:45.556  INFO 8312 --- [XNIO-1 task-9] l.server.io.HandshakeInterceptorImpl     : Incoming connection from /127.0.0.1:50521
+2020-03-02 07:33:45.563  INFO 8312 --- [XNIO-1 task-9] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2020-03-02 07:33:45.569  INFO 8312 --- [XNIO-1 task-9] lavalink.server.io.SocketServer          : Connection successfully established from /127.0.0.1:50521
+2020-03-02 07:33:58.169  INFO 8312 --- [XNIO-1 task-10] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2020-03-02 07:33:58.757  INFO 8312 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: be somebody
+2020-03-02 07:33:58.784  INFO 8312 --- [XNIO-1 I/O-1] lavalink.server.io.SocketServer          : {"track":"QAAA7QIAC0JlIFNvbWVib2R5ABRUaG91c2FuZCBGb290IEtydXRjaAAAAAAAA2WcAHBPOmh0dHBzOi8vYXBpLXYyLnNvdW5kY2xvdWQuY29tL21lZGlhL3NvdW5kY2xvdWQ6dHJhY2tzOjM3Njk2MjY2LzAyOWNhYjY0LTYyMjktNDYzZi1hOTVlLWI0OWUyOGNkMDZlMC9zdHJlYW0vaGxzAAEAN2h0dHBzOi8vc291bmRjbG91ZC5jb20vdGhvdXNhbmQtZm9vdC1rcnV0Y2gvYmUtc29tZWJvZHkACnNvdW5kY2xvdWQAAAAAAAAAAA==","startTime":0,"endTime":222620,"noReplace":false,"guildId":"429124176033611776","op":"play"}
+2020-03-02 07:33:58.786  INFO 8312 --- [XNIO-1 I/O-1] lavalink.server.io.SocketServer          : {"volume":100,"guildId":"429124176033611776","op":"volume"}
+2020-03-02 07:33:58.792  INFO 8312 --- [lava-daemon-pool-playback-13-thread-1] c.s.d.l.s.s.SoundCloudClientIdTracker    : Updating SoundCloud client ID (current is null).
+2020-03-02 07:33:59.796  INFO 8312 --- [lava-daemon-pool-playback-13-thread-1] c.s.d.l.s.s.SoundCloudClientIdTracker    : Updating SoundCloud client ID succeeded, new ID is xTQtEeWzObWW93u9EUTviDSu5Y7Ulk0R.
+2020-03-02 07:34:02.535  INFO 8312 --- [XNIO-1 I/O-1] lavalink.server.io.SocketServer          : {"sessionId":"022b9231daa6e4977e239c38ec1c6450","guildId":"429124176033611776","event":{"token":"e0d8733c1fe13be5","endpoint":"eu-west854.discord.media:80"},"op":"voiceUpdate"}
+2020-03-02 07:34:12.738  INFO 8312 --- [XNIO-1 I/O-1] lavalink.server.io.SocketServer          : {"guildId":"429124176033611776","op":"stop"}
+2020-03-02 07:34:12.741  INFO 8312 --- [XNIO-1 I/O-1] lavalink.server.io.SocketServer          : {"guildId":"429124176033611776","op":"destroy"}
+2020-03-02 07:34:14.097  INFO 8312 --- [XNIO-1 I/O-1] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:50521 -- CloseStatus[code=1006, reason=]
+2020-03-02 07:34:14.098  INFO 8312 --- [XNIO-1 I/O-1] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
+2020-03-02 07:34:14.100  INFO 8312 --- [XNIO-1 I/O-1] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2020-03-02 14:05:30.244  INFO 5909 --- [main] lavalink.server.Launcher                 : 
+
+[32m       .  [31m _                  _ _       _    [32m__ _ _
+[32m      /\\ [31m| | __ ___   ____ _| (_)_ __ | | __[32m\ \ \ \
+[32m     ( ( )[31m| |/ _` \ \ / / _` | | | '_ \| |/ /[32m \ \ \ \
+[32m      \\/ [31m| | (_| |\ V / (_| | | | | | |   < [32m  ) ) ) )
+[32m       '  [31m|_|\__,_| \_/ \__,_|_|_|_| |_|_|\_\[32m / / / /
+[0m    =========================================[32m/_/_/_/[0m
+
+	Version:        4f53d09491ba5254eb5c55c234a63b208388d3ef-SNAPSHOT
+	Build:          982
+	Build time:     18.02.2020 01:14:32 UTC
+	Branch          master
+	Commit:         4f53d09
+	Commit time:    28.12.2019 17:00:51 UTC
+	JVM:            11.0.5
+	Lavaplayer      1.3.32
+
+2020-03-02 14:05:30.935  INFO 5909 --- [main] lavalink.server.Launcher                 : Starting Launcher on alexey-HP-Pavilion-g6-Notebook-PC with PID 5909 (/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/Lavalink.jar started by alexey in /home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic)
+2020-03-02 14:05:30.937  INFO 5909 --- [main] lavalink.server.Launcher                 : No active profile set, falling back to default profiles: default
+2020-03-02 14:05:31.281  WARN 5909 --- [background-preinit] o.s.h.c.j.Jackson2ObjectMapperBuilder    : For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
+2020-03-02 14:05:35.435  WARN 5909 --- [main] io.undertow.websockets.jsr               : UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+2020-03-02 14:05:35.544  INFO 5909 --- [main] io.undertow.servlet                      : Initializing Spring embedded WebApplicationContext
+2020-03-02 14:05:35.545  INFO 5909 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4405 ms
+2020-03-02 14:05:36.875  WARN 5909 --- [main] l.server.config.SentryConfiguration      : Turning off sentry
+2020-03-02 14:05:36.923  INFO 5909 --- [main] l.s.c.AudioSendFactoryConfiguration      : OS: Linux, Arch: amd64
+2020-03-02 14:05:36.924  INFO 5909 --- [main] l.s.c.AudioSendFactoryConfiguration      : JDA-NAS supported system detected. Enabled native audio sending.
+2020-03-02 14:05:36.925  INFO 5909 --- [main] l.s.c.AudioSendFactoryConfiguration      : Setting buffer to 400ms
+2020-03-02 14:05:36.926  INFO 5909 --- [main] l.s.c.AudioSendFactoryConfiguration      : Setting playlist load limit to 6
+2020-03-02 14:05:39.016  INFO 5909 --- [main] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2020-03-02 14:05:40.506  INFO 5909 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-02 14:05:41.886  INFO 5909 --- [main] org.xnio                                 : XNIO version 3.3.8.Final
+2020-03-02 14:05:41.958  INFO 5909 --- [main] org.xnio.nio                             : XNIO NIO Implementation Version 3.3.8.Final
+2020-03-02 14:05:42.400  INFO 5909 --- [main] o.s.b.w.e.u.UndertowServletWebServer     : Undertow started on port(s) 2333 (http) with context path ''
+2020-03-02 14:05:42.433  INFO 5909 --- [main] lavalink.server.Launcher                 : Started Launcher in 14.693 seconds (JVM running for 19.617)
+2020-03-02 14:06:35.282  INFO 5909 --- [XNIO-1 task-1] io.undertow.servlet                      : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-02 14:06:35.284  INFO 5909 --- [XNIO-1 task-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-03-02 14:06:35.317  INFO 5909 --- [XNIO-1 task-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 33 ms
+2020-03-02 14:06:35.466  INFO 5909 --- [XNIO-1 task-1] l.server.io.HandshakeInterceptorImpl     : Incoming connection from /127.0.0.1:54098
+2020-03-02 14:06:35.898  INFO 5909 --- [XNIO-1 task-1] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2020-03-02 14:06:36.251  INFO 5909 --- [XNIO-1 task-1] lavalink.server.io.SocketServer          : Connection successfully established from /127.0.0.1:54098
+2020-03-02 14:07:35.587  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : {"sessionId":"b49015452b763de5dd97a332ee28b88f","guildId":"429124176033611776","event":{"token":"430f20ce6ecb6a8c","endpoint":"eu-west854.discord.media:80"},"op":"voiceUpdate"}
+2020-03-02 14:07:56.952  INFO 5909 --- [XNIO-1 task-2] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2020-03-02 14:07:59.095  INFO 5909 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: be somebody
+2020-03-02 14:07:59.200  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : {"track":"QAAAjAIAK0JlIFNvbWVib2R5IC0gVGhvdXNhbmQgRm9vdCBLcnV0Y2ggKEx5cmljcykAB0J1cm5vdXQAAAAAAANnGAALM0wzUjBvM1BFeVEAAQAraHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj0zTDNSMG8zUEV5UQAHeW91dHViZQAAAAAAAAAA","startTime":0,"endTime":223000,"noReplace":false,"guildId":"429124176033611776","op":"play"}
+2020-03-02 14:07:59.276  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : {"volume":100,"guildId":"429124176033611776","op":"volume"}
+2020-03-02 14:08:17.698  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : {"volume":0,"guildId":"429124176033611776","op":"volume"}
+2020-03-02 14:08:17.734  INFO 5909 --- [lava-daemon-pool-playback-5-thread-1] c.s.l.c.natives.NativeLibraryLoader      : Native library libmpg123-0: loading with filter com.sedmelluq.discord.lavaplayer.natives.ConnectorNativeLibLoader$$Lambda$624/0x0000000840691440@2144c6e
+2020-03-02 14:08:17.739  INFO 5909 --- [lava-daemon-pool-playback-5-thread-1] c.s.l.c.natives.NativeLibraryLoader      : Native library connector: loading with filter null
+2020-03-02 14:08:17.809  INFO 5909 --- [lava-daemon-pool-playback-5-thread-1] c.s.l.c.natives.NativeLibraryLoader      : Native library connector: successfully loaded.
+2020-03-02 14:08:50.014  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:54098 -- CloseStatus[code=1006, reason=]
+2020-03-02 14:08:50.015  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketContext         : Shutting down 1 playing players.
+2020-03-02 14:08:50.017  INFO 5909 --- [XNIO-1 I/O-2] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2020-03-02 14:08:50.031  WARN 5909 --- [lava-daemon-pool-playback-5-thread-1] c.s.d.l.t.p.LocalAudioTrackExecutor      : Suspicious exception for playback of 3L3R0o3PEyQ
+
+com.sedmelluq.discord.lavaplayer.tools.FriendlyException: The track was unexpectedly terminated.
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.handlePlaybackInterrupt(LocalAudioTrackExecutor.java:334) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.executeProcessingLoop(LocalAudioTrackExecutor.java:278) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.executeProcessingLoop(LocalAudioTrackExecutor.java:236) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaAudioTrack.process(MatroskaAudioTrack.java:39) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.DelegatedAudioTrack.processDelegate(DelegatedAudioTrack.java:25) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack.processStatic(YoutubeAudioTrack.java:57) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack.process(YoutubeAudioTrack.java:49) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.execute(LocalAudioTrackExecutor.java:91) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager.lambda$executeTrack$1(DefaultAudioPlayerManager.java:349) ~[lavaplayer-1.3.32.jar!/:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:834) ~[na:na]
+Caused by: java.lang.InterruptedException: null
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056) ~[na:na]
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090) ~[na:na]
+	at java.base/java.util.concurrent.ArrayBlockingQueue.put(ArrayBlockingQueue.java:367) ~[na:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.AllocatingAudioFrameBuffer.consume(AllocatingAudioFrameBuffer.java:179) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.BufferingPostProcessor.process(BufferingPostProcessor.java:41) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.FinalPcmAudioFilter.dispatch(FinalPcmAudioFilter.java:158) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.FinalPcmAudioFilter.process(FinalPcmAudioFilter.java:130) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.UserProvidedAudioFilters.process(UserProvidedAudioFilters.java:77) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.AudioPipeline.process(AudioPipeline.java:33) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.common.OpusPacketRouter.passDownstream(OpusPacketRouter.java:161) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.common.OpusPacketRouter.process(OpusPacketRouter.java:97) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaOpusTrackConsumer.consume(MatroskaOpusTrackConsumer.java:47) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaStreamingFile.processFrameInBlock(MatroskaStreamingFile.java:372) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaStreamingFile.parseClusterSimpleBlock(MatroskaStreamingFile.java:336) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaStreamingFile.parseNextCluster(MatroskaStreamingFile.java:321) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaStreamingFile.provideFrames(MatroskaStreamingFile.java:297) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.matroska.MatroskaAudioTrack.lambda$process$0(MatroskaAudioTrack.java:40) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.executeProcessingLoop(LocalAudioTrackExecutor.java:262) ~[lavaplayer-1.3.32.jar!/:na]
+	... 10 common frames omitted
+
+2020-03-02 14:18:01.050  INFO 5909 --- [XNIO-1 task-4] l.server.io.HandshakeInterceptorImpl     : Incoming connection from /127.0.0.1:54218
+2020-03-02 14:18:01.058  INFO 5909 --- [XNIO-1 task-4] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+2020-03-02 14:18:01.069  INFO 5909 --- [XNIO-1 task-4] lavalink.server.io.SocketServer          : Connection successfully established from /127.0.0.1:54218
+2020-03-02 14:18:11.446  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : {"sessionId":"79baf17714c0e12f8f4065cbfb3f1f68","guildId":"429124176033611776","event":{"token":"c524311868ca8f70","endpoint":"eu-west854.discord.media:80"},"op":"voiceUpdate"}
+2020-03-02 14:18:22.252  INFO 5909 --- [XNIO-1 task-5] l.server.player.AudioLoaderRestHandler   : GET /loadtracks
+2020-03-02 14:18:22.260  INFO 5909 --- [lava-daemon-pool-info-loader-2-thread-1] c.s.d.l.s.s.SoundCloudClientIdTracker    : Updating SoundCloud client ID (current is null).
+2020-03-02 14:18:24.004  INFO 5909 --- [lava-daemon-pool-info-loader-2-thread-1] c.s.d.l.s.s.SoundCloudClientIdTracker    : Updating SoundCloud client ID succeeded, new ID is xTQtEeWzObWW93u9EUTviDSu5Y7Ulk0R.
+2020-03-02 14:18:24.884  INFO 5909 --- [lava-daemon-pool-info-loader-2-thread-1] lavalink.server.player.AudioLoader       : Loaded playlist Search results for: be somebody
+2020-03-02 14:18:24.938  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : {"track":"QAAA7QIAC0JlIFNvbWVib2R5ABRUaG91c2FuZCBGb290IEtydXRjaAAAAAAAA2WcAHBPOmh0dHBzOi8vYXBpLXYyLnNvdW5kY2xvdWQuY29tL21lZGlhL3NvdW5kY2xvdWQ6dHJhY2tzOjM3Njk2MjY2LzAyOWNhYjY0LTYyMjktNDYzZi1hOTVlLWI0OWUyOGNkMDZlMC9zdHJlYW0vaGxzAAEAN2h0dHBzOi8vc291bmRjbG91ZC5jb20vdGhvdXNhbmQtZm9vdC1rcnV0Y2gvYmUtc29tZWJvZHkACnNvdW5kY2xvdWQAAAAAAAAAAA==","startTime":0,"endTime":222620,"noReplace":false,"guildId":"429124176033611776","op":"play"}
+2020-03-02 14:18:24.946  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : {"volume":100,"guildId":"429124176033611776","op":"volume"}
+2020-03-02 14:18:24.962  INFO 5909 --- [lava-daemon-pool-playback-9-thread-1] c.s.d.l.s.s.SoundCloudClientIdTracker    : Updating SoundCloud client ID (current is null).
+2020-03-02 14:18:26.556  INFO 5909 --- [lava-daemon-pool-playback-9-thread-1] c.s.d.l.s.s.SoundCloudClientIdTracker    : Updating SoundCloud client ID succeeded, new ID is xTQtEeWzObWW93u9EUTviDSu5Y7Ulk0R.
+2020-03-02 14:18:35.674  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : {"volume":0,"guildId":"429124176033611776","op":"volume"}
+2020-03-02 14:19:34.175  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:54218 -- CloseStatus[code=1006, reason=]
+2020-03-02 14:19:34.175  INFO 5909 --- [XNIO-1 I/O-2] lavalink.server.io.SocketContext         : Shutting down 1 playing players.
+2020-03-02 14:19:34.176  INFO 5909 --- [XNIO-1 I/O-2] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2020-03-02 14:19:34.179  WARN 5909 --- [lava-daemon-pool-playback-9-thread-1] c.s.d.l.t.p.LocalAudioTrackExecutor      : Suspicious exception for playback of O:https://api-v2.soundcloud.com/media/soundcloud:tracks:37696266/029cab64-6229-463f-a95e-b49e28cd06e0/stream/hls
+
+com.sedmelluq.discord.lavaplayer.tools.FriendlyException: The track was unexpectedly terminated.
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.handlePlaybackInterrupt(LocalAudioTrackExecutor.java:334) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.executeProcessingLoop(LocalAudioTrackExecutor.java:278) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudOpusM3uAudioTrack.process(SoundCloudOpusM3uAudioTrack.java:48) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.DelegatedAudioTrack.processDelegate(DelegatedAudioTrack.java:25) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioTrack.playFromIdentifier(SoundCloudAudioTrack.java:52) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioTrack.process(SoundCloudAudioTrack.java:39) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.execute(LocalAudioTrackExecutor.java:91) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager.lambda$executeTrack$1(DefaultAudioPlayerManager.java:349) ~[lavaplayer-1.3.32.jar!/:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:834) ~[na:na]
+Caused by: java.lang.InterruptedException: null
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056) ~[na:na]
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090) ~[na:na]
+	at java.base/java.util.concurrent.ArrayBlockingQueue.put(ArrayBlockingQueue.java:367) ~[na:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.AllocatingAudioFrameBuffer.consume(AllocatingAudioFrameBuffer.java:179) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.BufferingPostProcessor.process(BufferingPostProcessor.java:41) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.FinalPcmAudioFilter.dispatch(FinalPcmAudioFilter.java:158) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.FinalPcmAudioFilter.process(FinalPcmAudioFilter.java:130) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.UserProvidedAudioFilters.process(UserProvidedAudioFilters.java:77) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.filter.AudioPipeline.process(AudioPipeline.java:33) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.common.OpusPacketRouter.passDownstream(OpusPacketRouter.java:161) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.common.OpusPacketRouter.process(OpusPacketRouter.java:97) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.container.ogg.opus.OggOpusTrackHandler.provideFrames(OggOpusTrackHandler.java:51) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudOpusM3uAudioTrack.lambda$process$0(SoundCloudOpusM3uAudioTrack.java:56) ~[lavaplayer-1.3.32.jar!/:na]
+	at com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor.executeProcessingLoop(LocalAudioTrackExecutor.java:262) ~[lavaplayer-1.3.32.jar!/:na]
+	... 9 common frames omitted
+

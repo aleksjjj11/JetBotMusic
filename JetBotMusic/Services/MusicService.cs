@@ -13,6 +13,7 @@ using Victoria;
 using Victoria.Enums;
 using Victoria.EventArgs;
 using Victoria.Interfaces;
+using Victoria.Responses.Rest;
 // using Victoria.Queue;
 using Yandex.Music.Api;
 using Yandex.Music.Api.Models;
@@ -32,7 +33,7 @@ namespace JetBotMusic.Services
         //private bool _isLoopTrack = false;
         //private bool _isLoopQueue = false;
 
-        public MusicService(/*LavaRestClient restClient,*/ LavaNode lavaNode, DiscordSocketClient client/*LavaSocketClient socketClient*/)
+        public MusicService(LavaNode lavaNode, DiscordSocketClient client)
         {
             _lavaNode = lavaNode;
             _client = client;
@@ -52,10 +53,10 @@ namespace JetBotMusic.Services
         }
 
         public async Task ConnectAsync(SocketVoiceChannel voiceChannel, ITextChannel textChannel)
-            => await _lavaNode.JoinAsync(voiceChannel, textChannel);//_lavaSocketClient.ConnectAsync(voiceChannel, textChannel);
+            => await _lavaNode.JoinAsync(voiceChannel, textChannel);
 
         public async Task LeaveAsync(SocketVoiceChannel voiceChannel)
-            => await _lavaNode.LeaveAsync(voiceChannel);//_lavaSocketClient.DisconnectAsync(voiceChannel);
+            => await _lavaNode.LeaveAsync(voiceChannel);
 
         private async Task TimeAsync()
         {
@@ -149,13 +150,22 @@ namespace JetBotMusic.Services
             }
         }
 
-        public async Task<string> PlayAsync(string query, SocketGuild guild)
+        public async Task<string> PlayAsync(string query, SocketGuild guild, string source = "youtube")
         {
-            
             _player = _lavaNode.GetPlayer(guild);
-            //var results = await _lavaNode.SearchYouTubeAsync(query);
-            var res = await _lavaNode.SearchSoundCloudAsync(query);
-            //var track = results.Tracks.FirstOrDefault();
+            SearchResponse res;
+            if (source == "youtube")
+            {
+                res = await _lavaNode.SearchYouTubeAsync(query);
+            } 
+            else if (source == "soundcloud")
+            {
+                res = await _lavaNode.SearchSoundCloudAsync(query);
+            }
+            else
+            {
+                res = await _lavaNode.SearchYouTubeAsync(query);
+            }
             var track = res.Tracks.FirstOrDefault();
 
             if (_player.PlayerState == PlayerState.Playing)
@@ -163,12 +173,10 @@ namespace JetBotMusic.Services
                 _player.Queue.Enqueue(track);
                 return $"{track.Title} has been added to the queue.";
             }
-            else
-            {
-                await _player.PlayAsync(track);
-                await _player.UpdateVolumeAsync(100);
-                return $"**Playing** `{track.Title}`";
-            }
+            
+            await _player.PlayAsync(track);
+            await _player.UpdateVolumeAsync(100);
+            return $"**Playing** `{track.Title}`";
         }
 
         public async Task StopAsync()
