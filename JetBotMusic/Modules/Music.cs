@@ -72,6 +72,7 @@ namespace JetBotMusic.Modules
         [Alias("P", "Pl")]
         public async Task Play([Remainder]string query)
         {
+            await Join();
             var result = await _musicService.PlayAsync(query, Context.Guild);
             if (result.Contains("has been added to the queue"))
             {
