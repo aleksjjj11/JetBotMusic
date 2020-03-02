@@ -153,8 +153,10 @@ namespace JetBotMusic.Services
         public async Task<string> PlayAsync(string query, SocketGuild guild)
         {
             _player = _lavaNode.GetPlayer(guild);
-            var results = await _lavaNode.SearchYouTubeAsync(query);
-            var track = results.Tracks.FirstOrDefault();
+            //var results = await _lavaNode.SearchYouTubeAsync(query);
+            var res = await _lavaNode.SearchSoundCloudAsync(query);
+            //var track = results.Tracks.FirstOrDefault();
+            var track = res.Tracks.FirstOrDefault();
 
             if (_player.PlayerState == PlayerState.Playing)
             {
@@ -252,20 +254,6 @@ namespace JetBotMusic.Services
             });
         }
 
-        public async Task LyricsAsync()
-        {
-            //Not working 
-            /*string lyrics = await _player.Track.FetchLyricsAsync();
-            if (lyrics is null)
-            {
-                Console.WriteLine("--------------------------> NULL");
-            }
-            else
-            {
-                Console.WriteLine($"---------------------------> {lyrics}");
-            }*/
-        }
-
         public async Task SeekAsync(int days = 0, int hours = 0, int minutes = 0, int second = 0)
         {
             TimeSpan time = new TimeSpan(days, hours, minutes, second);
@@ -335,7 +323,7 @@ namespace JetBotMusic.Services
             }
         }
 
-        public async Task SetVolumeAsync(int value)
+        public async Task SetVolumeAsync(ushort value)
         {
             if (value > 150 || value < 0)
             {
@@ -343,7 +331,7 @@ namespace JetBotMusic.Services
                 return;
             }
 
-            //await _player.SetVolumeAsync(value);
+            await _player.UpdateVolumeAsync(value);
         }
 
         public async Task UpVolumeAsync()

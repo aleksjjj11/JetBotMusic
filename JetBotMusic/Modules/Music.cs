@@ -16,13 +16,15 @@ namespace JetBotMusic.Modules
         }
 
         [Command("SetVolume")]
-        public async Task SetVolume(int volume)
+        [Alias("St", "Setv", "Svolume")]
+        public async Task SetVolume(ushort volume)
         {
             await _musicService.SetVolumeAsync(volume);
             await Context.Message.DeleteAsync();
         }
         
         [Command("Join")]
+        [Alias("J")]
         public async Task Join()
         {
             SocketGuildUser user = Context.User as SocketGuildUser;
@@ -43,6 +45,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Leave")]
+        [Alias("Lv")]
         public async Task Leave()
         {
             SocketGuildUser user = Context.User as SocketGuildUser;
@@ -58,6 +61,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Shuffle")]
+        [Alias("Shuf", "Sh")]
         public async Task Shuffle()
         {
             await _musicService.Shuffle();
@@ -65,6 +69,7 @@ namespace JetBotMusic.Modules
         }
         
         [Command("Play")]
+        [Alias("P", "Pl")]
         public async Task Play([Remainder]string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild);
@@ -92,6 +97,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Seek")]
+        [Alias("Sk")]
         public async Task Reset(int hours = 0, int minutes = 0, int seconds = 0)
         {
             hours = hours < 0 || hours > 23 ? 0 : hours;
@@ -102,6 +108,7 @@ namespace JetBotMusic.Modules
             await _musicService.SeekAsync(0, hours, minutes, seconds);
         }
         [Command("Stop")]
+        [Alias("St", "Stp")]
         public async Task Stop()
         {
             await _musicService.StopAsync();
@@ -109,6 +116,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Skip")]
+        [Alias("S", "Skp")]
         public async Task Skip()
         {
             await _musicService.SkipAsync();
@@ -116,6 +124,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Pause")]
+        [Alias("Ps", "Wait")]
         public async Task Pause()
         {
             await _musicService.PauseAsync();
@@ -123,6 +132,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Resume")]
+        [Alias("R", "Res", "Rsm")]
         public async Task Resume()
         {
             await _musicService.ResumeAsync();
@@ -130,6 +140,7 @@ namespace JetBotMusic.Modules
         }
         
         [Command("List")]
+        [Alias("L", "Lst")]
         public async Task List()
         {
             await _musicService.TrackListAsync();
@@ -137,6 +148,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Move")]
+        [Alias("M", "Mv")]
         public async Task Move(int numberTrack, int newPosition = 0)
         {
             await _musicService.MoveAsync(numberTrack, newPosition);
@@ -144,13 +156,15 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Lyrics")]
-        public async Task Yandex([Remainder] string query = null)
+        [Alias("Lyr", "Lr", "Lrc")]
+        public async Task Lyrics([Remainder] string query = null)
         {
             await Context.Message.DeleteAsync();
             await _musicService.GetLyricsAsync(Context.User, query);
         }
 
         [Command("Remove")]
+        [Alias("Delete", "Del", "D", "Rem", "Rmv")]
         public async Task RemoveaAsync(int index = 0)
         {
             await Context.Message.DeleteAsync();
@@ -158,6 +172,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Aliases")]
+        [Alias("Help", "Command", "Com", "A")]
         public async Task AliasesAsync()
         {
             //todo Описать все команды и сделать и вывод по ввду данной команды
@@ -170,6 +185,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Loopqueue")]
+        [Alias("LoopQ", "LQ")]
         public async Task LoopQueueAsync()
         {
             //todo Реализация должна зацикливать текущую очередь, если в очереди нет песен, то зациклить только эту песню, 
@@ -179,6 +195,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Loop")]
+        [Alias("Lp")]
         public async Task LoopAsync()
         {
             //todo Зацикливать текущую песню
@@ -188,6 +205,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("Replay")]
+        [Alias("Rep", "Re", "Repl")]
         public async Task ReplayAsync()
         {
             //todo Воспроизводить заново текущую песню
@@ -196,6 +214,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("RemoveDupes")]
+        [Alias("RemoveD", "RemDup", "RD", "RDup")]
         public async Task RemoveDupesAsync()
         {
             //todo Удалять дублирующиеся песни из очереди
@@ -204,6 +223,7 @@ namespace JetBotMusic.Modules
         }
 
         [Command("LeaveCleanUp")]
+        [Alias("LeaveCU", "LCU", "LClean", "Clean", "C")]
         public async Task LeaveCleanupAsync()
         {
             //todo Должно удалять все песни пользователей из очереди, которые не находятся в голосовом чате с ботом

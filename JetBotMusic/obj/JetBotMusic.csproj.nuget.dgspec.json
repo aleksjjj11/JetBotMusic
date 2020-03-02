@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj": {}
+    "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj": {}
   },
   "projects": {
-    "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj": {
+    "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj",
+        "projectUniqueName": "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
         "projectName": "JetBotMusic",
-        "projectPath": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj",
-        "packagesPath": "/home/alexey/.nuget/packages/",
-        "outputPath": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/obj/",
+        "projectPath": "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
+        "packagesPath": "C:\\Users\\Areksei\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/home/alexey/.config/NuGet/NuGet.Config"
+          "C:\\Users\\Areksei\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
@@ -76,11 +76,15 @@
               "version": "[3.0.1, 3.0.1]"
             },
             {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "name": "Microsoft.NETCore.App.Host.win-x64",
               "version": "[3.0.1, 3.0.1]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
               "version": "[3.0.0, 3.0.0]"
             }
           ],
@@ -89,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
