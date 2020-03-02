@@ -46,7 +46,6 @@ namespace JetBotMusic.Services
             _lavaNode.OnTrackEnded += TrackFinished;
             return Task.CompletedTask;
         }
-
         private async Task PlayerUpdated(PlayerUpdateEventArgs playerUpdateEventArgs)
         {
             await TimeAsync();
@@ -152,6 +151,7 @@ namespace JetBotMusic.Services
 
         public async Task<string> PlayAsync(string query, SocketGuild guild)
         {
+            
             _player = _lavaNode.GetPlayer(guild);
             //var results = await _lavaNode.SearchYouTubeAsync(query);
             var res = await _lavaNode.SearchSoundCloudAsync(query);
