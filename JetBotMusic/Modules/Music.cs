@@ -216,7 +216,7 @@ namespace JetBotMusic.Modules
         public async Task LoopQueueAsync()
         {
             //todo Реализация должна зацикливать текущую очередь, если в очереди нет песен, то зациклить только эту песню, 
-            //через другой команды Loop
+            //через другую команду Loop
             await Context.Message.DeleteAsync();
             
         }
@@ -225,17 +225,18 @@ namespace JetBotMusic.Modules
         [Alias("Lp")]
         public async Task LoopAsync()
         {
-            //todo Зацикливать текущую песню
-            await _musicService.LoopTrackAsync();
+            //todo Зацикливать текущую песню ready
+            //todo Добавить состояние зацикливания в меню бота
+            bool res = await _musicService.LoopTrackAsync();
             await Context.Message.DeleteAsync();
-
+            var dmChannel = Context.User.GetOrCreateDMChannelAsync();
+            await dmChannel.Result.SendMessageAsync(res.ToString());
         }
 
         [Command("Replay")]
         [Alias("Rep", "Re", "Repl")]
         public async Task ReplayAsync()
         {
-            //todo Воспроизводить заново текущую песню
             await Context.Message.DeleteAsync();
             await _musicService.ReplayAsync();
         }
@@ -244,7 +245,6 @@ namespace JetBotMusic.Modules
         [Alias("RemoveD", "RemDup", "RD", "RDup")]
         public async Task RemoveDupesAsync()
         {
-            //todo Удалять дублирующиеся песни из очереди
             await Context.Message.DeleteAsync();
             await _musicService.RemoveDupesAsync();
         }

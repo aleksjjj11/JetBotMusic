@@ -30,7 +30,7 @@ namespace JetBotMusic.Services
         private IUserMessage _message;
         private IUserMessage _messageLyrics = null;
         private List<IUserMessage> _messagesLyrics = null;
-        //private bool _isLoopTrack = false;
+        private bool _isLoopTrack = false;
         //private bool _isLoopQueue = false;
 
         public MusicService(LavaNode lavaNode, DiscordSocketClient client)
@@ -392,10 +392,26 @@ namespace JetBotMusic.Services
                 .Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
 
             if (!reason.ShouldPlayNext()) return;
+
+            if (_isLoopTrack)
+            {
+                await _message.ModifyAsync(properties =>
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    string description = _message.Embeds.First().Description
+                        .Replace(firstString, $"*Status*: **Playing** `{track.Title}`");
+                    builder.WithTitle(_message.Embeds.First().Title)
+                        .WithDescription(description)
+                        .WithColor(Color.Orange);
+                    properties.Embed = builder.Build();
+                });
+                await player.PlayAsync(track);
+                await TrackListAsync();
+                return;
+            }
            
             if (!player.Queue.TryDequeue(out var item) || !(item is LavaTrack nextTack))
             {
-                //await player.TextChannel.SendMessageAsync("There are no more tracks in the queue");
                 await _message.ModifyAsync(properties =>
                 {
                     EmbedBuilder builder = new EmbedBuilder();
@@ -476,9 +492,10 @@ namespace JetBotMusic.Services
         {
         }
 
-        public async Task LoopTrackAsync()
+        public async Task<bool> LoopTrackAsync()
         {
-            //_isLoopTrack = !_isLoopTrack;
+            _isLoopTrack = !_isLoopTrack;
+            return _isLoopTrack;
         }
 
         public async Task LoopQueueAsync()
