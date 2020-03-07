@@ -73,27 +73,7 @@ namespace JetBotMusic.Modules
         public async Task Play([Remainder]string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild);
-            if (result.Contains("has been added to the queue"))
-            {
-                await Context.Message.DeleteAsync();
-                await _musicService.TrackListAsync();
-                return;
-            }
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle("JetBot-Music")
-                .WithDescription($"*Status*: {result}\n" + "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n🎶**Track in queue:**\n***Nothing***")
-                .WithColor(Color.Orange);
-            var message = await ReplyAsync("", false, builder.Build());
-            
-            await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
-            await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
-            await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
-            await message.AddReactionAsync(new Emoji("⏭")); //skip
-            await message.AddReactionAsync(new Emoji("🔀")); //shuffle
-            await message.AddReactionAsync(new Emoji("🎼")); //lyrics
-            await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
-            
-            _musicService.SetMessage(message);
+            BuildPlayingMessage(result);
         }
 
         [Command("PlaySoundCloud")]
@@ -101,27 +81,7 @@ namespace JetBotMusic.Modules
         public async Task PlaySoundCloud([Remainder] string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild, "soundcloud");
-            if (result.Contains("has been added to the queue"))
-            {
-                await Context.Message.DeleteAsync();
-                await _musicService.TrackListAsync();
-                return;
-            }
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle("JetBot-Music")
-                .WithDescription($"*Status*: {result}\n" + "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n🎶**Track in queue:**\n***Nothing***")
-                .WithColor(Color.Orange);
-            var message = await ReplyAsync("", false, builder.Build());
-            
-            await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
-            await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
-            await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
-            await message.AddReactionAsync(new Emoji("⏭")); //skip
-            await message.AddReactionAsync(new Emoji("🔀")); //shuffle
-            await message.AddReactionAsync(new Emoji("🎼")); //lyrics
-            await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
-            
-            _musicService.SetMessage(message);
+            BuildPlayingMessage(result);
         }
         [Command("Seek")]
         [Alias("Sk")]
@@ -212,6 +172,7 @@ namespace JetBotMusic.Modules
         public async Task PingAsync()
         {
             //todo Выводить задержку с серверами дискорда
+            await Context.Channel.SendMessageAsync(StreamMusicBot.Latency.ToString());
         }
 
         [Command("Loopqueue")]
@@ -259,6 +220,32 @@ namespace JetBotMusic.Modules
             //todo Должно удалять все песни пользователей из очереди, которые не находятся в голосовом чате с ботом
             await Context.Message.DeleteAsync();
             await _musicService.LeaveCleanUpAsync();
+        }
+
+        private async void BuildPlayingMessage(string nameSong)
+        {
+            if (nameSong.Contains("has been added to the queue"))
+            {
+                await Context.Message.DeleteAsync();
+                await _musicService.TrackListAsync();
+                return;
+            }
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle("JetBot-Music")
+                .WithDescription($"*Status*: {nameSong}\n" + "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n" +
+                                 $"*Ping:*{StreamMusicBot.Latency}🛰\n🎶**Track in queue:**\n***Nothing***")
+                .WithColor(Color.Orange);
+            var message = await ReplyAsync("", false, builder.Build());
+            
+            await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
+            await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
+            await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
+            await message.AddReactionAsync(new Emoji("⏭")); //skip
+            await message.AddReactionAsync(new Emoji("🔀")); //shuffle
+            await message.AddReactionAsync(new Emoji("🎼")); //lyrics
+            await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
+            
+            _musicService.SetMessage(message);
         }
     }
 }

@@ -49,7 +49,25 @@ namespace JetBotMusic.Services
         }
         private async Task PlayerUpdated(PlayerUpdateEventArgs playerUpdateEventArgs)
         {
+            await PingAsync();
             await TimeAsync();
+        }
+
+        private async Task PingAsync()
+        {
+            await _message.ModifyAsync(properties =>
+            {
+                string oldPing = _message.Embeds.First().Description.Substring(
+                    _message.Embeds.First().Description.IndexOf("*Ping:*"),
+                    _message.Embeds.First().Description.IndexOf("🛰")  - 
+                    _message.Embeds.First().Description.IndexOf("*Ping:*"));
+                string newPing = "*Ping:*" + StreamMusicBot.Latency;
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.WithTitle(_message.Embeds.First().Title)
+                    .WithDescription(_message.Embeds.First().Description.Replace(oldPing, newPing))
+                    .WithColor(_message.Embeds.First().Color.Value);
+                properties.Embed = builder.Build();
+            });
         }
 
         public async Task ConnectAsync(SocketVoiceChannel voiceChannel, ITextChannel textChannel)

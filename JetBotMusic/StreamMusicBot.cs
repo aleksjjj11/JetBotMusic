@@ -16,6 +16,7 @@ namespace JetBotMusic
         private DiscordSocketClient _client;
         private CommandService _cmdService;
         private IServiceProvider _services;
+        public static int Latency;
         public StreamMusicBot(DiscordSocketClient client = null, CommandService cmdService = null)
         {
             _client = client ?? new DiscordSocketClient(new DiscordSocketConfig
@@ -36,6 +37,7 @@ namespace JetBotMusic
             await _client.LoginAsync(TokenType.Bot, "NTA5NTgxNzA0NzgwODQwOTYx.Xk7I3Q.eY2HFX-QaAWIZHCGHO02IdVYDkk");
             await _client.StartAsync();
             _client.Log += LogAsync;
+            _client.LatencyUpdated += ClientOnLatencyUpdated;
             _services = SetupServices();
             
             var cmdHandler = new CommandHandler(_client, _cmdService, _services);
@@ -45,6 +47,12 @@ namespace JetBotMusic
             await _services.GetRequiredService<ReactionService>().InitializeAsync();
             
             await Task.Delay(-1);
+        }
+
+        private Task ClientOnLatencyUpdated(int arg1, int arg2)
+        {
+            Latency = _client.Latency;
+            return Task.CompletedTask;
         }
 
         private Task LogAsync(LogMessage logMessage)
