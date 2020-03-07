@@ -1,28 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj": {}
+    "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj": {}
   },
   "projects": {
-    "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj": {
+    "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj",
+        "projectUniqueName": "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
         "projectName": "JetBotMusic",
-        "projectPath": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/JetBotMusic.csproj",
-        "packagesPath": "/home/alexey/.nuget/packages/",
-        "outputPath": "/home/alexey/Yandex.Disk/JetBotMusic/JetBotMusic/obj/",
+        "projectPath": "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
+        "packagesPath": "C:\\Users\\trum\\.nuget\\packages\\",
+        "outputPath": "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "/home/alexey/.config/NuGet/NuGet.Config"
+          "C:\\Users\\trum\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -76,11 +75,15 @@
               "version": "[3.0.1, 3.0.1]"
             },
             {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[3.0.3, 3.0.3]"
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.0.1, 3.0.1]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
               "version": "[3.0.0, 3.0.0]"
             }
           ],
@@ -89,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
