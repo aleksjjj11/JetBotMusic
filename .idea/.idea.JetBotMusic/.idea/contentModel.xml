@@ -32,6 +32,7 @@
           <e p="spring.log.2020-02-18.0.gz" t="Include" />
           <e p="spring.log.2020-02-20.0.gz" t="Include" />
           <e p="spring.log.2020-02-21.0.gz" t="Include" />
+          <e p="spring.log.2020-03-02.0.gz" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">

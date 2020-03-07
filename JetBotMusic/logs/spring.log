@@ -392,3 +392,6 @@ Caused by: java.net.UnknownHostException: api-v2.soundcloud.com
 2020-03-03 10:29:53.663  INFO 4937 --- [XNIO-1 I/O-2] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:60310 -- CloseStatus[code=1006, reason=]
 2020-03-03 10:29:53.663  INFO 4937 --- [XNIO-1 I/O-2] lavalink.server.io.SocketContext         : Shutting down 0 playing players.
 2020-03-03 10:29:53.666  INFO 4937 --- [XNIO-1 I/O-2] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2020-03-03 10:34:50.268  INFO 4937 --- [Thread-1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-03-03 10:34:50.270  INFO 4937 --- [Thread-1] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
+2020-03-03 10:34:50.274  INFO 4937 --- [Thread-1] io.undertow.servlet                      : Destroying Spring FrameworkServlet 'dispatcherServlet'

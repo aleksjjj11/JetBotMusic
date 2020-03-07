@@ -203,6 +203,28 @@ namespace JetBotMusic.Modules
         public async Task AliasesAsync()
         {
             //todo Описать все команды и сделать и вывод по ввду данной команды
+            string message = "[!] - Prefix for control bot.\n" +
+                             "[Join] - Connect bot to you.\n" +
+                             "[Play] <query> - Plays a song with the given name or url.\n" +
+                             "[PlaySoundCloud] <query> - too [play], but from sound cloud.\n" +
+                             "[Pause] - Pauses the currently playing track.\n" +
+                             "[Resume] - Resume paused music.\n" +
+                             "[Stop] - Stop playing.\n" +
+                             "[Lyrics] - Gets the lyrics of the current playing song.\n" +
+                             "[Skip] - Skips the currently playing song.\n" +
+                             "[Leave] - Disconnect the bot from the voice channel it is in.\n" +
+                             "[Ping] - Checks the bot's response time to Discord.\n" +
+                             "[SetVolume] - Change the current volume.\n" +
+                             "[Shuffle] - Shuffles the queue.\n" +
+                             "[Seek] - Seeks to a certain point in the current track.\n" +
+                             "[List] - Update list of queue.\n" +
+                             "[Move] - Moves a certain song to a chosen position.\n" +
+                             "[Remove] - Removes a certain entry from the queue.\n" +
+                             "[LoopQueue] - Loops the whole queue.\n" +
+                             "[Loop] - Loop the currently playing song.\n" +
+                             "[Replay] - Reset the progress of the current song.\n" +
+                             "[RemoveDupes] - Removes duplicate songs from the queue.\n" +
+                             "[LeaveCleanUp] - Removes absent user's songs from the Queue.\n";
         }
 
         [Command("Ping")]
