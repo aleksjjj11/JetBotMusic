@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -38,7 +40,8 @@ namespace JetBotMusic.Modules
                 await ReplyAsync("You need to connect to a voice channel.");
                 return;
             }
-            
+
+            Console.WriteLine($"Amount of users: {user.VoiceChannel.Users.Count}");
             await _musicService.ConnectAsync(user.VoiceChannel, Context.Channel as ITextChannel);
             await ReplyAsync($"now connected to {user.VoiceChannel.Name}");
 
