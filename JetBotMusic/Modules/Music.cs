@@ -22,7 +22,7 @@ namespace JetBotMusic.Modules
         public async Task SetVolume(ushort volume)
         {
             await _musicService.SetVolumeAsync(volume);
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
         }
         
         [Command("Join")]
@@ -68,7 +68,7 @@ namespace JetBotMusic.Modules
         public async Task Shuffle()
         {
             await _musicService.Shuffle();
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
         }
         
         [Command("Play")]
@@ -94,7 +94,7 @@ namespace JetBotMusic.Modules
             minutes = minutes < 0 || minutes > 59 ? 0 : minutes;
             seconds = seconds < 0 || seconds > 59 ? 0 : seconds;
             
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             await _musicService.SeekAsync(0, hours, minutes, seconds);
         }
         [Command("Stop")]
@@ -110,7 +110,7 @@ namespace JetBotMusic.Modules
         public async Task Skip()
         {
             await _musicService.SkipAsync();
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
         }
 
         [Command("Pause")]
@@ -118,7 +118,7 @@ namespace JetBotMusic.Modules
         public async Task Pause()
         {
             await _musicService.PauseAsync();
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
         }
 
         [Command("Resume")]
@@ -126,7 +126,7 @@ namespace JetBotMusic.Modules
         public async Task Resume()
         {
             await _musicService.ResumeAsync();
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
         }
         
         [Command("List")]
@@ -134,7 +134,7 @@ namespace JetBotMusic.Modules
         public async Task List()
         {
             await _musicService.TrackListAsync();
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
         }
 
         [Command("Move")]
@@ -142,14 +142,14 @@ namespace JetBotMusic.Modules
         public async Task Move(int numberTrack, int newPosition = 0)
         {
             await _musicService.MoveAsync(numberTrack, newPosition);
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
         }
 
         [Command("Lyrics")]
         [Alias("Lyr", "Lr", "Lrc")]
         public async Task Lyrics([Remainder] string query = null)
         {
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             await _musicService.GetLyricsAsync(Context.User, query);
         }
 
@@ -157,7 +157,7 @@ namespace JetBotMusic.Modules
         [Alias("Delete", "Del", "D", "Rem", "Rmv")]
         public async Task RemoveaAsync(int index = 0)
         {
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             await _musicService.RemoveAsync(index);
         }
 
@@ -165,7 +165,7 @@ namespace JetBotMusic.Modules
         [Alias("Help", "Command", "Com", "A")]
         public async Task AliasesAsync()
         {
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             await _musicService.AliasAsync(Context.User);
             //todo Описать все команды и сделать и вывод по ввду данной команды
         
@@ -184,7 +184,7 @@ namespace JetBotMusic.Modules
         {
             //todo Реализация должна зацикливать текущую очередь, если в очереди нет песен, то зациклить только эту песню, 
             //через другую команду Loop
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             
         }
 
@@ -195,7 +195,7 @@ namespace JetBotMusic.Modules
             //todo Зацикливать текущую песню ready
             //todo Добавить состояние зацикливания в меню бота
             bool res = await _musicService.LoopTrackAsync();
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             var dmChannel = Context.User.GetOrCreateDMChannelAsync();
             await dmChannel.Result.SendMessageAsync(res.ToString());
         }
@@ -204,7 +204,7 @@ namespace JetBotMusic.Modules
         [Alias("Rep", "Re", "Repl")]
         public async Task ReplayAsync()
         {
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             await _musicService.ReplayAsync();
         }
 
@@ -212,7 +212,7 @@ namespace JetBotMusic.Modules
         [Alias("RemoveD", "RemDup", "RD", "RDup")]
         public async Task RemoveDupesAsync()
         {
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             await _musicService.RemoveDupesAsync();
         }
 
@@ -221,7 +221,7 @@ namespace JetBotMusic.Modules
         public async Task LeaveCleanupAsync()
         {
             //todo Должно удалять все песни пользователей из очереди, которые не находятся в голосовом чате с ботом
-            await Context.Message.DeleteAsync();
+            //await Context.Message.DeleteAsync();
             await _musicService.LeaveCleanUpAsync();
         }
 
@@ -229,7 +229,7 @@ namespace JetBotMusic.Modules
         {
             if (nameSong.Contains("has been added to the queue"))
             {
-                await Context.Message.DeleteAsync();
+                //await Context.Message.DeleteAsync();
                 await _musicService.TrackListAsync();
                 return;
             }
