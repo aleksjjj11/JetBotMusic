@@ -49,11 +49,30 @@ namespace JetBotMusic.Services
         }
         private async Task PlayerUpdated(PlayerUpdateEventArgs playerUpdateEventArgs)
         {
-            await PingAsync();
+            await TrackListAsync();
+            await UpdateVote();
+            await UpdatePing();
             await TimeAsync();
+            await UpdateTrack();
         }
 
-        private async Task PingAsync()
+        private async Task UpdateTrack()
+        {
+            string firstString = _message.Embeds.First().Description
+                .Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
+            if (firstString.Contains(_player.Track.Title) is true) return;
+            await _message.ModifyAsync(properties =>
+            {
+                EmbedBuilder builder = new EmbedBuilder();
+                string description = _message.Embeds.First().Description.Replace(firstString,
+                    $"*Status*: **{_player.PlayerState}** `{_player.Track.Title}`");
+                builder.WithTitle(_message.Embeds.First().Title)
+                    .WithDescription(description)
+                    .WithColor(Color.Orange);
+                properties.Embed = builder.Build();
+            });
+        }
+        private async Task UpdatePing()
         {
             await _message.ModifyAsync(properties =>
             {
@@ -333,7 +352,6 @@ namespace JetBotMusic.Services
             {
                 await _player.PauseAsync();
 
-                //Embed embed = _message.Embeds.First();
                 string firstString = _message.Embeds.First().Description
                     .Substring(0, _message.Embeds.First().Description.IndexOf("\n"));
 
@@ -552,6 +570,41 @@ namespace JetBotMusic.Services
         {
             //_isLoopQueue = !_isLoopQueue;
             _loopTrack = _player.Track;
+        }
+
+        private async Task UpdateVote()
+        {
+            try
+            {
+                var bot = _message.Author as SocketUser as SocketGuildUser;
+                Console.WriteLine(_message.Author);
+                if (bot is null)
+                {
+                    Console.WriteLine($"BOT IS NULL");
+                    return;
+                }
+                int amountVote = bot.VoiceChannel.Users.Count / 2 + 1;
+                string newValue = $"***Need votes for skip:***{amountVote}⏭";
+                int startIndex = _message.Embeds.First().Description.IndexOf("***Need votes for skip:***");
+                int endIndex = _message.Embeds.First().Description.IndexOf("⏭");
+                string oldValue = _message.Embeds.First().Description.Substring(startIndex, endIndex-startIndex);
+                Console.WriteLine($"START INDEX: {startIndex} END INDEX: {endIndex}\nNew value:{newValue}\nOld:{oldValue}");
+                await _message.ModifyAsync(properties =>
+                {
+                    EmbedBuilder builder = new EmbedBuilder();
+                    string description = _message.Embeds.First().Description
+                        .Replace(oldValue, newValue);
+                    builder.WithTitle(_message.Embeds.First().Title)
+                        .WithDescription(description)
+                        .WithColor(Color.Orange);
+                    properties.Embed = builder.Build();
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR: {ex.Message}");
+            }
+            
         }
     }
 }
