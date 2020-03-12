@@ -21,6 +21,8 @@
           <e p="spring.log.2020-02-20.0.gz" t="Include" />
           <e p="spring.log.2020-02-21.0.gz" t="Include" />
           <e p="spring.log.2020-03-02.0.gz" t="Include" />
+          <e p="spring.log.2020-03-07.0.gz" t="Include" />
+          <e p="spring.log.2020-03-11.0.gz" t="Include" />
         </e>
         <e p="Modules" t="Include">
           <e p="Music.cs" t="Include" />
