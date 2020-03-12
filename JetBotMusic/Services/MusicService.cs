@@ -80,7 +80,7 @@ namespace JetBotMusic.Services
                     _message.Embeds.First().Description.IndexOf("*Ping:*"),
                     _message.Embeds.First().Description.IndexOf("🛰")  - 
                     _message.Embeds.First().Description.IndexOf("*Ping:*"));
-                string newPing = "*Ping:*" + StreamMusicBot.Latency;
+                string newPing = $"*Ping:* `{StreamMusicBot.Latency}`";
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle(_message.Embeds.First().Title)
                     .WithDescription(_message.Embeds.First().Description.Replace(oldPing, newPing))
@@ -576,17 +576,16 @@ namespace JetBotMusic.Services
         {
             try
             {
-                var bot = _message.Author as SocketUser as SocketGuildUser;
-                Console.WriteLine(_message.Author);
-                if (bot is null)
+                
+                if ((_player.VoiceChannel as SocketVoiceChannel) is null)
                 {
-                    Console.WriteLine($"BOT IS NULL");
+                    Console.WriteLine($"VOICE CHANNEL IS NULL");
                     return;
                 }
-                int amountVote = bot.VoiceChannel.Users.Count / 2 + 1;
-                string newValue = $"***Need votes for skip:***{amountVote}⏭";
+                int amountVote = (_player.VoiceChannel as SocketVoiceChannel).Users.Count / 2 + 1;
+                string newValue = $"***Need votes for skip:*** `{amountVote}`⏭";
                 int startIndex = _message.Embeds.First().Description.IndexOf("***Need votes for skip:***");
-                int endIndex = _message.Embeds.First().Description.IndexOf("⏭");
+                int endIndex = _message.Embeds.First().Description.IndexOf("⏭") + 1;
                 string oldValue = _message.Embeds.First().Description.Substring(startIndex, endIndex-startIndex);
                 Console.WriteLine($"START INDEX: {startIndex} END INDEX: {endIndex}\nNew value:{newValue}\nOld:{oldValue}");
                 await _message.ModifyAsync(properties =>

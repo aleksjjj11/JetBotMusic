@@ -236,8 +236,8 @@ namespace JetBotMusic.Modules
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("JetBot-Music")
                 .WithDescription($"*Status*: {nameSong}\n" + "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n" +
-                                 $"*Ping:*{StreamMusicBot.Latency}🛰\n" +
-                                 $"***Need votes for skip:***1⏭\n" +
+                                 $"*Ping:* `{StreamMusicBot.Latency}`🛰\n" +
+                                 $"***Need votes for skip:*** `1`⏭\n" +
                                  $"🎶**Track in queue:**\n***Nothing***")
                 .WithColor(Color.Orange);
             var message = await ReplyAsync("", false, builder.Build());
