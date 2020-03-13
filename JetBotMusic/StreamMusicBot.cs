@@ -30,11 +30,12 @@ namespace JetBotMusic
                 LogLevel = LogSeverity.Verbose,
                 CaseSensitiveCommands = false
             });
+            
         }
 
         public async Task InitializeAsync()
         {
-            await _client.LoginAsync(TokenType.Bot, "NTA5NTgxNzA0NzgwODQwOTYx.Xk7I3Q.eY2HFX-QaAWIZHCGHO02IdVYDkk");
+            await _client.LoginAsync(TokenType.Bot, "NTA5NTgxNzA0NzgwODQwOTYx.XmvMvw.C0H9Y7-pegTu_52-C-9GZA9cj7M");
             await _client.StartAsync();
             _client.Log += LogAsync;
             _client.LatencyUpdated += ClientOnLatencyUpdated;
