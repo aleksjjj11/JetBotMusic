@@ -49,11 +49,11 @@ namespace JetBotMusic.Services
         }
         private async Task PlayerUpdated(PlayerUpdateEventArgs playerUpdateEventArgs)
         {
-            await TrackListAsync();
-            await UpdateVote();
-            await UpdatePing();
-            await TimeAsync();
-            await UpdateTrack();
+            TrackListAsync().Wait();
+            UpdateVote().Wait();
+            UpdatePing().Wait();
+            TimeAsync().Wait();
+            UpdateTrack().Wait();
         }
 
         private async Task UpdateTrack()
