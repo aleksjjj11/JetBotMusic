@@ -76,6 +76,11 @@ namespace JetBotMusic.Modules
         public async Task Play([Remainder]string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild);
+            if (result is null)
+            {
+                Console.WriteLine("Result is empty");
+                return;
+            }
             BuildPlayingMessage(result);
         }
 
@@ -84,6 +89,11 @@ namespace JetBotMusic.Modules
         public async Task PlaySoundCloud([Remainder] string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild, "soundcloud");
+            if (result is null)
+            {
+                Console.WriteLine("Result is empty");
+                return;
+            }
             BuildPlayingMessage(result);
         }
         [Command("Seek")]

@@ -29,7 +29,6 @@ namespace JetBotMusic.Services
         public async Task InitializeAsync()
         {
             await _cmdService.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
-            _client.ReactionRemoved += ReactionRemoved;
             _client.ReactionAdded += ReactionAdded;
         }
 
@@ -154,10 +153,9 @@ namespace JetBotMusic.Services
 
             if (reaction.Emote.Name is "🎼")
             {
+                await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
                 await _musicService.GetLyricsAsync(reaction.User.Value as SocketUser);
             }
-            //await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
-            //return Task.CompletedTask;
         }
 
         public Task SetReactions(string listReactions)
@@ -172,11 +170,6 @@ namespace JetBotMusic.Services
             {
                 await reaction.Message.Value.AddReactionAsync(new Emoji("" + _listReactions[i]));
             }
-        }
-        private async Task ReactionRemoved(Cacheable<IUserMessage, ulong> arg1, ISocketMessageChannel socketMessageChannel, SocketReaction reaction)
-        {
-            //socketMessageChannel.SendMessageAsync(reaction.Emote.Name);
-            //await ReactionAdded(arg1, socketMessageChannel, reaction);
         }
     }
 }

@@ -204,6 +204,7 @@ namespace JetBotMusic.Services
                 res = await _lavaNode.SearchYouTubeAsync(query);
             }
             var track = res.Tracks.FirstOrDefault();
+            if (track?.Title == "Track empty" || track is null) return null;
 
             if (_player.PlayerState == PlayerState.Playing)
             {
