@@ -1,28 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj": {}
+    "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj": {
+    "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
+        "projectUniqueName": "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
         "projectName": "JetBotMusic",
-        "projectPath": "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
-        "packagesPath": "C:\\Users\\Areksei\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Areksei\\YandexDisk\\JetBotMusic\\JetBotMusic\\obj\\",
+        "projectPath": "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\JetBotMusic.csproj",
+        "packagesPath": "C:\\Users\\trum\\.nuget\\packages\\",
+        "outputPath": "D:\\Desktop_new(11.12)\\labs\\Lesha_JetBot\\JetBotMusic\\JetBotMusic\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Areksei\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\trum\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

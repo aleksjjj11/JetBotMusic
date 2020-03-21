@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -267,6 +268,13 @@ namespace JetBotMusic.Modules
         public async Task YandexPlaylist(string url)
         {
             /*TODO Должен по полученному url находить плейлист на сайте яндекс музыки и все песни этого плейлиста добавить в очередь проигрывания*/
+            if (Regex.IsMatch(url, "https://music\\.yandex\\.ru/users/.+/playlists/\\d+") == false)
+            {
+                return;
+            }
+            string YandexUserName = Regex.Matches(url, "https://music\\.yandex\\.ru/users/(.+)/playlists/(\\d+)").First().Groups[1].Value;
+            string YandexPlaylistId = Regex.Matches(url, "https://music\\.yandex\\.ru/users/(.+)/playlists/(\\d+)").First().Groups[2].Value;
+            url = $"https://music.yandex.ru/handlers/playlist.jsx?owner={YandexUserName}&kinds={YandexPlaylistId}";
             await _musicService.YandexPlaylistAsync(url);
         }
     }
