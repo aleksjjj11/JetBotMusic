@@ -606,5 +606,10 @@ namespace JetBotMusic.Services
             }
             
         }
+
+        public async Task YandexPlaylistAsync(string url)
+        {
+            
+        }
     }
 }

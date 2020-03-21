@@ -266,7 +266,8 @@ namespace JetBotMusic.Modules
         [Alias("YP", "Y", "YPlaylist")]
         public async Task YandexPlaylist(string url)
         {
-            /*TODO Должен по полученному url находить плейлист на сайте яндекс музыки и все песни этого плейлиста добавить в очередь проигрывания*/ 
+            /*TODO Должен по полученному url находить плейлист на сайте яндекс музыки и все песни этого плейлиста добавить в очередь проигрывания*/
+            await _musicService.YandexPlaylistAsync(url);
         }
     }
 }
