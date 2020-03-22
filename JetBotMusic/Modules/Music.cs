@@ -236,7 +236,7 @@ namespace JetBotMusic.Modules
             await _musicService.LeaveCleanUpAsync();
         }
 
-        private async void BuildPlayingMessage(string nameSong)
+        private async Task BuildPlayingMessage(string nameSong)
         {
             if (nameSong.Contains("has been added to the queue"))
             {
@@ -265,7 +265,7 @@ namespace JetBotMusic.Modules
         }
         [Command("YandexPlaylist")]
         [Alias("YP", "Y", "YPlaylist")]
-        public async Task YandexPlaylist(string url)
+        public async Task YandexPlaylist(string url, int startId = 0)
         {
             /*TODO Должен по полученному url находить плейлист на сайте яндекс музыки и все песни этого плейлиста добавить в очередь проигрывания*/
             if (Regex.IsMatch(url, "https://music\\.yandex\\.ru/users/.+/playlists/\\d+") == false)
@@ -275,7 +275,17 @@ namespace JetBotMusic.Modules
             string YandexUserName = Regex.Matches(url, "https://music\\.yandex\\.ru/users/(.+)/playlists/(\\d+)").First().Groups[1].Value;
             string YandexPlaylistId = Regex.Matches(url, "https://music\\.yandex\\.ru/users/(.+)/playlists/(\\d+)").First().Groups[2].Value;
             url = $"https://music.yandex.ru/handlers/playlist.jsx?owner={YandexUserName}&kinds={YandexPlaylistId}";
-            await _musicService.YandexPlaylistAsync(url);
+            var result = await _musicService.YandexPlaylistAsync(url, Context.Guild, startId);
+            if (result is null)
+            {
+                Console.WriteLine("Result is empty");
+                return;
+            }
+            for (int i = startId; i < result.Count && i < startId + 10; i++)
+            {
+                string query = $"{result[i].artists.First().name} - {result[i].title}";
+                Play(query).Wait();
+            }
         }
     }
 }

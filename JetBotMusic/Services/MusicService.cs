@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Common;
@@ -17,6 +20,7 @@ using Victoria.Responses.Rest;
 // using Victoria.Queue;
 using Yandex.Music.Api;
 using Yandex.Music.Api.Models;
+using YandexAPI;
 
 namespace JetBotMusic.Services
 {
@@ -607,9 +611,22 @@ namespace JetBotMusic.Services
             
         }
 
-        public async Task YandexPlaylistAsync(string url)
+        public async Task<List<TracksItem>> YandexPlaylistAsync(string url, SocketGuild guild, int startId = 0)
         {
-            
+            HttpClient client = new HttpClient();
+            var response = client.GetAsync(url).Result;
+            string textResponse = response.Content.ReadAsStringAsync().Result;
+            var root = JsonSerializer.Deserialize<Root>(textResponse);
+            if (root.playlist.tracks.Count == 0)
+                return null;
+            else
+                return root.playlist.tracks;
+            /*for (int i = startId; i < root.playlist.tracks.Count && i < i + 10; i++)
+            {
+                string query = $"{root.playlist.tracks[i].artists.First().name} - {root.playlist.tracks[i].title}";
+                await PlayAsync(query, guild);
+            }*/
+            Console.WriteLine("\nCount of tracks: " + root.playlist.tracks.Count);
         }
     }
 }
