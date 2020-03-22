@@ -619,14 +619,20 @@ namespace JetBotMusic.Services
             var root = JsonSerializer.Deserialize<Root>(textResponse);
             if (root.playlist.tracks.Count == 0)
                 return null;
-            else
-                return root.playlist.tracks;
-            /*for (int i = startId; i < root.playlist.tracks.Count && i < i + 10; i++)
-            {
-                string query = $"{root.playlist.tracks[i].artists.First().name} - {root.playlist.tracks[i].title}";
-                await PlayAsync(query, guild);
-            }*/
-            Console.WriteLine("\nCount of tracks: " + root.playlist.tracks.Count);
+            
+            return root.playlist.tracks;
+        }
+
+        public async Task<List<TracksItem>> YandexAlbumAsync(string url, SocketGuild contextGuild, int startId)
+        {
+            HttpClient client = new HttpClient();
+            var response = client.GetAsync(url).Result;
+            string textResponse = response.Content.ReadAsStringAsync().Result;
+            var root = JsonSerializer.Deserialize<Root>(textResponse);
+            if (root.playlist.tracks.Count == 0)
+                return null;
+            
+            return root.playlist.tracks;
         }
     }
 }

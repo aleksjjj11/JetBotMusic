@@ -264,10 +264,9 @@ namespace JetBotMusic.Modules
             _musicService.SetMessage(message);
         }
         [Command("YandexPlaylist")]
-        [Alias("YP", "Y", "YPlaylist")]
+        [Alias("YP", "YPlaylist")]
         public async Task YandexPlaylist(string url, int startId = 0)
         {
-            /*TODO Должен по полученному url находить плейлист на сайте яндекс музыки и все песни этого плейлиста добавить в очередь проигрывания*/
             if (Regex.IsMatch(url, "https://music\\.yandex\\.ru/users/.+/playlists/\\d+") == false)
             {
                 return;
@@ -276,6 +275,24 @@ namespace JetBotMusic.Modules
             string YandexPlaylistId = Regex.Matches(url, "https://music\\.yandex\\.ru/users/(.+)/playlists/(\\d+)").First().Groups[2].Value;
             url = $"https://music.yandex.ru/handlers/playlist.jsx?owner={YandexUserName}&kinds={YandexPlaylistId}";
             var result = await _musicService.YandexPlaylistAsync(url, Context.Guild, startId);
+            if (result is null)
+            {
+                Console.WriteLine("Result is empty");
+                return;
+            }
+            for (int i = startId; i < result.Count && i < startId + 10; i++)
+            {
+                string query = $"{result[i].artists.First().name} - {result[i].title}";
+                Play(query).Wait();
+            }
+        }
+
+        [Command("YandexAlbum")]
+        [Alias("YA", "YAlbum")]
+        public async Task YandexAlbum(string url, int startId = 0)
+        {
+            /*TODO Должен по полученному url находить альбом на сайте яндекс музыки и 10 песен этого плейлиста добавить в очередь проигрывания начиная с указанного id*/
+            var result = await _musicService.YandexAlbumAsync(url, Context.Guild, startId);
             if (result is null)
             {
                 Console.WriteLine("Result is empty");
