@@ -292,6 +292,12 @@ namespace JetBotMusic.Modules
         public async Task YandexAlbum(string url, int startId = 0)
         {
             /*TODO Должен по полученному url находить альбом на сайте яндекс музыки и 10 песен этого плейлиста добавить в очередь проигрывания начиная с указанного id*/
+            if (Regex.IsMatch(url, "https://music\\.yandex\\.ru/album/\\d+") == false)
+            {
+                return;
+            }
+            string albumid = Regex.Matches(url, "https://music\\.yandex\\.ru/album/(\\d+)").First().Groups[1].Value;
+            url = $"https://music.yandex.ru/handlers/album.jsx?album={albumid}";
             var result = await _musicService.YandexAlbumAsync(url, Context.Guild, startId);
             if (result is null)
             {
