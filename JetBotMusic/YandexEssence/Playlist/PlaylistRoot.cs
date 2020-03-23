@@ -1,6 +1,6 @@
 ﻿namespace YandexAPI
 {
-    public class Root
+    public class PlaylistRoot
     {
     
         /// <summary>

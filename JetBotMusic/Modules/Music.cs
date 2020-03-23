@@ -294,6 +294,7 @@ namespace JetBotMusic.Modules
             /*TODO Должен по полученному url находить альбом на сайте яндекс музыки и 10 песен этого плейлиста добавить в очередь проигрывания начиная с указанного id*/
             if (Regex.IsMatch(url, "https://music\\.yandex\\.ru/album/\\d+") == false)
             {
+                Console.WriteLine("Bad url");
                 return;
             }
             string albumid = Regex.Matches(url, "https://music\\.yandex\\.ru/album/(\\d+)").First().Groups[1].Value;
@@ -304,9 +305,10 @@ namespace JetBotMusic.Modules
                 Console.WriteLine("Result is empty");
                 return;
             }
-            for (int i = startId; i < result.Count && i < startId + 10; i++)
+            Console.WriteLine($"Amount of tracks: {result.volumes[0].Count}");
+            for (int i = startId; i < result.volumes[0].Count && i < startId + 10; i++)
             {
-                string query = $"{result[i].artists.First().name} - {result[i].title}";
+                string query = $"{result.volumes[0][i].artists.First().name} - {result.volumes[0][i].title}";
                 Play(query).Wait();
             }
         }

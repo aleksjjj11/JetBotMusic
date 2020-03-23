@@ -616,23 +616,23 @@ namespace JetBotMusic.Services
             HttpClient client = new HttpClient();
             var response = client.GetAsync(url).Result;
             string textResponse = response.Content.ReadAsStringAsync().Result;
-            var root = JsonSerializer.Deserialize<Root>(textResponse);
+            var root = JsonSerializer.Deserialize<PlaylistRoot>(textResponse);
             if (root.playlist.tracks.Count == 0)
                 return null;
             
             return root.playlist.tracks;
         }
 
-        public async Task<List<TracksItem>> YandexAlbumAsync(string url, SocketGuild contextGuild, int startId)
+        public async Task<AlbumRoot> YandexAlbumAsync(string url, SocketGuild contextGuild, int startId)
         {
             HttpClient client = new HttpClient();
             var response = client.GetAsync(url).Result;
             string textResponse = response.Content.ReadAsStringAsync().Result;
-            var root = JsonSerializer.Deserialize<Root>(textResponse);
-            if (root.playlist.tracks.Count == 0)
+            var root = JsonSerializer.Deserialize<AlbumRoot>(textResponse);
+            if (root.volumes[0].Count == 0)
                 return null;
             
-            return root.playlist.tracks;
+            return root;
         }
     }
 }
