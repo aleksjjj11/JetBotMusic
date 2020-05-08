@@ -1,10 +1,8 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using JetBotMusic.Modules;
 using JetBotMusic.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Victoria;
