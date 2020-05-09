@@ -22,7 +22,7 @@ namespace JetBotMusic.Modules
         [Alias("St", "Setv", "Svolume")]
         public async Task SetVolume(ushort volume)
         {
-            await _musicService.SetVolumeAsync(volume);
+            await _musicService.SetVolumeAsync(volume, Context.Guild);
             await Context.Message.DeleteAsync();
         }
         
@@ -68,7 +68,7 @@ namespace JetBotMusic.Modules
         [Alias("Shuf", "Sh")]
         public async Task Shuffle()
         {
-            await _musicService.Shuffle();
+            await _musicService.Shuffle(Context.Guild);
             await Context.Message.DeleteAsync();
         }
         
@@ -106,13 +106,13 @@ namespace JetBotMusic.Modules
             seconds = seconds < 0 || seconds > 59 ? 0 : seconds;
             
             await Context.Message.DeleteAsync();
-            await _musicService.SeekAsync(0, hours, minutes, seconds);
+            await _musicService.SeekAsync(0, hours, minutes, seconds, Context.Guild);
         }
         [Command("Stop")]
         [Alias("St", "Stp")]
         public async Task Stop()
         {
-            await _musicService.StopAsync();
+            await _musicService.StopAsync(Context.Guild);
             await ReplyAsync("Music playBack stopped.");
         }
 
@@ -120,7 +120,7 @@ namespace JetBotMusic.Modules
         [Alias("S", "Skp")]
         public async Task Skip()
         {
-            await _musicService.SkipAsync();
+            await _musicService.SkipAsync(Context.Guild);
             await Context.Message.DeleteAsync();
         }
 
@@ -128,7 +128,7 @@ namespace JetBotMusic.Modules
         [Alias("Ps", "Wait")]
         public async Task Pause()
         {
-            await _musicService.PauseAsync();
+            await _musicService.PauseAsync(Context.Guild);
             await Context.Message.DeleteAsync();
         }
 
@@ -136,7 +136,7 @@ namespace JetBotMusic.Modules
         [Alias("R", "Res", "Rsm")]
         public async Task Resume()
         {
-            await _musicService.ResumeAsync();
+            await _musicService.ResumeAsync(Context.Guild);
             await Context.Message.DeleteAsync();
         }
         
@@ -144,7 +144,7 @@ namespace JetBotMusic.Modules
         [Alias("L", "Lst")]
         public async Task List()
         {
-            await _musicService.TrackListAsync();
+            //await _musicService.TrackListAsync();
             await Context.Message.DeleteAsync();
         }
 
@@ -152,7 +152,7 @@ namespace JetBotMusic.Modules
         [Alias("M", "Mv")]
         public async Task Move(int numberTrack, int newPosition = 0)
         {
-            await _musicService.MoveAsync(numberTrack, newPosition);
+            await _musicService.MoveAsync(numberTrack, newPosition, Context.Guild);
             await Context.Message.DeleteAsync();
         }
 
@@ -161,7 +161,7 @@ namespace JetBotMusic.Modules
         public async Task Lyrics([Remainder] string query = null)
         {
             await Context.Message.DeleteAsync();
-            await _musicService.GetLyricsAsync(Context.User, query);
+            await _musicService.GetLyricsAsync(Context.User, Context.Guild ,query);
         }
 
         [Command("Remove")]
@@ -169,7 +169,7 @@ namespace JetBotMusic.Modules
         public async Task RemoveaAsync(int index = 0)
         {
             await Context.Message.DeleteAsync();
-            await _musicService.RemoveAsync(index);
+            await _musicService.RemoveAsync(index, Context.Guild);
         }
 
         [Command("Aliases")]
@@ -178,14 +178,11 @@ namespace JetBotMusic.Modules
         {
             await Context.Message.DeleteAsync();
             await _musicService.AliasAsync(Context.User);
-            //todo Описать все команды и сделать и вывод по ввду данной команды
-        
         }
 
         [Command("Ping")]
         public async Task PingAsync()
         {
-            //todo Выводить задержку с серверами дискорда
             await Context.Channel.SendMessageAsync(StreamMusicBot.Latency.ToString());
         }
 
@@ -203,7 +200,6 @@ namespace JetBotMusic.Modules
         [Alias("Lp")]
         public async Task LoopAsync()
         {
-            //todo Зацикливать текущую песню ready
             //todo Добавить состояние зацикливания в меню бота
             bool res = await _musicService.LoopTrackAsync();
             await Context.Message.DeleteAsync();
@@ -216,7 +212,7 @@ namespace JetBotMusic.Modules
         public async Task ReplayAsync()
         {
             await Context.Message.DeleteAsync();
-            await _musicService.ReplayAsync();
+            await _musicService.ReplayAsync(Context.Guild);
         }
 
         [Command("RemoveDupes")]
@@ -224,7 +220,7 @@ namespace JetBotMusic.Modules
         public async Task RemoveDupesAsync()
         {
             await Context.Message.DeleteAsync();
-            await _musicService.RemoveDupesAsync();
+            await _musicService.RemoveDupesAsync(Context.Guild);
         }
 
         [Command("LeaveCleanUp")]
@@ -241,7 +237,7 @@ namespace JetBotMusic.Modules
             if (nameSong.Contains("has been added to the queue"))
             {
                 await Context.Message.DeleteAsync();
-                await _musicService.TrackListAsync();
+                await _musicService.TrackListAsync(Context.Guild);
                 return;
             }
             EmbedBuilder builder = new EmbedBuilder();

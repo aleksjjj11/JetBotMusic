@@ -33,8 +33,16 @@ namespace JetBotMusic.Services
 
         private async Task ReactionAdded(Cacheable<IUserMessage, ulong> arg1, ISocketMessageChannel socketMessageChannel, SocketReaction reaction)
         {
+            IGuild guild = null;
+            foreach (var element in _client.Guilds)
+            {
+                if (element.GetChannel(reaction.Message.Value.Channel.Id) != null)
+                {
+                    guild = element;
+                    break;
+                }
+            }
             //⏯    ▶    ⏩    🔊    🚫    🔈    🔀
-            
             if (reaction.User.Value.IsBot) return;
             
             //await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
@@ -42,7 +50,8 @@ namespace JetBotMusic.Services
             if (reaction.Emote.Name is "⏯")
             {
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
-                await _musicService.PauseAsync();
+                await _musicService.PauseAsync(guild);
+                
             }
             
             if (reaction.Emote.Name is "⏭")
@@ -60,7 +69,7 @@ namespace JetBotMusic.Services
                 if (bot.VoiceChannel.Users.Count / 2 + 1 <=
                     reaction.Message.Value.Reactions[reaction.Emote].ReactionCount)
                 {
-                    await _musicService.SkipAsync();
+                    await _musicService.SkipAsync(guild);
                     var list = reaction.Message.Value.GetReactionUsersAsync(reaction.Emote, 20).FlattenAsync().Result;
                     foreach (var skipUser in list)
                     {
@@ -76,7 +85,7 @@ namespace JetBotMusic.Services
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🚫"));
                 
-                await _musicService.UnmuteAsync();
+                await _musicService.UnmuteAsync(guild);
                 
                 Embed embed = reaction.Message.Value.Embeds.First();
                 
@@ -94,7 +103,7 @@ namespace JetBotMusic.Services
             if (reaction.Emote.Name is "🔈")
             {
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
-                await _musicService.DownVolumeAsync();
+                await _musicService.DownVolumeAsync(Context.Guild);
             }
             
             if (reaction.Emote.Name is "🚫")
@@ -103,7 +112,7 @@ namespace JetBotMusic.Services
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🔊"));
                 
-                await _musicService.MuteAsync();
+                await _musicService.MuteAsync(guild);
 
                 Embed embed = reaction.Message.Value.Embeds.First();
                 
@@ -121,13 +130,13 @@ namespace JetBotMusic.Services
             if (reaction.Emote.Name is "🔀")
             {
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
-                await _musicService.Shuffle();
+                await _musicService.Shuffle(guild);
             }
 
             if (reaction.Emote.Name is "⏹")
             {
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
-                await _musicService.StopAsync();
+                await _musicService.StopAsync(guild);
                 
                 Embed embed = reaction.Message.Value.Embeds.First();
                 string firstString = embed.Description.Substring(0, embed.Description.IndexOf("\n"));
@@ -153,7 +162,7 @@ namespace JetBotMusic.Services
             if (reaction.Emote.Name is "🎼")
             {
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
-                await _musicService.GetLyricsAsync(reaction.User.Value as SocketUser);
+                await _musicService.GetLyricsAsync(reaction.User.Value as SocketUser, guild);
             }
         }
 
