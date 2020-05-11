@@ -58,7 +58,6 @@ namespace JetBotMusic.Services
             {
                 var user = reaction.User.Value as SocketGuildUser;
                 var bot = reaction.Message.Value.Author as SocketGuildUser;
-                //await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
                 if (!(user.VoiceChannel is null))
                     if (user.VoiceChannel != bot.VoiceChannel)
                     {
