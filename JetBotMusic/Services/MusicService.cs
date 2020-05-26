@@ -195,7 +195,7 @@ namespace JetBotMusic.Services
             }
         }
 
-        public async Task<string> PlayAsync(string query, SocketGuild guild, string source = "youtube")
+        public async Task<LavaTrack> PlayAsync(string query, SocketGuild guild, string source = "youtube")
         {
             LavaPlayer player = _lavaNode.GetPlayer(guild);
             SearchResponse res;
@@ -217,11 +217,13 @@ namespace JetBotMusic.Services
             if (player.PlayerState == PlayerState.Playing)
             {
                 player.Queue.Enqueue(track);
-                return $"{track.Title} has been added to the queue.";
+                //return $"{track.Title} has been added to the queue.";
+                return track;
             }
             await player.PlayAsync(track);
             await player.UpdateVolumeAsync(100);
-            return $"**Playing** `{track.Title}`";
+            return track;
+            // return $"**Playing** `{track.Title}`";
         }
         
         public async Task StopAsync(IGuild guild)
@@ -624,6 +626,7 @@ namespace JetBotMusic.Services
 
         public async Task LeaveCleanUpAsync()
         {
+            //TODO delete songs of users who left voice channel
         }
 
         public async Task<bool> LoopTrackAsync()
@@ -644,13 +647,11 @@ namespace JetBotMusic.Services
             try
             {
                 
-                // if ((_player.VoiceChannel as SocketVoiceChannel) is null)
                 if ((player.VoiceChannel as SocketVoiceChannel) is null)
                 {
                     Console.WriteLine($"VOICE CHANNEL IS NULL");
                     return;
                 }
-                //int amountVote = (_player.VoiceChannel as SocketVoiceChannel).Users.Count / 2 + 1;
                 int amountVote = (player.VoiceChannel as SocketVoiceChannel).Users.Count / 2 + 1;
                 string newValue = $"***Need votes for skip:*** `{amountVote}`⏭";
                 int startIndex = message.Embeds.First().Description.IndexOf("***Need votes for skip:***");
@@ -695,8 +696,14 @@ namespace JetBotMusic.Services
             var root = JsonSerializer.Deserialize<AlbumRoot>(textResponse);
             if (root.volumes[0].Count == 0)
                 return null;
-            
             return root;
+        }
+
+        public async Task<string> YandexTrackAsync(string trackId, SocketGuild contextGuild)
+        {
+            YandexMusicApi yandexMusicApi = new YandexMusicApi();
+            var track = yandexMusicApi.GetTrack(trackId);
+            return $"{track.Title} - {track.Artists.First().Name}";
         }
     }
 }

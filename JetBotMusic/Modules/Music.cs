@@ -6,6 +6,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using JetBotMusic.Services;
+using Victoria;
 
 namespace JetBotMusic.Modules
 {
@@ -232,8 +233,10 @@ namespace JetBotMusic.Modules
             await _musicService.LeaveCleanUpAsync();
         }
 
-        private async Task BuildPlayingMessage(string nameSong)
+        private async Task BuildPlayingMessage(LavaTrack track)
         {
+            string nameSong = track.Title;
+            Console.WriteLine($"-----------------<><><><><><>><><<><><><><><>><><> {track.Url}");
             if (nameSong.Contains("has been added to the queue"))
             {
                 await Context.Message.DeleteAsync();
@@ -242,11 +245,14 @@ namespace JetBotMusic.Modules
             }
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("JetBot-Music")
-                .WithDescription($"*Status*: {nameSong}\n" + "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n" +
+                .WithDescription($"*Status*: **Playing** `{nameSong}`\n" +
+                                 "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n" +
                                  $"*Ping:* `{StreamMusicBot.Latency}`🛰\n" +
                                  $"***Need votes for skip:*** `1`⏭\n" +
                                  $"🎶**Track in queue:**\n***Nothing***")
                 .WithColor(Color.Orange);
+            /*builder.Footer = new EmbedFooterBuilder();
+            builder.Footer.WithIconUrl($"https://img.youtube.com/vi/{track.Id}/default.jpg");*/
             var message = await ReplyAsync("", false, builder.Build());
             
             await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
@@ -287,7 +293,6 @@ namespace JetBotMusic.Modules
         [Alias("YA", "YAlbum")]
         public async Task YandexAlbum(string url, int startId = 0)
         {
-            /*TODO Должен по полученному url находить альбом на сайте яндекс музыки и 10 песен этого плейлиста добавить в очередь проигрывания начиная с указанного id*/
             if (Regex.IsMatch(url, "https://music\\.yandex\\.ru/album/\\d+") == false)
             {
                 Console.WriteLine("Bad url");
@@ -307,6 +312,20 @@ namespace JetBotMusic.Modules
                 string query = $"{result.volumes[0][i].artists.First().name} - {result.volumes[0][i].title}";
                 Play(query).Wait();
             }
+        }
+
+        [Command("YandexTrack")]
+        [Alias("YT", "YTrack")]
+        public async Task YandexTrack(string url)
+        {
+            if (Regex.IsMatch(url, "https://music\\.yandex\\.ru/album/\\d+/track/\\d+") == false)
+            {
+                Console.WriteLine("Bad url");
+                return;
+            }
+            string trackid = Regex.Matches(url, "https://music\\.yandex\\.ru/album/\\d+/track/(\\d+)").First().Groups[1].Value;
+            string query = _musicService.YandexTrackAsync(trackid, Context.Guild).Result;
+            Play(query).Wait();
         }
     }
 }
