@@ -32,6 +32,11 @@ namespace JetBotMusic.Services
         //private bool _isLoopQueue = false;
         private Dictionary<IMessageChannel, IUserMessage> GUIMessages;
 
+        public bool IsPlaying(IGuild guild)
+        {
+            Console.WriteLine($"======================<><><> {_lavaNode.GetPlayer(guild).PlayerState}");
+            return _lavaNode.GetPlayer(guild).PlayerState == PlayerState.Playing;
+        }
         public MusicService(LavaNode lavaNode, DiscordSocketClient client)
         {
             _lavaNode = lavaNode;
@@ -195,7 +200,7 @@ namespace JetBotMusic.Services
             }
         }
 
-        public async Task<LavaTrack> PlayAsync(string query, SocketGuild guild, string source = "youtube")
+        public async Task<KeyValuePair<LavaTrack, bool>> PlayAsync(string query, SocketGuild guild, string source = "youtube")
         {
             LavaPlayer player = _lavaNode.GetPlayer(guild);
             SearchResponse res;
@@ -212,17 +217,19 @@ namespace JetBotMusic.Services
                 res = await _lavaNode.SearchYouTubeAsync(query);
             }
             var track = res.Tracks.FirstOrDefault();
-            if (track?.Title == "Track empty" || track is null) return null;
+            if (track?.Title == "Track empty" || track is null) return new KeyValuePair<LavaTrack, bool>(null, false);
 
             if (player.PlayerState == PlayerState.Playing)
             {
                 player.Queue.Enqueue(track);
                 //return $"{track.Title} has been added to the queue.";
-                return track;
+                //return track;
+                return new KeyValuePair<LavaTrack, bool>(track, true);
             }
             await player.PlayAsync(track);
             await player.UpdateVolumeAsync(100);
-            return track;
+            return new KeyValuePair<LavaTrack, bool>(track, false);
+            //return track;
             // return $"**Playing** `{track.Title}`";
         }
         

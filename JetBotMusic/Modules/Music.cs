@@ -78,12 +78,12 @@ namespace JetBotMusic.Modules
         public async Task Play([Remainder]string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild);
-            if (result is null)
+            if (result.Key is null)
             {
                 Console.WriteLine("Result is empty");
                 return;
             }
-            BuildPlayingMessage(result);
+            BuildPlayingMessage(result.Key, result.Value);
         }
 
         [Command("PlaySoundCloud")]
@@ -91,12 +91,12 @@ namespace JetBotMusic.Modules
         public async Task PlaySoundCloud([Remainder] string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild, "soundcloud");
-            if (result is null)
+            if (result.Key is null)
             {
                 Console.WriteLine("Result is empty");
                 return;
             }
-            BuildPlayingMessage(result);
+            BuildPlayingMessage(result.Key, result.Value);
         }
         [Command("Seek")]
         [Alias("Sk")]
@@ -233,11 +233,11 @@ namespace JetBotMusic.Modules
             await _musicService.LeaveCleanUpAsync();
         }
 
-        private async Task BuildPlayingMessage(LavaTrack track)
+        private async Task BuildPlayingMessage(LavaTrack track, bool isPlaing)
         {
             string nameSong = track.Title;
             Console.WriteLine($"-----------------<><><><><><>><><<><><><><><>><><> {track.Url}");
-            if (nameSong.Contains("has been added to the queue"))
+            if (isPlaing)
             {
                 await Context.Message.DeleteAsync();
                 await _musicService.TrackListAsync(Context.Guild);
@@ -254,7 +254,7 @@ namespace JetBotMusic.Modules
             /*builder.Footer = new EmbedFooterBuilder();
             builder.Footer.WithIconUrl($"https://img.youtube.com/vi/{track.Id}/default.jpg");*/
             var message = await ReplyAsync("", false, builder.Build());
-            
+            _musicService.SetMessage(message);
             await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
             await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
             await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
@@ -263,7 +263,7 @@ namespace JetBotMusic.Modules
             await message.AddReactionAsync(new Emoji("🎼")); //lyrics
             await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
             
-            _musicService.SetMessage(message);
+            
         }
         [Command("YandexPlaylist")]
         [Alias("YP", "YPlaylist")]
@@ -325,7 +325,7 @@ namespace JetBotMusic.Modules
             }
             string trackid = Regex.Matches(url, "https://music\\.yandex\\.ru/album/\\d+/track/(\\d+)").First().Groups[1].Value;
             string query = _musicService.YandexTrackAsync(trackid, Context.Guild).Result;
-            Play(query).Wait();
+            await Play(query);
         }
     }
 }
