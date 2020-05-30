@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$APPLICATION_CONFIG_DIR$/extensions" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.Rider2019.3/system/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_JetBotMusic.720302024.00" t="ExcludeRecursive" />
-    <e p="$PROJECT_DIR$" t="IncludeFlat">
+    <e p="C:\Users\TaskeDes\AppData\local\JetBrains\Rider2020.1\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\TaskeDes\AppData\local\JetBrains\Rider2020.1\resharper-host\local\Transient\ReSharperHost\v201\SolutionCaches\_JetBotMusic.-440908171.00" t="ExcludeRecursive" />
+    <e p="C:\Users\TaskeDes\Desktop\JetBotMusic" t="IncludeFlat">
       <e p="JetBotMusic" t="IncludeRecursive">
+        <e p="application.yml" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
         <e p="CommandHandler.cs" t="Include" />
         <e p="JetBotMusic.csproj" t="IncludeRecursive" />
         <e p="Lavalink.jar" t="Include" />
+        <e p="logs" t="Include">
+          <e p="spring.log" t="Include" />
+          <e p="spring.log.2020-05-08.0.gz" t="Include" />
+          <e p="spring.log.2020-05-09.0.gz" t="Include" />
+          <e p="spring.log.2020-05-11.0.gz" t="Include" />
+          <e p="spring.log.2020-05-26.0.gz" t="Include" />
+        </e>
         <e p="Modules" t="Include">
           <e p="Music.cs" t="Include" />
-          <e p="ServerControl.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.0" t="Include">
+              <e p="JetBotMusic.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
         </e>
         <e p="ParserLycris" t="Include">
           <e p="ParserGenius.cs" t="Include" />
@@ -40,28 +54,6 @@
             <e p="TagsItem.cs" t="Include" />
             <e p="TrackPosition.cs" t="Include" />
             <e p="TracksItem.cs" t="Include" />
-          </e>
-        </e>
-        <e p="application.yml" t="Include" />
-        <e p="bin" t="ExcludeRecursive" />
-        <e p="logs" t="Include">
-          <e p="spring (2).log" t="Include" />
-          <e p="spring.log" t="Include" />
-          <e p="spring.log.2020-03-02.0.gz" t="Include" />
-          <e p="spring.log.2020-03-07.0.gz" t="Include" />
-          <e p="spring.log.2020-03-11.0.gz" t="Include" />
-          <e p="spring.log.2020-03-12.0.gz" t="Include" />
-          <e p="spring.log.2020-03-13.0.gz" t="Include" />
-          <e p="spring.log.2020-03-14.0.gz" t="Include" />
-          <e p="spring.log.2020-03-21.0.gz" t="Include" />
-          <e p="spring.log.2020-03-22.0.gz" t="Include" />
-          <e p="spring.log.2020-03-23.0.gz" t="Include" />
-        </e>
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="netcoreapp3.0" t="Include">
-              <e p="JetBotMusic.AssemblyInfo.cs" t="Include" />
-            </e>
           </e>
         </e>
       </e>
