@@ -200,9 +200,14 @@ namespace JetBotMusic.Services
             }
         }
 
-        public async Task<KeyValuePair<LavaTrack, bool>> PlayAsync(string query, SocketGuild guild, string source = "youtube")
+        public async Task<KeyValuePair<LavaTrack, bool>> PlayAsync(string query, SocketGuild guild, string source = "youtube", SocketVoiceChannel voiceChannel = null, ITextChannel textChannel = null)
         {
-            LavaPlayer player = _lavaNode.GetPlayer(guild);
+            
+            if (voiceChannel != null && textChannel != null && _lavaNode.TryGetPlayer(guild, out LavaPlayer player) == false)
+            {
+                ConnectAsync(voiceChannel, textChannel).Wait();
+            }
+            player = _lavaNode.GetPlayer(guild);
             SearchResponse res;
             if (source == "youtube")
             {

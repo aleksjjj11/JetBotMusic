@@ -77,7 +77,7 @@ namespace JetBotMusic.Modules
         [Alias("P", "Pl")]
         public async Task Play([Remainder]string query)
         {
-            var result = await _musicService.PlayAsync(query, Context.Guild);
+            var result = await _musicService.PlayAsync(query, Context.Guild, "youtube", (Context.User as SocketGuildUser)?.VoiceChannel, Context.Channel as ITextChannel);
             if (result.Key is null)
             {
                 Console.WriteLine("Result is empty");
@@ -90,7 +90,7 @@ namespace JetBotMusic.Modules
         [Alias("PSC", "PlSC", "PlaySC")]
         public async Task PlaySoundCloud([Remainder] string query)
         {
-            var result = await _musicService.PlayAsync(query, Context.Guild, "soundcloud");
+            var result = await _musicService.PlayAsync(query, Context.Guild, "soundcloud", (Context.User as SocketGuildUser)?.VoiceChannel, Context.Channel as ITextChannel);
             if (result.Key is null)
             {
                 Console.WriteLine("Result is empty");

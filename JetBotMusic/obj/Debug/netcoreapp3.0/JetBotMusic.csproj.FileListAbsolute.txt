@@ -125,3 +125,4 @@ C:\Users\TaskeDes\Desktop\JetBotMusic\JetBotMusic\bin\Debug\netcoreapp3.0\Victor
 C:\Users\TaskeDes\Desktop\JetBotMusic\JetBotMusic\bin\Debug\netcoreapp3.0\Yandex.Music.Api.dll
 C:\Users\TaskeDes\Desktop\JetBotMusic\JetBotMusic\obj\Debug\netcoreapp3.0\JetBotMusic.csproj.CopyComplete
 C:\Users\TaskeDes\Desktop\JetBotMusic\JetBotMusic\obj\Debug\netcoreapp3.0\JetBotMusic.genruntimeconfig.cache
+C:\Users\TaskeDes\Desktop\JetBotMusic\JetBotMusic\bin\Debug\netcoreapp3.0\System.Linq.Async.dll
