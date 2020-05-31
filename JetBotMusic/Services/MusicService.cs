@@ -320,7 +320,7 @@ namespace JetBotMusic.Services
                 message.Embeds.First().Description.IndexOf("\n🎶"),
                 message.Embeds.First().Description.Length - message.Embeds.First().Description.IndexOf("\n🎶"));
 
-            var trackList = player.Queue.Items.ToList();
+            var trackList = player.Queue.ToList();
             if (player.Queue.Count > 0)
             {
                 listMessage += "\n🎶**Track in queue:**";
@@ -361,7 +361,7 @@ namespace JetBotMusic.Services
                 message.Embeds.First().Description.IndexOf("\n🎶"),
                 message.Embeds.First().Description.Length - message.Embeds.First().Description.IndexOf("\n🎶"));
 
-            var trackList = player.Queue.Items.ToList();
+            var trackList = player.Queue.ToList();
             if (player.Queue.Count > 0)
             {
                 listMessage += "\n🎶**Track in queue:**";
@@ -503,7 +503,7 @@ namespace JetBotMusic.Services
             if (numberTrack == newPosition || player.Queue.Count is 0) return;
             if (numberTrack >= player.Queue.Count || newPosition >= player.Queue.Count) return;
             //Получаем нашу очередь в лист 
-            var queue = player.Queue.Items.ToList();
+            var queue = player.Queue.ToList();
 
             //Добаляем трек в новую позицию и удаляем со старой
             queue.Insert(newPosition, queue[numberTrack]);
@@ -593,7 +593,7 @@ namespace JetBotMusic.Services
         {
             LavaPlayer player = _lavaNode.GetPlayer(guild);
             int i = 0;
-            foreach (LavaTrack element in player.Queue.Items)
+            foreach (LavaTrack element in player.Queue)
             {
                 if (i == index)
                 {
@@ -619,10 +619,10 @@ namespace JetBotMusic.Services
 
             for (int i = 0; i < player.Queue.Count - 1; i++)
             {
-                LavaTrack firstTrack = player.Queue.Items.GetItemByIndex(i) as LavaTrack;
+                LavaTrack firstTrack = player.Queue.GetItemByIndex(i) as LavaTrack;
                 for (int j = i + 1; j < player.Queue.Count; j++)
                 {
-                    LavaTrack secondTrack = player.Queue.Items.GetItemByIndex(j) as LavaTrack;
+                    LavaTrack secondTrack = player.Queue.GetItemByIndex(j) as LavaTrack;
 
                     if (firstTrack?.Id == secondTrack?.Id) player.Queue.Remove(secondTrack);
                 }
