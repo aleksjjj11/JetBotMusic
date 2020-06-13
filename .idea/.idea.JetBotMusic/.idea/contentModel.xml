@@ -12,12 +12,12 @@
         <e p="Lavalink.jar" t="Include" />
         <e p="logs" t="Include">
           <e p="spring.log" t="Include" />
-          <e p="spring.log.2020-05-08.0.gz" t="Include" />
-          <e p="spring.log.2020-05-09.0.gz" t="Include" />
           <e p="spring.log.2020-05-11.0.gz" t="Include" />
           <e p="spring.log.2020-05-26.0.gz" t="Include" />
           <e p="spring.log.2020-05-29.0.gz" t="Include" />
           <e p="spring.log.2020-05-30.0.gz" t="Include" />
+          <e p="spring.log.2020-05-31.0.gz" t="Include" />
+          <e p="spring.log.2020-06-09.0.gz" t="Include" />
         </e>
         <e p="Modules" t="Include">
           <e p="Music.cs" t="Include" />

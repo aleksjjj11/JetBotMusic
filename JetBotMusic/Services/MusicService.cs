@@ -13,6 +13,7 @@ using Victoria;
 using Victoria.Enums;
 using Victoria.EventArgs;
 using Victoria.Interfaces;
+using Victoria.Resolvers;
 using Victoria.Responses.Rest;
 using Yandex.Music.Api;
 using Yandex.Music.Api.Models;
@@ -34,7 +35,6 @@ namespace JetBotMusic.Services
 
         public bool IsPlaying(IGuild guild)
         {
-            Console.WriteLine($"======================<><><> {_lavaNode.GetPlayer(guild).PlayerState}");
             return _lavaNode.GetPlayer(guild).PlayerState == PlayerState.Playing;
         }
         public MusicService(LavaNode lavaNode, DiscordSocketClient client)
@@ -49,9 +49,17 @@ namespace JetBotMusic.Services
             _lavaNode.OnLog += LogAsync;
             _lavaNode.OnPlayerUpdated += PlayerUpdated;
             _lavaNode.OnTrackEnded += TrackFinished;
+            _lavaNode.OnWebSocketClosed += LavaNodeOnOnWebSocketClosed;
             GUIMessages = new Dictionary<IMessageChannel, IUserMessage>();
             return Task.CompletedTask;
         }
+
+        private async Task LavaNodeOnOnWebSocketClosed(WebSocketClosedEventArgs arg)
+        {
+            Console.WriteLine("Bot reconnected on voice channel");
+            await _lavaNode.JoinAsync(_lavaNode.GetPlayer(_client.GetGuild(arg.GuildId)).VoiceChannel);
+        }
+
         private async Task PlayerUpdated(PlayerUpdateEventArgs playerUpdateEventArgs)
         {
             TrackListAsync(playerUpdateEventArgs.Player).Wait();
@@ -202,7 +210,6 @@ namespace JetBotMusic.Services
 
         public async Task<KeyValuePair<LavaTrack, bool>> PlayAsync(string query, SocketGuild guild, string source = "youtube", SocketVoiceChannel voiceChannel = null, ITextChannel textChannel = null)
         {
-            
             if (voiceChannel != null && textChannel != null && _lavaNode.TryGetPlayer(guild, out LavaPlayer player) == false)
             {
                 ConnectAsync(voiceChannel, textChannel).Wait();
