@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v3.0": {
       "JetBotMusic/1.0.0": {
         "dependencies": {
-          "AngleSharp": "0.13.0-alpha-766",
+          "AngleSharp": "0.14.0",
           "Discord.Net": "2.1.1",
           "Genius.NET": "2.0.0",
           "Victoria": "5.1.6",
@@ -18,14 +18,14 @@
           "JetBotMusic.dll": {}
         }
       },
-      "AngleSharp/0.13.0-alpha-766": {
+      "AngleSharp/0.14.0": {
         "dependencies": {
           "System.Text.Encoding.CodePages": "4.5.0"
         },
         "runtime": {
           "lib/netstandard2.0/AngleSharp.dll": {
-            "assemblyVersion": "0.13.0.0",
-            "fileVersion": "0.13.0.0"
+            "assemblyVersion": "0.14.0.0",
+            "fileVersion": "0.14.0.0"
           }
         }
       },
@@ -874,12 +874,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AngleSharp/0.13.0-alpha-766": {
+    "AngleSharp/0.14.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-RBfdVUag75wyXMUKPnovjAV8/At5/zgMYGFLKoH4I0p/HmmrwPaRlfoLoCMnosApnn9uFmG+AZzUq1E27+0wgA==",
-      "path": "anglesharp/0.13.0-alpha-766",
-      "hashPath": "anglesharp.0.13.0-alpha-766.nupkg.sha512"
+      "sha512": "sha512-34w9I7nyszfEYBY8g7T3B0AtWlOivNh+QoWc3KECRwbmcNyqWmb4huihtmpH2Ds7rIRRHMMPv9yfPBxxjBn03g==",
+      "path": "anglesharp/0.14.0",
+      "hashPath": "anglesharp.0.14.0.nupkg.sha512"
     },
     "Discord.Net/2.1.1": {
       "type": "package",
