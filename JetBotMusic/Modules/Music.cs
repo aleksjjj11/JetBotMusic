@@ -42,11 +42,12 @@ namespace JetBotMusic.Modules
                 await ReplyAsync("You need to connect to a voice channel.");
                 return;
             }
-
-            Console.WriteLine($"Amount of users: {user.VoiceChannel.Users.Count}");
+            
             await _musicService.ConnectAsync(user.VoiceChannel, Context.Channel as ITextChannel);
-            await ReplyAsync($"now connected to {user.VoiceChannel.Name}");
-
+            if (user.VoiceChannel.Id == 693885456663838850)
+                await ReplyAsync($"Disappeared");
+            else 
+                await ReplyAsync($"now connected to {user.VoiceChannel.Name}");
         }
 
         [Command("Leave")]
