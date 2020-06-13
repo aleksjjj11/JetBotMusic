@@ -26,6 +26,10 @@
   "frameworks": {
     "netcoreapp3.0": {
       "dependencies": {
+        "AngleSharp": {
+          "target": "Package",
+          "version": "[0.14.0, )"
+        },
         "Discord.Net": {
           "target": "Package",
           "version": "[2.1.1, )"
