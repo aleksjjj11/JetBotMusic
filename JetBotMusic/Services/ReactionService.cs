@@ -65,7 +65,7 @@ namespace JetBotMusic.Services
                         return;
                     }
                 
-                if (bot.VoiceChannel.Users.Count / 2 + 1 <=
+                if (VoteForSkip(bot.VoiceChannel) <=
                     reaction.Message.Value.Reactions[reaction.Emote].ReactionCount)
                 {
                     await _musicService.SkipAsync(guild);
@@ -177,6 +177,11 @@ namespace JetBotMusic.Services
             {
                 await reaction.Message.Value.AddReactionAsync(new Emoji("" + _listReactions[i]));
             }
+        }
+
+        private int VoteForSkip(SocketVoiceChannel voiceChannel)
+        {
+            return voiceChannel.Users.Where(user => user.IsDeafened == false).ToList().Count / 2 + 1;
         }
     }
 }
