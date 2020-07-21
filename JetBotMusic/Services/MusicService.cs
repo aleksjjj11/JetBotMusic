@@ -231,18 +231,14 @@ namespace JetBotMusic.Services
             var track = res.Tracks.FirstOrDefault();
             if (track?.Title == "Track empty" || track is null) return new KeyValuePair<LavaTrack, bool>(null, false);
 
-            if (player.PlayerState == PlayerState.Playing)
+            if (player.PlayerState == PlayerState.Playing || player.PlayerState == PlayerState.Paused)
             {
                 player.Queue.Enqueue(track);
-                //return $"{track.Title} has been added to the queue.";
-                //return track;
                 return new KeyValuePair<LavaTrack, bool>(track, true);
             }
             await player.PlayAsync(track);
             await player.UpdateVolumeAsync(100);
             return new KeyValuePair<LavaTrack, bool>(track, false);
-            //return track;
-            // return $"**Playing** `{track.Title}`";
         }
         
         public async Task StopAsync(IGuild guild)
