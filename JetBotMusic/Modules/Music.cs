@@ -62,7 +62,6 @@ namespace JetBotMusic.Modules
             else
             {
                 await _musicService.LeaveAsync(user.VoiceChannel);
-                await ReplyAsync($"Bot has now left {user.VoiceChannel.Name}");
             }
         }
 
