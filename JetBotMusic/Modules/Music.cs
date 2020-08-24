@@ -327,5 +327,41 @@ namespace JetBotMusic.Modules
             string query = _musicService.YandexTrackAsync(trackid, Context.Guild).Result;
             await Play(query);
         }
+        
+        [Command("Statistic")]
+        [Alias("Stat")]
+        public async Task StatisticAsync()
+        {
+            try
+            {
+                EmbedBuilder builder = new EmbedBuilder();
+                /*builder.Author.WithName("JetBot_Music")
+                    .WithIconUrl(Context.Client.CurrentUser.GetAvatarUrl());*/
+                builder.WithColor(Color.Purple)
+                    .WithAuthor("JetBot_Music");
+                builder.ThumbnailUrl = "https://cdn.discordapp.com/avatars/509581704780840961/72ae1df0ad2955267c783bcf1b2ab52f.png";
+                int countTextChannel = 0, countTotalMember = 0;
+                foreach (var el in Context.Client.Guilds)
+                {
+                    countTextChannel += el.TextChannels.Count;
+                    countTotalMember += el.MemberCount;
+                }
+
+                builder.Fields.Add(new EmbedFieldBuilder().WithName("Server Count")
+                    .WithValue(Context.Client.Guilds.Count).WithIsInline(true));
+                builder.Fields.Add(new EmbedFieldBuilder().WithName("Text Channels").WithValue(countTextChannel)
+                    .WithIsInline(true));
+                builder.Fields.Add(new EmbedFieldBuilder().WithName("Total Members").WithValue(countTotalMember)
+                    .WithIsInline(true));
+                builder.Fields.Add(new EmbedFieldBuilder().WithName("Playing Servers")
+                    .WithValue(_musicService.GetCountPlayers).WithIsInline(true));
+                var dmChannel = Context.User.GetOrCreateDMChannelAsync();
+                await dmChannel.Result.SendMessageAsync("", false, builder.Build());
+            }
+            catch (Exception ex)
+            {
+                await Context.Channel.SendMessageAsync(ex.Message);
+            }
+        }
     }
 }

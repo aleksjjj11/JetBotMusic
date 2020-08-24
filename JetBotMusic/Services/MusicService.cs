@@ -720,5 +720,7 @@ namespace JetBotMusic.Services
             var track = yandexMusicApi.GetTrack(trackId);
             return $"{track.Title} - {track.Artists.First().Name}";
         }
+        
+        public long GetCountPlayers { get => _lavaNode.Players.Count(); }
     }
 }
