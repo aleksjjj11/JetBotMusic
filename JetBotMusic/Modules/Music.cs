@@ -56,13 +56,9 @@ namespace JetBotMusic.Modules
         {
             SocketGuildUser user = Context.User as SocketGuildUser;
             if (user is null)
-            {
                 await ReplyAsync("Please join the channel the bot is in to make it leave.");
-            }
             else
-            {
                 await _musicService.LeaveAsync(user.VoiceChannel);
-            }
         }
 
         [Command("Shuffle")]
@@ -167,7 +163,7 @@ namespace JetBotMusic.Modules
 
         [Command("Remove")]
         [Alias("Delete", "Del", "D", "Rem", "Rmv")]
-        public async Task RemoveaAsync(int index = 0)
+        public async Task RemoveAsync(int index = 0)
         {
             await Context.Message.DeleteAsync();
             await _musicService.RemoveAsync(index, Context.Guild);
@@ -251,8 +247,6 @@ namespace JetBotMusic.Modules
                                  $"***Need votes for skip:*** `1`⏭\n" +
                                  $"🎶**Track in queue:**\n***Nothing***")
                 .WithColor(Color.Orange);
-            /*builder.Footer = new EmbedFooterBuilder();
-            builder.Footer.WithIconUrl($"https://img.youtube.com/vi/{track.Id}/default.jpg");*/
             var message = await ReplyAsync("", false, builder.Build());
             _musicService.SetMessage(message);
             await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
@@ -271,6 +265,7 @@ namespace JetBotMusic.Modules
         {
             if (Regex.IsMatch(url, "https://music\\.yandex\\.ru/users/.+/playlists/\\d+") == false)
             {
+                Console.WriteLine("Have not matches");
                 return;
             }
             string YandexUserName = Regex.Matches(url, "https://music\\.yandex\\.ru/users/(.+)/playlists/(\\d+)").First().Groups[1].Value;
@@ -285,7 +280,7 @@ namespace JetBotMusic.Modules
             for (int i = startId; i < result.Count && i < startId + 10; i++)
             {
                 string query = $"{result[i].artists.First().name} - {result[i].title}";
-                Play(query).Wait();
+                PlaySoundCloud(query).Wait();
             }
         }
 
@@ -310,7 +305,7 @@ namespace JetBotMusic.Modules
             for (int i = startId; i < result.volumes[0].Count && i < startId + 10; i++)
             {
                 string query = $"{result.volumes[0][i].artists.First().name} - {result.volumes[0][i].title}";
-                Play(query).Wait();
+                PlaySoundCloud(query).Wait();
             }
         }
 
@@ -325,7 +320,7 @@ namespace JetBotMusic.Modules
             }
             string trackid = Regex.Matches(url, "https://music\\.yandex\\.ru/album/\\d+/track/(\\d+)").First().Groups[1].Value;
             string query = _musicService.YandexTrackAsync(trackid, Context.Guild).Result;
-            await Play(query);
+            await PlaySoundCloud(query);
         }
         
         [Command("Statistic")]

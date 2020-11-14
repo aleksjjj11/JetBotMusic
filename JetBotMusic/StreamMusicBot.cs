@@ -31,9 +31,9 @@ namespace JetBotMusic
             
         }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(string token)
         {
-            await _client.LoginAsync(TokenType.Bot, "NTU0MzQzMTY5NDU0NjM3MDU3.XtNHEQ.Pxqe_gKtQ5zzWPTp-FV5kL2_xoo");
+            await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
             _client.Log += LogAsync;
             _client.LatencyUpdated += ClientOnLatencyUpdated;
