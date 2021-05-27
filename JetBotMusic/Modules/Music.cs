@@ -12,8 +12,8 @@ namespace JetBotMusic.Modules
 {
     public class Music : ModuleBase<SocketCommandContext>
     {
-        private MusicService _musicService;
-        private ReactionService _reactionService;
+        private readonly MusicService _musicService;
+
         public Music(MusicService musicService)
         {
             _musicService = musicService;
@@ -31,34 +31,46 @@ namespace JetBotMusic.Modules
         [Alias("J")]
         public async Task Join()
         {
-            SocketGuildUser user = Context.User as SocketGuildUser;
+            var user = Context.User as SocketGuildUser;
+
             if (user is null)
             {
                 await ReplyAsync("User not found.");
                 return;
             }
+
             if (user.VoiceChannel is null)
             {
                 await ReplyAsync("You need to connect to a voice channel.");
                 return;
             }
-            
+
             await _musicService.ConnectAsync(user.VoiceChannel, Context.Channel as ITextChannel);
+
             if (user.VoiceChannel.Id == 693885456663838850)
+            {
                 await ReplyAsync($"Disappeared");
-            else 
+            }
+            else
+            {
                 await ReplyAsync($"now connected to {user.VoiceChannel.Name}");
+            }
         }
 
         [Command("Leave")]
         [Alias("Lv")]
         public async Task Leave()
         {
-            SocketGuildUser user = Context.User as SocketGuildUser;
+            var user = Context.User as SocketGuildUser;
+
             if (user is null)
+            {
                 await ReplyAsync("Please join the channel the bot is in to make it leave.");
+            }
             else
+            {
                 await _musicService.LeaveAsync(user.VoiceChannel);
+            }
         }
 
         [Command("Shuffle")]
@@ -74,12 +86,14 @@ namespace JetBotMusic.Modules
         public async Task Play([Remainder]string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild, "youtube", (Context.User as SocketGuildUser)?.VoiceChannel, Context.Channel as ITextChannel);
+
             if (result.Key is null)
             {
                 Console.WriteLine("Result is empty");
                 return;
             }
-            BuildPlayingMessage(result.Key, result.Value);
+
+            BuildPlayingMessage(result.Key, result.Value).Wait();
         }
 
         [Command("PlaySoundCloud")]
@@ -87,13 +101,16 @@ namespace JetBotMusic.Modules
         public async Task PlaySoundCloud([Remainder] string query)
         {
             var result = await _musicService.PlayAsync(query, Context.Guild, "soundcloud", (Context.User as SocketGuildUser)?.VoiceChannel, Context.Channel as ITextChannel);
+
             if (result.Key is null)
             {
                 Console.WriteLine("Result is empty");
                 return;
             }
-            BuildPlayingMessage(result.Key, result.Value);
+
+            BuildPlayingMessage(result.Key, result.Value).Wait();
         }
+
         [Command("Seek")]
         [Alias("Sk")]
         public async Task Reset(int hours = 0, int minutes = 0, int seconds = 0)
@@ -105,6 +122,7 @@ namespace JetBotMusic.Modules
             await Context.Message.DeleteAsync();
             await _musicService.SeekAsync(0, hours, minutes, seconds, Context.Guild);
         }
+
         [Command("Stop")]
         [Alias("St", "Stp")]
         public async Task Stop()
@@ -199,7 +217,9 @@ namespace JetBotMusic.Modules
         {
             //todo Добавить состояние зацикливания в меню бота
             bool res = await _musicService.LoopTrackAsync();
+
             await Context.Message.DeleteAsync();
+
             var dmChannel = Context.User.GetOrCreateDMChannelAsync();
             await dmChannel.Result.SendMessageAsync(res.ToString());
         }
@@ -229,36 +249,6 @@ namespace JetBotMusic.Modules
             await _musicService.LeaveCleanUpAsync();
         }
 
-        private async Task BuildPlayingMessage(LavaTrack track, bool isPlaing)
-        {
-            string nameSong = track.Title;
-            Console.WriteLine($"-----------------<><><><><><>><><<><><><><><>><><> {track.Url}");
-            if (isPlaing)
-            {
-                await Context.Message.DeleteAsync();
-                await _musicService.TrackListAsync(Context.Guild);
-                return;
-            }
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle("JetBot-Music")
-                .WithDescription($"*Status*: **Playing** `{nameSong}`\n" +
-                                 "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n" +
-                                 $"*Ping:* `{StreamMusicBot.Latency}`🛰\n" +
-                                 $"***Need votes for skip:*** `1`⏭\n" +
-                                 $"🎶**Track in queue:**\n***Nothing***")
-                .WithColor(Color.Orange);
-            var message = await ReplyAsync("", false, builder.Build());
-            _musicService.SetMessage(message);
-            await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
-            await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
-            await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
-            await message.AddReactionAsync(new Emoji("⏭")); //skip
-            await message.AddReactionAsync(new Emoji("🔀")); //shuffle
-            await message.AddReactionAsync(new Emoji("🎼")); //lyrics
-            await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
-            
-            
-        }
         [Command("YandexPlaylist")]
         [Alias("YP", "YPlaylist")]
         public async Task YandexPlaylist(string url, int startId = 0)
@@ -268,15 +258,19 @@ namespace JetBotMusic.Modules
                 Console.WriteLine("Have not matches");
                 return;
             }
+
             string YandexUserName = Regex.Matches(url, "https://music\\.yandex\\.ru/users/(.+)/playlists/(\\d+)").First().Groups[1].Value;
             string YandexPlaylistId = Regex.Matches(url, "https://music\\.yandex\\.ru/users/(.+)/playlists/(\\d+)").First().Groups[2].Value;
+
             url = $"https://music.yandex.ru/handlers/playlist.jsx?owner={YandexUserName}&kinds={YandexPlaylistId}";
             var result = await _musicService.YandexPlaylistAsync(url, Context.Guild, startId);
+
             if (result is null)
             {
                 Console.WriteLine("Result is empty");
                 return;
             }
+
             for (int i = startId; i < result.Count && i < startId + 10; i++)
             {
                 string query = $"{result[i].artists.First().name} - {result[i].title}";
@@ -293,18 +287,25 @@ namespace JetBotMusic.Modules
                 Console.WriteLine("Bad url");
                 return;
             }
+
             string albumid = Regex.Matches(url, "https://music\\.yandex\\.ru/album/(\\d+)").First().Groups[1].Value;
+
             url = $"https://music.yandex.ru/handlers/album.jsx?album={albumid}";
             var result = await _musicService.YandexAlbumAsync(url, Context.Guild, startId);
+
             if (result is null)
             {
                 Console.WriteLine("Result is empty");
                 return;
             }
-            Console.WriteLine($"Amount of tracks: {result.volumes[0].Count}");
-            for (int i = startId; i < result.volumes[0].Count && i < startId + 10; i++)
+
+            var firstVolume = result.volumes[0];
+
+            Console.WriteLine($"Amount of tracks: {firstVolume.Count}");
+
+            for (int i = startId; i < firstVolume.Count && i < startId + 10; i++)
             {
-                string query = $"{result.volumes[0][i].artists.First().name} - {result.volumes[0][i].title}";
+                string query = $"{firstVolume[i].artists.First().name} - {firstVolume[i].title}";
                 PlaySoundCloud(query).Wait();
             }
         }
@@ -318,8 +319,10 @@ namespace JetBotMusic.Modules
                 Console.WriteLine("Bad url");
                 return;
             }
-            string trackid = Regex.Matches(url, "https://music\\.yandex\\.ru/album/\\d+/track/(\\d+)").First().Groups[1].Value;
-            string query = _musicService.YandexTrackAsync(trackid, Context.Guild).Result;
+
+            string trackId = Regex.Matches(url, "https://music\\.yandex\\.ru/album/\\d+/track/(\\d+)").First().Groups[1].Value;
+            string query = _musicService.YandexTrackAsync(trackId, Context.Guild).Result;
+
             await PlaySoundCloud(query);
         }
         
@@ -329,27 +332,42 @@ namespace JetBotMusic.Modules
         {
             try
             {
-                EmbedBuilder builder = new EmbedBuilder();
-                /*builder.Author.WithName("JetBot_Music")
-                    .WithIconUrl(Context.Client.CurrentUser.GetAvatarUrl());*/
+                var builder = new EmbedBuilder();
+
                 builder.WithColor(Color.Purple)
-                    .WithAuthor("JetBot_Music");
-                builder.ThumbnailUrl = "https://cdn.discordapp.com/avatars/509581704780840961/72ae1df0ad2955267c783bcf1b2ab52f.png";
+                       .WithAuthor("JetBot_Music")
+                       .ThumbnailUrl = "https://cdn.discordapp.com/avatars/509581704780840961/72ae1df0ad2955267c783bcf1b2ab52f.png";
+
                 int countTextChannel = 0, countTotalMember = 0;
+
                 foreach (var el in Context.Client.Guilds)
                 {
                     countTextChannel += el.TextChannels.Count;
                     countTotalMember += el.MemberCount;
                 }
 
-                builder.Fields.Add(new EmbedFieldBuilder().WithName("Server Count")
-                    .WithValue(Context.Client.Guilds.Count).WithIsInline(true));
-                builder.Fields.Add(new EmbedFieldBuilder().WithName("Text Channels").WithValue(countTextChannel)
-                    .WithIsInline(true));
-                builder.Fields.Add(new EmbedFieldBuilder().WithName("Total Members").WithValue(countTotalMember)
-                    .WithIsInline(true));
-                builder.Fields.Add(new EmbedFieldBuilder().WithName("Playing Servers")
-                    .WithValue(_musicService.GetCountPlayers).WithIsInline(true));
+                builder.Fields
+                       .Add(new EmbedFieldBuilder()
+                       .WithName("Server Count")
+                       .WithValue(Context.Client.Guilds.Count).WithIsInline(true));
+
+                builder.Fields
+                       .Add(new EmbedFieldBuilder()
+                       .WithName("Text Channels")
+                       .WithValue(countTextChannel)
+                       .WithIsInline(true));
+
+                builder.Fields
+                       .Add(new EmbedFieldBuilder()
+                       .WithName("Total Members")
+                       .WithValue(countTotalMember)
+                       .WithIsInline(true));
+
+                builder.Fields
+                       .Add(new EmbedFieldBuilder()
+                       .WithName("Playing Servers")
+                       .WithValue(_musicService.GetCountPlayers).WithIsInline(true));
+
                 var dmChannel = Context.User.GetOrCreateDMChannelAsync();
                 await dmChannel.Result.SendMessageAsync("", false, builder.Build());
             }
@@ -357,6 +375,43 @@ namespace JetBotMusic.Modules
             {
                 await Context.Channel.SendMessageAsync(ex.Message);
             }
+        }
+
+        private async Task BuildPlayingMessage(LavaTrack track, bool isPlaing)
+        {
+            string nameSong = track.Title;
+            Console.WriteLine($"-----------------<><><><><><>><><<><><><><><>><><> {track.Url}");
+
+            if (isPlaing)
+            {
+                await Context.Message.DeleteAsync();
+                await _musicService.TrackListAsync(Context.Guild);
+                return;
+            }
+
+            var builder = new EmbedBuilder();
+
+            var description = $"*Status*: **Playing** `{nameSong}`\n" +
+                              "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n" +
+                              $"*Ping:* `{StreamMusicBot.Latency}`🛰\n" +
+                              $"***Need votes for skip:*** `1`⏭\n" +
+                              $"🎶**Track in queue:**\n***Nothing***";
+
+            builder.WithTitle("JetBot-Music")
+                .WithDescription(description)
+                .WithColor(Color.Orange);
+
+            var message = await ReplyAsync("", false, builder.Build());
+
+            _musicService.SetMessage(message);
+
+            await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
+            await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
+            await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
+            await message.AddReactionAsync(new Emoji("⏭")); //skip
+            await message.AddReactionAsync(new Emoji("🔀")); //shuffle
+            await message.AddReactionAsync(new Emoji("🎼")); //lyrics
+            await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
         }
     }
 }
