@@ -11,10 +11,11 @@ namespace JetBotMusic
 {
     public class StreamMusicBot
     {
-        private DiscordSocketClient _client;
-        private CommandService _cmdService;
+        private readonly DiscordSocketClient _client;
+        private readonly CommandService _cmdService;
         private IServiceProvider _services;
         public static int Latency;
+
         public StreamMusicBot(DiscordSocketClient client = null, CommandService cmdService = null)
         {
             _client = client ?? new DiscordSocketClient(new DiscordSocketConfig
@@ -23,6 +24,7 @@ namespace JetBotMusic
                 MessageCacheSize = 50,
                 LogLevel = LogSeverity.Debug
             });
+
             _cmdService = cmdService ?? new CommandService(new CommandServiceConfig
             {
                 LogLevel = LogSeverity.Verbose,
@@ -35,9 +37,11 @@ namespace JetBotMusic
         {
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
+
             _client.Log += LogAsync;
             _client.LatencyUpdated += ClientOnLatencyUpdated;
             _client.UserVoiceStateUpdated += ClientOnUserVoiceStateUpdated;
+
             _services = SetupServices();
             
             var cmdHandler = new CommandHandler(_client, _cmdService, _services);
@@ -49,13 +53,14 @@ namespace JetBotMusic
             await Task.Delay(-1);
         }
 
-        private async Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState arg2, SocketVoiceState arg3)
+        private Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState arg2, SocketVoiceState arg3)
         {
             if (arg1.IsBot && arg1.Id == _client.CurrentUser.Id)
             {
-                
                 Console.WriteLine($"Bot went in hell\n{arg2.ToString()}\n{arg3.ToString()}");
             }
+
+            return Task.CompletedTask;
         }
 
         private Task ClientOnLatencyUpdated(int arg1, int arg2)
