@@ -12,28 +12,25 @@ namespace JavaAnSharp
 {
     public class ParserGenius
     {
-        private string writters { get; } = null;
-        private string lyrics = null;
-        private string writtenBy { get; } = null;
-        private string dateRelease { get; } = null;
-        private string videoUrl { get; } = null;
-        private string fullAddress { get; } = "https://genius.com/";
+        private string _lyrics = "";
+        private readonly string _fullAddress = "https://genius.com/";
 
         public ParserGenius(string query = "NEFFEX - Trust me")
         {
-            GeniusClient geniusClient =
-                new GeniusClient("0KELsTGebL5A6ZExHu-h4sLL7MlZxoX_4DKfGgXC1RrilwKQhWpGeMcXik0hMZ35");
-            //Получаем результаты по запросу
+            var geniusClient = new GeniusClient("0KELsTGebL5A6ZExHu-h4sLL7MlZxoX_4DKfGgXC1RrilwKQhWpGeMcXik0hMZ35");
             var result = geniusClient.SearchClient.Search(TextFormat.Dom, query);
-            Hit hit = result.Result.Response.First();
-            string str = hit.Result.ToString();
+            var firstHit = result.Result.Response.First();
+            string str = firstHit.Result.ToString();
+
             //Создаём устойчивое выражение, чтобы найти id нашей песни 
-            Regex regex = new Regex(@"(\W)id(\W):\s\d*");
-            MatchCollection collection = regex.Matches(str);
-            Match matches = collection.First();
+            var regex = new Regex(@"(\W)id(\W):\s\d*");
+            var collection = regex.Matches(str);
+            var matches = collection.First();
 
             Console.WriteLine($"Found this id: {matches.Value}");
+
             string id = matches.Value.Remove(0, 6);
+
             //По пулученному id получаем песню
             Song song = geniusClient.SongsClient.GetSong(TextFormat.Dom, id).Result.Response;
 
@@ -44,9 +41,10 @@ namespace JavaAnSharp
             }
 
             Console.WriteLine($"URl : {song.Url}");
-            fullAddress = song.Url is null ? null : song.Url;
 
-            if (fullAddress is null)
+            _fullAddress = song.Url;
+
+            if (_fullAddress is null)
             {
                 Console.WriteLine("Address is null, next actions stopped.");
                 return;
@@ -55,41 +53,48 @@ namespace JavaAnSharp
 
         public async Task Initialization()
         {
-            HttpClient httpClient = new HttpClient();
-            var responce = await httpClient.GetAsync(fullAddress);
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(_fullAddress);
             string source = null;
-            source = await responce.Content.ReadAsStringAsync();
+
+            source = await response.Content.ReadAsStringAsync();
+
             var domParser = new HtmlParser();
             var document = await domParser.ParseDocumentAsync(source);
-            //Console.WriteLine($"URl : {fullAddress}");
+
             var results = document.QuerySelectorAll("p");
+
             if (results is null) return;
-            lyrics = results.First().TextContent;
-            Regex squareBrackets = new Regex(@"\[\w*\W*\w*\W*\w*\]");
-            MatchCollection collection = squareBrackets.Matches(lyrics);
+
+            _lyrics = results.First().TextContent;
+
+            var squareBrackets = new Regex(@"\[\w*\W*\w*\W*\w*\]");
+            var collection = squareBrackets.Matches(_lyrics);
+
             foreach (Match match in collection)
             {
-                lyrics = lyrics.Replace(match.Value + "\n", "");
+                _lyrics = _lyrics.Replace(match.Value + "\n", "");
             }
         }
 
         public string GetLyrics()
         {
-            return lyrics;
+            return _lyrics;
         }
 
         public List<string> DivideLyrics()
         {
-            List<string> listLyrics = new List<string>();
+            var listLyrics = new List<string>();
 
             int i = 2000;
-            while (i < lyrics.Length)
+
+            while (i < _lyrics.Length)
             {
-                lyrics = lyrics.Insert(i, "/");
+                _lyrics = _lyrics.Insert(i, "/");
                 i += 2000;
             }
 
-            listLyrics = lyrics.Split("/").ToList();
+            listLyrics = _lyrics.Split("/").ToList();
 
             return listLyrics;
         }
