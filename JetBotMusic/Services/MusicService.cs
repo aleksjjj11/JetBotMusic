@@ -12,10 +12,7 @@ using JavaAnSharp;
 using Victoria;
 using Victoria.Enums;
 using Victoria.EventArgs;
-using Victoria.Interfaces;
-using Victoria.Responses.Rest;
 using Yandex.Music.Api;
-using Yandex.Music.Api.Models;
 using YandexAPI;
 
 namespace JetBotMusic.Services
@@ -24,12 +21,10 @@ namespace JetBotMusic.Services
     {
         private readonly LavaNode _lavaNode;
         private readonly DiscordSocketClient _client;
-        private Queue<LavaTrack> _loopQueue;
-        private LavaTrack _loopTrack;
-        private IUserMessage _messageLyrics = null;
+        private IUserMessage _messageLyrics;
         private List<IUserMessage> _messagesLyrics = null;
         private bool _isLoopTrack = false;
-        private Dictionary<IMessageChannel, IUserMessage> GUIMessages;
+        private Dictionary<IMessageChannel, IUserMessage> _guiMessages;
 
         public bool IsPlaying(IGuild guild)
         {
@@ -43,6 +38,7 @@ namespace JetBotMusic.Services
         }
 
         public async Task OnReadyAsync() => await _lavaNode.ConnectAsync();
+        public long CountPlayers => _lavaNode.Players.Count();
 
         public Task InitializeAsync()
         {
@@ -52,7 +48,7 @@ namespace JetBotMusic.Services
             _lavaNode.OnTrackEnded += TrackFinished;
             _lavaNode.OnWebSocketClosed += LavaNodeOnOnWebSocketClosed;
 
-            GUIMessages = new Dictionary<IMessageChannel, IUserMessage>();
+            _guiMessages = new Dictionary<IMessageChannel, IUserMessage>();
 
             return Task.CompletedTask;
         }
@@ -77,10 +73,10 @@ namespace JetBotMusic.Services
 
         private async Task UpdateTrack(LavaPlayer player)
         {
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
             var embed = message.Embeds.First();
-            var lengthOldTrackName = embed.Description.IndexOf("\n");
-            var firstString = embed.Description.Substring(0, lengthOldTrackName);
+            var lengthOldTrackName = embed.Description.IndexOf("\n", StringComparison.Ordinal);
+            var firstString = embed.Description[..lengthOldTrackName];
 
             if (firstString.Contains(player.Track.Title) is true) 
                 return;
@@ -102,13 +98,13 @@ namespace JetBotMusic.Services
 
         private async Task UpdatePing(LavaPlayer player)
         {
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
 
             await message.ModifyAsync(properties =>
             {
                 var embed = message.Embeds.First();
-                var startIndex = embed.Description.IndexOf("*Ping:*");
-                var endIndex = embed.Description.IndexOf("🛰");
+                var startIndex = embed.Description.IndexOf("*Ping:*", StringComparison.Ordinal);
+                var endIndex = embed.Description.IndexOf("🛰", StringComparison.Ordinal);
                 var lengthPingStr = endIndex - startIndex;
 
                 var oldPing = embed.Description.Substring(startIndex, lengthPingStr);
@@ -136,48 +132,47 @@ namespace JetBotMusic.Services
 
         private async Task TimeAsync(LavaPlayer player)
         {
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
             var timeSpan = player.Track.Position;
             var track = player.Track;
 
             await message.ModifyAsync(properties =>
             {
                 var embed = message.Embeds.First();
-                var startIndex = embed.Description.IndexOf("**This time:**");
-                var lengthLine = embed.Description.IndexOf("🆒") - startIndex;
-                string oldStr = embed.Description.Substring(startIndex, lengthLine);
+                var startIndex = embed.Description.IndexOf("**This time:**", StringComparison.Ordinal);
+                var lengthLine = embed.Description.IndexOf("🆒", StringComparison.Ordinal) - startIndex;
+                var oldStr = embed.Description.Substring(startIndex, lengthLine);
 
-                string timeMSG = default;
+                string timeMsg;
 
+                var newMinutes = track.Duration.Minutes + track.Duration.Hours * 60 < 10
+                    ? '0' + (track.Duration.Minutes + track.Duration.Hours * 60).ToString()
+                    : (track.Duration.Minutes + track.Duration.Hours * 60).ToString();
                 if (player.Track.IsStream)
                 {
-                    timeMSG = "**This time:**`STREAMING`";
+                    timeMsg = "**This time:**`STREAMING`";
                 }
                 else
                 {
-                    string oldMinutes = timeSpan.Minutes + timeSpan.Hours * 60 < 10
+                    var oldMinutes = timeSpan.Minutes + timeSpan.Hours * 60 < 10
                         ? '0' + (timeSpan.Minutes + timeSpan.Hours * 60).ToString()
                         : (timeSpan.Minutes + timeSpan.Hours * 60).ToString();
 
-                    string oldSeconds = timeSpan.Seconds < 10
+                    var oldSeconds = timeSpan.Seconds < 10
                         ? '0' + timeSpan.Seconds.ToString()
                         : timeSpan.Seconds.ToString();
 
-                    string newMinutes = track.Duration.Minutes + track.Duration.Hours * 60 < 10
-                        ? '0' + (track.Duration.Minutes + track.Duration.Hours * 60).ToString()
-                        : (track.Duration.Minutes + track.Duration.Hours * 60).ToString();
-
-                    string newSeconds = track.Duration.Seconds < 10
+                    var newSeconds = track.Duration.Seconds < 10
                         ? '0' + track.Duration.Seconds.ToString()
                         : track.Duration.Seconds.ToString();
 
-                    timeMSG = $"**This time:**`{oldMinutes}:{oldSeconds}/{newMinutes}:{newSeconds}`";
+                    timeMsg = $"**This time:**`{oldMinutes}:{oldSeconds}/{newMinutes}:{newSeconds}`";
                 }
 
                 var builder = new EmbedBuilder();
 
                 builder.WithTitle(embed.Title)
-                    .WithDescription(embed.Description.Replace(oldStr, timeMSG))
+                    .WithDescription(embed.Description.Replace(oldStr, timeMsg))
                     .WithColor(embed.Color.Value);
 
                 properties.Embed = builder.Build();
@@ -188,18 +183,18 @@ namespace JetBotMusic.Services
         {
             try
             {
-                GUIMessages.Add(message.Channel, message);
+                _guiMessages.Add(message.Channel, message);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                GUIMessages[message.Channel] = message;
+                _guiMessages[message.Channel] = message;
             }
         }
 
         public async Task GetLyricsAsync(SocketUser user, IGuild guild, string query = null)
         {
-            LavaPlayer player = _lavaNode.GetPlayer(guild);
-            //Массив строк для неопреледелённого количества сообщения для вывода текста песен
+            var player = _lavaNode.GetPlayer(guild);
+            //Массив строк для неопределенного количества сообщения для вывода текста песен
             var listLyrics = new List<string>();
 
             if (player.Track != null)
@@ -232,13 +227,13 @@ namespace JetBotMusic.Services
 
             var dmChannel = user.GetOrCreateDMChannelAsync();
 
-            for (int i = 0; i < listLyrics.Count; i++)
+            foreach (var lyrics in listLyrics)
             {
                 var builder = new EmbedBuilder();
 
                 builder.WithTitle("Lyrics")
-                    .WithDescription(listLyrics[i])
-                    .WithColor(Color.Red);
+                       .WithDescription(lyrics)
+                       .WithColor(Color.Red);
 
                 await dmChannel.Result.SendMessageAsync("", false, builder.Build());
             }
@@ -252,22 +247,15 @@ namespace JetBotMusic.Services
             }
 
             player = _lavaNode.GetPlayer(guild);
-            SearchResponse res;
 
-            switch (source)
+            var resultTracks = source switch
             {
-                case "youtube":
-                    res = await _lavaNode.SearchYouTubeAsync(query);
-                    break;
-                case "soundcloud":
-                    res = await _lavaNode.SearchSoundCloudAsync(query);
-                    break;
-                default:
-                    res = await _lavaNode.SearchYouTubeAsync(query);
-                    break;
-            }
+                "youtube" => await _lavaNode.SearchYouTubeAsync(query),
+                "soundcloud" => await _lavaNode.SearchSoundCloudAsync(query),
+                _ => await _lavaNode.SearchYouTubeAsync(query)
+            };
 
-            var track = res.Tracks.FirstOrDefault();
+            var track = resultTracks.Tracks.FirstOrDefault();
 
             if (track?.Title == "Track empty" || track is null) 
                 return new KeyValuePair<LavaTrack, bool>(null, false);
@@ -302,7 +290,7 @@ namespace JetBotMusic.Services
             await player.UpdateVolumeAsync(0);
         }
 
-        public async Task UnmuteAsync(IGuild guild)
+        public async Task UnMuteAsync(IGuild guild)
         {
             var player = _lavaNode.GetPlayer(guild);
             await player.UpdateVolumeAsync(100);
@@ -311,28 +299,28 @@ namespace JetBotMusic.Services
         public async Task AliasAsync(SocketUser user)
         {
             var builder = new EmbedBuilder();
-            string message = "[!] - Prefix for control bot.\n" +
-                             "[Join] - Connect bot to you.\n" +
-                             "[Play] <query> - Plays a song with the given name or url.\n" +
-                             "[PlaySoundCloud] <query> - too [play], but from sound cloud.\n" +
-                             "[Pause] - Pauses the currently playing track.\n" +
-                             "[Resume] - Resume paused music.\n" +
-                             "[Stop] - Stop playing.\n" +
-                             "[Lyrics] - Gets the lyrics of the current playing song.\n" +
-                             "[Skip] - Skips the currently playing song.\n" +
-                             "[Leave] - Disconnect the bot from the voice channel it is in.\n" +
-                             "[Ping] - Checks the bot's response time to Discord.\n" +
-                             "[SetVolume] - Change the current volume.\n" +
-                             "[Shuffle] - Shuffles the queue.\n" +
-                             "[Seek] - Seeks to a certain point in the current track.\n" +
-                             "[List] - Update list of queue.\n" +
-                             "[Move] - Moves a certain song to a chosen position.\n" +
-                             "[Remove] - Removes a certain entry from the queue.\n" +
-                             "[LoopQueue] - Loops the whole queue.\n" +
-                             "[Loop] - Loop the currently playing song.\n" +
-                             "[Replay] - Reset the progress of the current song.\n" +
-                             "[RemoveDupes] - Removes duplicate songs from the queue.\n" +
-                             "[LeaveCleanUp] - Removes absent user's songs from the Queue.\n";
+            var message = "[!] - Prefix for control bot.\n" +
+                          "[Join] - Connect bot to you.\n" +
+                          "[Play] <query> - Plays a song with the given name or url.\n" +
+                          "[PlaySoundCloud] <query> - too [play], but from sound cloud.\n" +
+                          "[Pause] - Pauses the currently playing track.\n" +
+                          "[Resume] - Resume paused music.\n" +
+                          "[Stop] - Stop playing.\n" +
+                          "[Lyrics] - Gets the lyrics of the current playing song.\n" +
+                          "[Skip] - Skips the currently playing song.\n" +
+                          "[Leave] - Disconnect the bot from the voice channel it is in.\n" +
+                          "[Ping] - Checks the bot's response time to Discord.\n" +
+                          "[SetVolume] - Change the current volume.\n" +
+                          "[Shuffle] - Shuffles the queue.\n" +
+                          "[Seek] - Seeks to a certain point in the current track.\n" +
+                          "[List] - Update list of queue.\n" +
+                          "[Move] - Moves a certain song to a chosen position.\n" +
+                          "[Remove] - Removes a certain entry from the queue.\n" +
+                          "[LoopQueue] - Loops the whole queue.\n" +
+                          "[Loop] - Loop the currently playing song.\n" +
+                          "[Replay] - Reset the progress of the current song.\n" +
+                          "[RemoveDupes] - Removes duplicate songs from the queue.\n" +
+                          "[LeaveCleanUp] - Removes absent user's songs from the Queue.\n";
 
             builder.WithTitle("Lyrics")
                    .WithDescription(message)
@@ -346,7 +334,7 @@ namespace JetBotMusic.Services
         public async Task SkipAsync(IGuild guild)
         {
             var player = _lavaNode.GetPlayer(guild);
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
 
             if (player.Queue.Count is 0) return;
 
@@ -372,20 +360,20 @@ namespace JetBotMusic.Services
 
         public async Task TrackListAsync(LavaPlayer player)
         {
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
             var listMessage = "";
             var embed = message.Embeds.First();
-            var startIndex = embed.Description.IndexOf("\n🎶");
+            var startIndex = embed.Description.IndexOf("\n🎶", StringComparison.Ordinal);
             var descriptionLength = embed.Description.Length - startIndex;
 
-            string useless = embed.Description.Substring(startIndex, descriptionLength);
+            var useless = embed.Description.Substring(startIndex, descriptionLength);
 
             var trackList = player.Queue.ToList();
 
             if (player.Queue.Count > 0)
             {
                 listMessage += "\n🎶**Track in queue:**";
-                for (int i = 0; i < trackList.Count; i++)
+                for (var i = 0; i < trackList.Count; i++)
                 {
                     var track = trackList[i] as LavaTrack;
 
@@ -421,10 +409,10 @@ namespace JetBotMusic.Services
         public async Task TrackListAsync(IGuild guild)
         {
             var player = _lavaNode.GetPlayer(guild);
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
             var listMessage = "";
             var embed = message.Embeds.First();
-            var startIndex = embed.Description.IndexOf("\n🎶");
+            var startIndex = embed.Description.IndexOf("\n🎶", StringComparison.Ordinal);
             var descriptionLength = embed.Description.Length - startIndex;
 
             var useless = embed.Description.Substring(startIndex, descriptionLength);
@@ -435,17 +423,15 @@ namespace JetBotMusic.Services
             {
                 listMessage += "\n🎶**Track in queue:**";
 
-                for (int i = 0; i < trackList.Count; i++)
+                for (var i = 0; i < trackList.Count; i++)
                 {
-                    var track = trackList[i] as LavaTrack;
-
-                    if (track is null)
+                    if (trackList[i] is LavaTrack track)
                     {
-                        listMessage += "\n`Track empty`";
+                        listMessage += $"\n```css\n .{i} [{track.Title}]```";
                     }
                     else
                     {
-                        listMessage += $"\n```css\n .{i} [{track.Title}]```";
+                        listMessage += "\n`Track empty`";
                     }
                 }
             }
@@ -491,14 +477,15 @@ namespace JetBotMusic.Services
 
             if (player is null) return;
 
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
 
             if (player.PlayerState != PlayerState.Paused)
             {
                 await player.PauseAsync();
 
                 var embed = message.Embeds.First();
-                var firstString = embed.Description.Substring(0, embed.Description.IndexOf("\n"));
+                var symbolIndex = embed.Description.IndexOf("\n", StringComparison.Ordinal);
+                var firstString = embed.Description[..symbolIndex];
 
                 await message.ModifyAsync(properties =>
                 {
@@ -524,14 +511,15 @@ namespace JetBotMusic.Services
 
             if (player is null) return;
 
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
 
             if (player.PlayerState == PlayerState.Paused)
             {
                 await player.ResumeAsync();
 
                 var embed = message.Embeds.First();
-                var oldValue = embed.Description.Substring(0, embed.Description.IndexOf("\n"));
+                var endLineIndex = embed.Description.IndexOf("\n", StringComparison.Ordinal);
+                var oldValue = embed.Description[..endLineIndex];
 
                 await message.ModifyAsync(properties =>
                 {
@@ -602,7 +590,7 @@ namespace JetBotMusic.Services
             //Получаем нашу очередь в лист 
             var queue = player.Queue.ToList();
 
-            //Добаляем трек в новую позицию и удаляем со старой
+            //Добавляем трек в новую позицию и удаляем со старой
             queue.Insert(newPosition, queue[numberTrack]);
 
             if (newPosition < numberTrack)
@@ -629,10 +617,10 @@ namespace JetBotMusic.Services
             var reason = trackEndedEventArgs.Reason;
             var player = trackEndedEventArgs.Player;
             var track = trackEndedEventArgs.Track;
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
             var embed = message.Embeds.First();
-            var descriptionLength = embed.Description.IndexOf("\n");
-            var firstString = embed.Description.Substring(0, descriptionLength);
+            var descriptionEndLineIndex = embed.Description.IndexOf("\n", StringComparison.Ordinal);
+            var firstString = embed.Description[..descriptionEndLineIndex];
 
             if (reason.ShouldPlayNext() == false) return;
 
@@ -703,7 +691,7 @@ namespace JetBotMusic.Services
         public async Task RemoveAsync(int index, IGuild guild)
         {
             var player = _lavaNode.GetPlayer(guild);
-            int i = 0;
+            var i = 0;
 
             foreach (var element in player.Queue)
             {
@@ -731,11 +719,11 @@ namespace JetBotMusic.Services
 
             if (player.Queue.Count is 0) return;
 
-            for (int i = 0; i < player.Queue.Count - 1; i++)
+            for (var i = 0; i < player.Queue.Count - 1; i++)
             {
                 var firstTrack = player.Queue.GetItemByIndex(i) as LavaTrack;
 
-                for (int j = i + 1; j < player.Queue.Count; j++)
+                for (var j = i + 1; j < player.Queue.Count; j++)
                 {
                     var secondTrack = player.Queue.GetItemByIndex(j) as LavaTrack;
 
@@ -768,24 +756,24 @@ namespace JetBotMusic.Services
 
         private async Task UpdateVote(LavaPlayer player)
         {
-            var message = GUIMessages[player.TextChannel];
+            var message = _guiMessages[player.TextChannel];
 
             try
             {
-                if ((player.VoiceChannel as SocketVoiceChannel) is null)
+                if (player.VoiceChannel is not SocketVoiceChannel channel)
                 {
                     Console.WriteLine($"VOICE CHANNEL IS NULL");
                     return;
                 }
 
-                int amountVote = (player.VoiceChannel as SocketVoiceChannel).Users.Count / 2 + 1;
-                string newValue = $"***Need votes for skip:*** `{amountVote}`⏭";
+                var amountVote = channel.Users.Count / 2 + 1;
+                var newValue = $"***Need votes for skip:*** `{amountVote}`⏭";
 
                 var embed = message.Embeds.First();
 
-                int startIndex = embed.Description.IndexOf("***Need votes for skip:***");
-                int endIndex = embed.Description.IndexOf("⏭") + 1;
-                string oldValue = embed.Description.Substring(startIndex, endIndex - startIndex);
+                var startIndex = embed.Description.IndexOf("***Need votes for skip:***", StringComparison.Ordinal);
+                var endIndex = embed.Description.IndexOf("⏭", StringComparison.Ordinal) + 1;
+                var oldValue = embed.Description.Substring(startIndex, endIndex - startIndex);
 
                 Console.WriteLine($"START INDEX: {startIndex} END INDEX: {endIndex}\nNew value:{newValue}\nOld:{oldValue}");
 
@@ -812,13 +800,12 @@ namespace JetBotMusic.Services
             var client = new HttpClient();
             var response = client.GetAsync(url).Result;
 
-            string textResponse = response.Content.ReadAsStringAsync().Result;
+            var textResponse = await response.Content.ReadAsStringAsync();
             var root = JsonSerializer.Deserialize<PlaylistRoot>(textResponse);
 
-            if (root.playlist.tracks.Count == 0)
-                return null;
-
-            return root.playlist.tracks;
+            return root.playlist.tracks.Count == 0 
+                ? null 
+                : root.playlist.tracks;
         }
 
         public async Task<AlbumRoot> YandexAlbumAsync(string url, SocketGuild contextGuild, int startId)
@@ -826,13 +813,12 @@ namespace JetBotMusic.Services
             var client = new HttpClient();
             var response = client.GetAsync(url).Result;
 
-            string textResponse = response.Content.ReadAsStringAsync().Result;
+            var textResponse = await response.Content.ReadAsStringAsync();
             var root = JsonSerializer.Deserialize<AlbumRoot>(textResponse);
 
-            if (root.volumes[0].Count == 0)
-                return null;
-
-            return root;
+            return root.volumes[0].Count == 0 
+                ? null 
+                : root;
         }
 
         public async Task<string> YandexTrackAsync(string trackId, SocketGuild contextGuild)
@@ -842,7 +828,5 @@ namespace JetBotMusic.Services
 
             return $"{track.Title} - {track.Artists.First().Name}";
         }
-
-        public long GetCountPlayers => _lavaNode.Players.Count();
     }
 }

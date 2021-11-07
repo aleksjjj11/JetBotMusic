@@ -20,19 +20,19 @@ namespace JavaAnSharp
             var geniusClient = new GeniusClient("0KELsTGebL5A6ZExHu-h4sLL7MlZxoX_4DKfGgXC1RrilwKQhWpGeMcXik0hMZ35");
             var result = geniusClient.SearchClient.Search(TextFormat.Dom, query);
             var firstHit = result.Result.Response.First();
-            string str = firstHit.Result.ToString();
+            var str = firstHit.Result.ToString();
 
             //Создаём устойчивое выражение, чтобы найти id нашей песни 
             var regex = new Regex(@"(\W)id(\W):\s\d*");
-            var collection = regex.Matches(str);
+            var collection = regex.Matches(str ?? string.Empty);
             var matches = collection.First();
 
             Console.WriteLine($"Found this id: {matches.Value}");
 
-            string id = matches.Value.Remove(0, 6);
+            var id = matches.Value.Remove(0, 6);
 
             //По пулученному id получаем песню
-            Song song = geniusClient.SongsClient.GetSong(TextFormat.Dom, id).Result.Response;
+            var song = geniusClient.SongsClient.GetSong(TextFormat.Dom, id).Result.Response;
 
             if (song is null)
             {
@@ -55,9 +55,8 @@ namespace JavaAnSharp
         {
             var httpClient = new HttpClient();
             var response = await httpClient.GetAsync(_fullAddress);
-            string source = null;
 
-            source = await response.Content.ReadAsStringAsync();
+            var source = await response.Content.ReadAsStringAsync();
 
             var domParser = new HtmlParser();
             var document = await domParser.ParseDocumentAsync(source);
@@ -86,7 +85,7 @@ namespace JavaAnSharp
         {
             var listLyrics = new List<string>();
 
-            int i = 2000;
+            var i = 2000;
 
             while (i < _lyrics.Length)
             {
@@ -94,7 +93,7 @@ namespace JavaAnSharp
                 i += 2000;
             }
 
-            listLyrics = _lyrics.Split("/").ToList();
+            listLyrics.AddRange(_lyrics.Split("/"));
 
             return listLyrics;
         }

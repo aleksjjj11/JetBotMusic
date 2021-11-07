@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -16,8 +15,7 @@ namespace JetBotMusic.Services
         private readonly IServiceProvider _services;
         private readonly MusicService _musicService;
         private string _listReactions;
-        private List<SocketGuildUser> _skippingUsers;
-        
+
         public ReactionService(DiscordSocketClient client, CommandService cmdService, IServiceProvider services, MusicService musicService)
         {
             _client = client;
@@ -42,19 +40,17 @@ namespace JetBotMusic.Services
         {
             await reaction.Message.Value.RemoveAllReactionsAsync();
 
-            for (int i = 0; i < _listReactions.Length; i++)
+            foreach (var reactionItem in _listReactions)
             {
-                await reaction.Message.Value.AddReactionAsync(new Emoji("" + _listReactions[i]));
+                await reaction.Message.Value.AddReactionAsync(new Emoji("" + reactionItem));
             }
         }
 
         private async Task ReactionAdded(Cacheable<IUserMessage, ulong> arg1, ISocketMessageChannel socketMessageChannel, SocketReaction reaction)
         {
-            IGuild guild = _client.Guilds.FirstOrDefault(element => element.GetChannel(reaction.Message.Value.Channel.Id) != null);
+            var guild = _client.Guilds.FirstOrDefault(element => element.GetChannel(reaction.Message.Value.Channel.Id) != null);
             //⏯    ▶    ⏩    🔊    🚫    🔈    🔀
             if (reaction.User.Value.IsBot) return;
-            
-            //await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
             
             if (reaction.Emote.Name is "⏯")
             {
@@ -96,7 +92,7 @@ namespace JetBotMusic.Services
                 await reaction.Message.Value.RemoveReactionAsync(reaction.Emote, reaction.Message.Value.Author);
                 await reaction.Message.Value.AddReactionAsync(new Emoji("🚫"));
                 
-                await _musicService.UnmuteAsync(guild);
+                await _musicService.UnMuteAsync(guild);
                 
                 var embed = reaction.Message.Value.Embeds.First();
                 
@@ -104,7 +100,7 @@ namespace JetBotMusic.Services
                 {
                     var builder = new EmbedBuilder();
 
-                    string description = embed.Description.Replace("*Voice Status*: **With mute**", "*Voice Status*: **Without mute**");
+                    var description = embed.Description.Replace("*Voice Status*: **With mute**", "*Voice Status*: **Without mute**");
 
                     builder.WithTitle(embed.Title)
                            .WithDescription(description)
@@ -134,7 +130,7 @@ namespace JetBotMusic.Services
                 {
                     var builder = new EmbedBuilder();
 
-                    string description = embed.Description.Replace("*Voice Status*: **Without mute**", "*Voice Status*: **With mute**");
+                    var description = embed.Description.Replace("*Voice Status*: **Without mute**", "*Voice Status*: **With mute**");
 
                     builder.WithTitle(embed.Title)
                            .WithDescription(description)
@@ -156,15 +152,15 @@ namespace JetBotMusic.Services
                 await _musicService.StopAsync(guild);
                 
                 var embed = reaction.Message.Value.Embeds.First();
-                var lengthDescription = embed.Description.IndexOf("\n");
+                var lengthDescription = embed.Description.IndexOf("\n", StringComparison.Ordinal);
 
-                string firstString = embed.Description.Substring(0, lengthDescription);
+                var firstString = embed.Description[..lengthDescription];
                 
                 await reaction.Message.Value.ModifyAsync(properties =>
                 {
                     var builder = new EmbedBuilder();
 
-                    string description = embed.Description.Replace(firstString, "*Status*: **Stopping**");
+                    var description = embed.Description.Replace(firstString, "*Status*: **Stopping**");
 
                     builder.WithTitle(embed.Title)
                            .WithDescription(description)
