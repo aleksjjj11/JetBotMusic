@@ -35,7 +35,10 @@ namespace JetBotMusic
             var userMessage = message as SocketUserMessage;
             
             if (userMessage is null) return;
-            if (!((SocketUserMessage) message).HasMentionPrefix(_client.CurrentUser, ref argPos) && !((SocketUserMessage)message).HasStringPrefix("!", ref argPos)) return;
+            var socketUserMessage = (SocketUserMessage)message;
+            var med = !socketUserMessage.HasStringPrefix("!", ref argPos);
+            var med2 = !socketUserMessage.HasMentionPrefix(_client.CurrentUser, ref argPos);
+            if (med2 && med) return;
             
             var context = new SocketCommandContext(_client, userMessage);
             var result = await _cmdService.ExecuteAsync(context, argPos, _services);

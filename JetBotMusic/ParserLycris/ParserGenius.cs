@@ -18,9 +18,9 @@ namespace JavaAnSharp
         public ParserGenius(string query = "NEFFEX - Trust me")
         {
             var geniusClient = new GeniusClient("0KELsTGebL5A6ZExHu-h4sLL7MlZxoX_4DKfGgXC1RrilwKQhWpGeMcXik0hMZ35");
-            var result = geniusClient.SearchClient.Search(TextFormat.Dom, query);
-            var firstHit = result.Result.Response.First();
-            var str = firstHit.Result.ToString();
+            var result = geniusClient.SearchClient.Search(query);
+            var firstHit = result.Result.Response.Hits.FirstOrDefault();
+            var str = firstHit?.Result?.ToString();
 
             //Создаём устойчивое выражение, чтобы найти id нашей песни 
             var regex = new Regex(@"(\W)id(\W):\s\d*");
@@ -29,10 +29,10 @@ namespace JavaAnSharp
 
             Console.WriteLine($"Found this id: {matches.Value}");
 
-            var id = matches.Value.Remove(0, 6);
+            ulong.TryParse(matches.Value.Remove(0, 6), out ulong id);
 
             //По пулученному id получаем песню
-            var song = geniusClient.SongsClient.GetSong(TextFormat.Dom, id).Result.Response;
+            var song = geniusClient.SongClient.GetSong(id).Result.Response;
 
             if (song is null)
             {
@@ -40,9 +40,9 @@ namespace JavaAnSharp
                 return;
             }
 
-            Console.WriteLine($"URl : {song.Url}");
+            Console.WriteLine($"URl : {song.Song.Url}");
 
-            _fullAddress = song.Url;
+            _fullAddress = song.Song.Url;
 
             if (_fullAddress is null)
             {

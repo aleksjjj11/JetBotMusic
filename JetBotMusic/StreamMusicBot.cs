@@ -1,40 +1,37 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using JetBotMusic.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Victoria;
 
 namespace JetBotMusic
 {
-    public class StreamMusicBot
+    public class StreamMusicBot : IHostedService
     {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _cmdService;
-        private IServiceProvider _services;
+        private readonly IServiceProvider _services;
+        // private IServiceProvider _services;
         public static int Latency;
 
-        public StreamMusicBot(DiscordSocketClient client = null, CommandService cmdService = null)
+        public StreamMusicBot(DiscordSocketClient client, CommandService cmdService, IServiceProvider services)
         {
-            _client = client ?? new DiscordSocketClient(new DiscordSocketConfig
-            {
-                AlwaysDownloadUsers = true,
-                MessageCacheSize = 50,
-                LogLevel = LogSeverity.Debug
-            });
+            var token = Environment.GetEnvironmentVariable("JetBotMusicBotToken");
+            _services = services;
+            _client = client;
 
-            _cmdService = cmdService ?? new CommandService(new CommandServiceConfig
-            {
-                LogLevel = LogSeverity.Verbose,
-                CaseSensitiveCommands = false
-            });
-            
+            _cmdService = cmdService;
         }
 
-        public async Task InitializeAsync(string token)
+        public async Task InitializeAsync()
         {
+            var token = Environment.GetEnvironmentVariable("JetBotMusicBotToken");
+
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
@@ -42,15 +39,15 @@ namespace JetBotMusic
             _client.LatencyUpdated += ClientOnLatencyUpdated;
             _client.UserVoiceStateUpdated += ClientOnUserVoiceStateUpdated;
 
-            _services = SetupServices();
+            // _services = SetupServices();
             
             var cmdHandler = new CommandHandler(_client, _cmdService, _services);
             await cmdHandler.InitializeAsync();
 
-            await _services.GetRequiredService<MusicService>().InitializeAsync();
-            await _services.GetRequiredService<ReactionService>().InitializeAsync();
+            // await _services.GetRequiredService<MusicService>().InitializeAsync();
+            // await _services.GetRequiredService<ReactionService>().InitializeAsync();
             
-            await Task.Delay(-1);
+            // await Task.Delay(-1);
         }
 
         private Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState arg2, SocketVoiceState arg3)
@@ -75,15 +72,26 @@ namespace JetBotMusic
             return Task.CompletedTask;
         }
 
-        private IServiceProvider SetupServices()
-            => new ServiceCollection()
-                .AddSingleton(_client)
-                .AddSingleton(_cmdService)
-                .AddSingleton<CommandHandler>()
-                .AddSingleton<MusicService>()
-                .AddSingleton<ReactionService>()
-                .AddSingleton<LavaConfig>()
-                .AddSingleton<LavaNode>()
-                .BuildServiceProvider();
+        // private IServiceProvider SetupServices()
+        // {
+        //     var serviceCollection = new ServiceCollection()
+        //         .AddSingleton(_client)
+        //         .AddSingleton(_cmdService)
+        //         .AddSingleton<CommandHandler>()
+        //         .AddSingleton<MusicService>()
+        //         .AddSingleton<ReactionService>();
+        //     
+        //     
+        // }
+        // .AddLavaNode();
+        public async Task StartAsync(CancellationToken cancellationToken)
+        {
+            await InitializeAsync();
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

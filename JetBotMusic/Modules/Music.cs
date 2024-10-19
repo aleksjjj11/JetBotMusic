@@ -23,7 +23,7 @@ namespace JetBotMusic.Modules
         [Alias("St", "Setv", "Svolume")]
         public async Task SetVolume(ushort volume)
         {
-            await _musicService.SetVolumeAsync(volume, Context.Guild);
+            await _musicService.SetVolumeAsync(volume, Context.Guild.Id);
             await Context.Message.DeleteAsync();
         }
         
@@ -71,13 +71,13 @@ namespace JetBotMusic.Modules
             }
         }
 
-        [Command("Shuffle")]
-        [Alias("Shuf", "Sh")]
-        public async Task Shuffle()
-        {
-            await _musicService.Shuffle(Context.Guild);
-            await Context.Message.DeleteAsync();
-        }
+        // [Command("Shuffle")]
+        // [Alias("Shuf", "Sh")]
+        // public async Task Shuffle()
+        // {
+        //     await _musicService.Shuffle(Context.Guild);
+        //     await Context.Message.DeleteAsync();
+        // }
         
         [Command("Play")]
         [Alias("P", "Pl")]
@@ -91,7 +91,7 @@ namespace JetBotMusic.Modules
                 return;
             }
 
-            BuildPlayingMessage(key, value).Wait();
+            // BuildPlayingMessage(key, value).Wait();
         }
 
         [Command("PlaySoundCloud")]
@@ -106,48 +106,48 @@ namespace JetBotMusic.Modules
                 return;
             }
 
-            BuildPlayingMessage(key, value).Wait();
+            // BuildPlayingMessage(key, value).Wait();
         }
 
-        [Command("Seek")]
-        [Alias("Sk")]
-        public async Task Reset(int hours = 0, int minutes = 0, int seconds = 0)
-        {
-            hours = hours is < 0 or > 23 
-                ? 0 
-                : hours;
-            minutes = minutes is < 0 or > 59 
-                ? 0 
-                : minutes;
-            seconds = seconds is < 0 or > 59 
-                ? 0 
-                : seconds;
-            
-            await Context.Message.DeleteAsync();
-            await _musicService.SeekAsync(0, hours, minutes, seconds, Context.Guild);
-        }
+        // [Command("Seek")]
+        // [Alias("Sk")]
+        // public async Task Reset(int hours = 0, int minutes = 0, int seconds = 0)
+        // {
+        //     hours = hours is < 0 or > 23 
+        //         ? 0 
+        //         : hours;
+        //     minutes = minutes is < 0 or > 59 
+        //         ? 0 
+        //         : minutes;
+        //     seconds = seconds is < 0 or > 59 
+        //         ? 0 
+        //         : seconds;
+        //     
+        //     await Context.Message.DeleteAsync();
+        //     await _musicService.SeekAsync(0, hours, minutes, seconds, Context.Guild);
+        // }
 
         [Command("Stop")]
         [Alias("St", "Stp")]
         public async Task Stop()
         {
-            await _musicService.StopAsync(Context.Guild);
+            await _musicService.StopAsync(Context.Guild.Id);
             await ReplyAsync("Music playBack stopped.");
         }
 
-        [Command("Skip")]
-        [Alias("S", "Skp")]
-        public async Task Skip()
-        {
-            await _musicService.SkipAsync(Context.Guild);
-            await Context.Message.DeleteAsync();
-        }
+        // [Command("Skip")]
+        // [Alias("S", "Skp")]
+        // public async Task Skip()
+        // {
+        //     await _musicService.SkipAsync(Context.Guild.Id);
+        //     await Context.Message.DeleteAsync();
+        // }
 
         [Command("Pause")]
         [Alias("Ps", "Wait")]
         public async Task Pause()
         {
-            await _musicService.PauseAsync(Context.Guild);
+            await _musicService.PauseAsync(Context.Guild.Id);
             await Context.Message.DeleteAsync();
         }
 
@@ -155,7 +155,7 @@ namespace JetBotMusic.Modules
         [Alias("R", "Res", "Rsm")]
         public async Task Resume()
         {
-            await _musicService.ResumeAsync(Context.Guild);
+            await _musicService.ResumeAsync(Context.Guild.Id);
             await Context.Message.DeleteAsync();
         }
         
@@ -170,24 +170,24 @@ namespace JetBotMusic.Modules
         [Alias("M", "Mv")]
         public async Task Move(int numberTrack, int newPosition = 0)
         {
-            await _musicService.MoveAsync(numberTrack, newPosition, Context.Guild);
+            await _musicService.MoveAsync(numberTrack, newPosition, Context.Guild.Id);
             await Context.Message.DeleteAsync();
         }
 
-        [Command("Lyrics")]
-        [Alias("Lyr", "Lr", "Lrc")]
-        public async Task Lyrics([Remainder] string query = null)
-        {
-            await Context.Message.DeleteAsync();
-            await _musicService.GetLyricsAsync(Context.User, Context.Guild ,query);
-        }
+        // [Command("Lyrics")]
+        // [Alias("Lyr", "Lr", "Lrc")]
+        // public async Task Lyrics([Remainder] string query = null)
+        // {
+        //     await Context.Message.DeleteAsync();
+        //     await _musicService.GetLyricsAsync(Context.User, Context.Guild ,query);
+        // }
 
         [Command("Remove")]
         [Alias("Delete", "Del", "D", "Rem", "Rmv")]
         public async Task RemoveAsync(int index = 0)
         {
             await Context.Message.DeleteAsync();
-            await _musicService.RemoveAsync(index, Context.Guild);
+            await _musicService.RemoveAsync(index, Context.Guild.Id);
         }
 
         [Command("Aliases")]
@@ -223,7 +223,7 @@ namespace JetBotMusic.Modules
 
             await Context.Message.DeleteAsync();
 
-            var dmChannel = Context.User.GetOrCreateDMChannelAsync();
+            var dmChannel = Context.User.CreateDMChannelAsync();
             await dmChannel.Result.SendMessageAsync(res.ToString());
         }
 
@@ -232,7 +232,7 @@ namespace JetBotMusic.Modules
         public async Task ReplayAsync()
         {
             await Context.Message.DeleteAsync();
-            await _musicService.ReplayAsync(Context.Guild);
+            await _musicService.ReplayAsync(Context.Guild.Id);
         }
 
         [Command("RemoveDupes")]
@@ -240,7 +240,7 @@ namespace JetBotMusic.Modules
         public async Task RemoveDupesAsync()
         {
             await Context.Message.DeleteAsync();
-            await _musicService.RemoveDupesAsync(Context.Guild);
+            await _musicService.RemoveDupesAsync(Context.Guild.Id);
         }
 
         [Command("LeaveCleanUp")]
@@ -371,7 +371,7 @@ namespace JetBotMusic.Modules
                        .WithName("Playing Servers")
                        .WithValue(_musicService.CountPlayers).WithIsInline(true));
 
-                var dmChannel = Context.User.GetOrCreateDMChannelAsync();
+                var dmChannel = Context.User.CreateDMChannelAsync();
                 await dmChannel.Result.SendMessageAsync("", false, builder.Build());
             }
             catch (Exception ex)
@@ -380,41 +380,41 @@ namespace JetBotMusic.Modules
             }
         }
 
-        private async Task BuildPlayingMessage(LavaTrack track, bool isPlaying)
-        {
-            var nameSong = track.Title;
-            Console.WriteLine($"-----------------<><><><><><>><><<><><><><><>><><> {track.Url}");
-
-            if (isPlaying)
-            {
-                await Context.Message.DeleteAsync();
-                await _musicService.TrackListAsync(Context.Guild);
-                return;
-            }
-
-            var builder = new EmbedBuilder();
-
-            var description = $"*Status*: **Playing** `{nameSong}`\n" +
-                              "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n" +
-                              $"*Ping:* `{StreamMusicBot.Latency}`🛰\n" +
-                              $"***Need votes for skip:*** `1`⏭\n" +
-                              $"🎶**Track in queue:**\n***Nothing***";
-
-            builder.WithTitle("JetBot-Music")
-                .WithDescription(description)
-                .WithColor(Color.Orange);
-
-            var message = await ReplyAsync("", false, builder.Build());
-
-            _musicService.SetMessage(message);
-
-            await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
-            await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
-            await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
-            await message.AddReactionAsync(new Emoji("⏭")); //skip
-            await message.AddReactionAsync(new Emoji("🔀")); //shuffle
-            await message.AddReactionAsync(new Emoji("🎼")); //lyrics
-            await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
-        }
+        // private async Task BuildPlayingMessage(LavaTrack track, bool isPlaying)
+        // {
+        //     var nameSong = track.Title;
+        //     Console.WriteLine($"-----------------<><><><><><>><><<><><><><><>><><> {track.Url}");
+        //
+        //     if (isPlaying)
+        //     {
+        //         await Context.Message.DeleteAsync();
+        //         await _musicService.TrackListAsync(Context.Guild);
+        //         return;
+        //     }
+        //
+        //     var builder = new EmbedBuilder();
+        //
+        //     var description = $"*Status*: **Playing** `{nameSong}`\n" +
+        //                       "*Voice Status*: **Without mute**\n**This time:**`00:00/00:00`🆒\n" +
+        //                       $"*Ping:* `{StreamMusicBot.Latency}`🛰\n" +
+        //                       $"***Need votes for skip:*** `1`⏭\n" +
+        //                       $"🎶**Track in queue:**\n***Nothing***";
+        //
+        //     builder.WithTitle("JetBot-Music")
+        //         .WithDescription(description)
+        //         .WithColor(Color.Orange);
+        //
+        //     var message = await ReplyAsync("", false, builder.Build());
+        //
+        //     _musicService.SetMessage(message);
+        //
+        //     await message.AddReactionAsync(new Emoji("🚪")); //leave to voice channel (not added)
+        //     await message.AddReactionAsync(new Emoji("⏹")); //stop (not added)
+        //     await message.AddReactionAsync(new Emoji("⏯")); //pause and resume
+        //     await message.AddReactionAsync(new Emoji("⏭")); //skip
+        //     await message.AddReactionAsync(new Emoji("🔀")); //shuffle
+        //     await message.AddReactionAsync(new Emoji("🎼")); //lyrics
+        //     await message.AddReactionAsync(new Emoji("🚫")); //mute and unmute
+        // }
     }
 }
