@@ -1,0 +1,39 @@
+# Ignore build output directories
+/bin/
+/obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+
+# Rider directories
+.idea/
+.vscode/
+*.sln.iml
+
+# Rider specific files
+*.DotSettings
+
+# Backup and temporary files
+*.bak
+*.tmp
+
+# Logs
+*.log
+
+# Others
+*.cache/
+*.pdb
+*.mdb
+
+# Ignore environment specific files
+.env
+.env.*.local
+
+# Ignore NuGet packages
+*.nupkg
+packages/
+
+# Ignore dotnet local toolships
+.local_toolsets/
